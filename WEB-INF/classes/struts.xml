@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+   <constant name="struts.devMode" value="true" />
+   <constant name="struts.ui.theme" value="simple" />
+   <constant name="struts.action.excludePattern" value="/Login*" />
+   <!-- to use this we need to use annotation
+				<constant name="struts.convention.result.path" value="/WEB-INF/jsp/" />
+   -->
+   <package name="default" extends="struts-default">
+
+		<!-- this is a global action that makes sure user is logged in -->
+		
+		<global-results>
+      <result name="login" type="redirect">welcome.action</result>
+		</global-results>
+		
+		<action name="home">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result>/Login</result>
+		</action>
+		
+		<action name="logout" class="traffic.LogoutAction">
+			<result>/WEB-INF/jsp/welcome.jsp</result>
+		</action>	 
+		
+		<action name="welcome" class="traffic.WelcomeAction">
+			<result name="success">/WEB-INF/jsp/welcome.jsp</result>
+			<result name="login">/Login</result>	   
+		</action>
+	  
+		<action name="project" 
+						class="traffic.ProjectAction" 
+						method="execute">
+			<result>/WEB-INF/jsp/project.jsp</result>
+			<result name="error">/WEB-INF/jsp/project.jsp</result>
+			<result name="view">/WEB-INF/jsp/projectView.jsp</result>			
+		</action>
+		<action name="projectUpdate" 
+						class="traffic.ProjectUpdateAction" 
+						method="execute">
+			<result>/WEB-INF/jsp/projectUpdate.jsp</result>
+			<result name="error">/WEB-INF/jsp/projectUpdate.jsp</result>
+			<result name="view">/WEB-INF/jsp/projectUpdateView.jsp</result>
+			<result name="noproject">/WEB-INF/jsp/noproject.jsp</result>			
+		</action>	  
+
+		<action name="search" 
+						class="traffic.SearchAction" 
+						method="execute">
+			<result name="input">/WEB-INF/jsp/search.jsp</result>		
+			<result name="error">/WEB-INF/jsp/search.jsp</result>
+			<result name="success">/WEB-INF/jsp/search.jsp</result>
+		</action>
+		<!--		
+		<action name="report" 
+						class="traffic.ReportAction" 
+						method="execute">
+			<result name="input">/WEB-INF/jsp/reportInput.jsp</result>		
+			<result name="error">/WEB-INF/jsp/reportInput.jsp</result>
+			<result name="success">/WEB-INF/jsp/reportResult.jsp</result>
+		</action>
+		-->
+   </package>
+
+</struts>

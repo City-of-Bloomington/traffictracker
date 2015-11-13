@@ -1,0 +1,13 @@
+<Context
+         reloadable="false" crossContext="true">
+  <Resource name="jdbc/MySQL_traffic"
+			auth="Container"
+			type="javax.sql.DataSource" 
+			username="traffictracker"
+			password="your pass"
+			driverClassName="com.mysql.jdbc.Driver"
+			url="jdbc:mysql://localhost:3306/traffictracker" 
+			removeAbandoned="true"
+			removeAbandonedTimeout="60"
+			maxActive="6"  /> 
+</Context> 
