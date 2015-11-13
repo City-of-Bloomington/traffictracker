@@ -13,14 +13,14 @@
 
     <context-param>
       <param-name>url</param-name>
-      <param-value>http://outlaw/traffictracker/</param-value>
+      <param-value>/traffictracker/</param-value>
       <description> general servlet url
       </description>
     </context-param>
     <context-param>
       <param-name>url2</param-name>
-      <param-value>http://outlaw/images/traffictracker/</param-value>
-      <description> general servlet url
+      <param-value>http://your server/traffictracker/js/images/</param-value>
+      <description> for serving images
       </description>
     </context-param>
     <context-param>
@@ -29,16 +29,10 @@
       <description> debug flag, we set to true in develpment phase only
       </description>
     </context-param>
-    <context-param>
-      <param-name>activeMail</param-name>
-      <param-value>true</param-value>
-      <description>
-	  </description>
-    </context-param>
 		
     <context-param>
       <param-name>cas_url</param-name>
-      <param-value>https://bloomington.in.gov/cas/logout</param-value>
+      <param-value>your cas server url/cas/logout</param-value>
       <description> cas logout url
       </description>
     </context-param>
@@ -66,11 +60,11 @@
 	  <filter-class>edu.yale.its.tp.cas.client.filter.CASFilter</filter-class>
 	  <init-param>
 		<param-name>edu.yale.its.tp.cas.client.filter.loginUrl</param-name>
-		<param-value>https://bloomington.in.gov/cas/login</param-value>
+		<param-value>https://your cas server/cas/login</param-value>
 	  </init-param>
 	  <init-param>
 		<param-name>edu.yale.its.tp.cas.client.filter.validateUrl</param-name>
-		<param-value>https://bloomington.in.gov/cas/serviceValidate</param-value>
+		<param-value>https://your cas server/cas/serviceValidate</param-value>
 	  </init-param>
 	  <init-param>
 		<param-name>edu.yale.its.tp.cas.client.filter.serverName</param-name>

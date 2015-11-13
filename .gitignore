@@ -46,4 +46,7 @@ Temporary Items
 .tar
 .com
 .exe
+prepare.java
+context.xml
+web.xml
 build
