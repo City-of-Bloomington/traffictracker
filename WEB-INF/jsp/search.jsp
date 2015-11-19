@@ -23,15 +23,15 @@
 		<dd><s:textfield name="projectList.id" size="10" value="%{projectList.id}" /></dd>
 	</dl>
 	<dl class="fn1-input-field">
-		<dt>Project Name </dt>
+		<dt>Name </dt>
 		<dd><s:textfield name="projectList.name" value="%{projectList.name}" size="30" maxlength="70" /> </dd>
 	</dl>
 	<dl class="fn1-input-field">
-		<dt>Project Owner</dt>
+		<dt>Owner</dt>
 		<dd><s:select name="projectList.owner_id" value="%{projectList.owner_id}" list="owners" listKey="id" listValue="name" headerKey="-1" headerValue="All" /></dd>
 	</dl>
 	<dl class="fn1-input-field">
-		<dt>Project Type</dt>
+		<dt>Type</dt>
 		<dd><s:select name="projectList.type_id" value="%{projectList.type_id}" list="types" listKey="id" headerKey="-1" headerValue="All" listValue="name" /></dd>
 	</dl>
 	<dl class="fn1-input-field">
@@ -80,7 +80,7 @@
 	</dl>
 	<dl class="fn1-input-field">
 		<dt></dt>
-		<dd><s:submit name="action" type="button" value="Submit" /></dd>
+		<dd><s:submit name="action" type="button" value="Submit" cssClass="fn1-btn" /></dd>
 	</dl>
 </s:form>
 <s:if test="projects != null && projects.size() > 0">

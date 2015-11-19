@@ -35,7 +35,7 @@ public class SubType extends Type{
 		
     //
     public String getType_id(){
-				return type_id; // could be category_id or sub_category_id
+				return type_id; // could be sub_id or sub_sub_id
     }
     //
     // setters

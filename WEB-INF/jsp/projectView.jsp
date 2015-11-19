@@ -41,7 +41,7 @@
 	<div class="tt-split-container">
 		<dl class="fn1-output-field">
 			<dt>New/Improved Features</dt>
-			<dd><s:property value="%{project.category}" /><s:if test="project.hasSubCategory()"> - <s:property value="%{project.sub_category}" /><s:if test="project.hasSubSubCategory()"> - <s:property value="%{project.sub_sub_category}" /></s:if></s:if></dd>
+			<dd><s:property value="%{project.allFeaturesText}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
 			<dt>Funding Source</dt>
@@ -70,8 +70,8 @@
 			<dd><s:property value="%{project.des_no}" /> </dd>
 		</dl>
 		<dl class="fn1-output-field">
-			<dt>Request Date</dt>
-			<dd><s:property value="%{project.request_date}" /> </dd>
+			<dt>Created Date</dt>
+			<dd><s:property value="%{project.date}" /> </dd>
 		</dl>
 		<dl class="fn1-output-field">
 			<dt>Est. End Date</dt>
@@ -91,8 +91,6 @@
 		</dl>
 	</div>
 </div>
-
-
 
 	<s:if test="project.canHaveMoreUpdates()">
 		<a href="<s:property value='#application.url' />project.action?id=<s:property value='project.id' />&action=Edit" class="fn1-btn">Edit Project</a>

@@ -25,9 +25,11 @@
       <s:actionmessage/>
 		</div>
   </s:elseif>
-  <p>*indicate a required field </p>
-  	<s:if test="projet.id != ''">
-		<dl class="fn1-input-field">
+  <p>*indicate a required field <br />
+		** indicate delete after clicking on "Save Changes"
+	</p>
+  	<s:if test="project.id != ''">
+		<dl class="fn1-output-field">
 			  <dt>Project ID</dt>
 				<dd><s:property value="project.id" /></dd>
 		</dl>
@@ -43,16 +45,28 @@
 			<dd><s:textarea name="project.description" value="%{project.description}" row="5" cols="80" requiredLabel="true" /></dd>
 		</dl>
 		<dl class="fn1-input-field--select">
-			<dt>Project Owner</dt>
+			<dt>Owner</dt>
 			<dd><s:select name="project.owner_id" value="%{project.owner_id}" list="owners" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Owner" requiredLabel="true" /></dd>
 		</dl>
 		<dl class="fn1-input-field--select">
-			<dt>Project Type</dt>
+			<dt>Type</dt>
 			<dd><s:select name="project.type_id" value="%{project.type_id}" list="types" listKey="id" headerKey="-1" headerValue="Pick Type" listValue="name" requiredLabel="true" /></dd>
 		</dl>
+		<s:if test="%{project.hasFeatures()}" >
+			<dl class="fn1-output-field">			
+				<dt>Features</dt>
+				<dd>Current </dd>
+			</dl>
+			<s:iterator var="one" value="%{project.features}">
+				<dl class="fn1-output-field">							
+					<dt><input type="checkbox" name="project.del_feature" value="<s:property value='id' />" />**</dt><dd><s:property />
+					</dd>
+				</dl>
+			</s:iterator>
+		</s:if>
 		<dl class="fn1-input-field--select">
-			<dt>New/Improved Features</dt>
-			<dd><s:select name="project.category_id" value="%{project.category_id}" list="categories" listKey="id" listValue="name" onchange="doRefresh()" headerKey="-1" headerValue="Pick Feature" /><s:if test="project.hasSubCategory()"><s:select name="project.sub_category_id" value="%{project.sub_category_id}" list="sub_categories" listKey="id" listValue="name" onchange="doRefresh()" /><s:if test="project.hasSubSubCategory()"><s:select name="project.sub_sub_category_id" value="%{project.sub_sub_category_id}" list="sub_sub_categories" listKey="id" listValue="name" /></s:if></s:if></dd>
+			<dt>New/Improve</dt>
+			<dd><s:select name="feature.feature_id" value="%{feature.feature_id}" list="features" listKey="id" listValue="name" onchange="doRefresh()" headerKey="-1" headerValue="Pick Feature" /><s:if test="feature.hasSubFeature()"><s:select name="feature.sub_id" value="%{feature.sub_id}" list="sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" onchange="doRefresh()" /><s:if test="feature.hasSubSubFeature()"><s:select name="feature.sub_sub_id" value="%{feature.sub_sub_id}" list="sub_sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" /></s:if></s:if></dd>
 		</dl>
 		<dl class="fn1-input-field--select">
 			<dt>Funding Source</dt>
@@ -81,8 +95,8 @@
 			<dd><s:textfield name="project.des_no" value="%{project.des_no}" size="20" maxlength="30" /> </dd>
 		</dl>
 		<dl class="fn1-input-field">
-			<dt>Request Date</dt>
-			<dd><s:textfield name="project.request_date" value="%{project.request_date}" size="10" cssClass="date" /> </dd>
+			<dt>Created Date</dt>
+			<dd><s:textfield name="project.date" value="%{project.date}" size="10" cssClass="date" /> </dd>
 		</dl>
 		<dl class="fn1-input-field">
 			<dt>Est. End Date</dt>
@@ -100,20 +114,17 @@
 			<dt>Actual Cost</dt>
 			<dd>$<s:textfield name="project.actual_cost" value="%{project.actual_cost}" size="12" maxlength="12" /> </dd>
 		</dl>
-
 		<s:if test="project.id == ''">
-			<dl class="fn1-input-field">
+			<dl class="fn1-input-field">			
 				<dt></dt>
-				<dd><s:submit name="action" type="button" value="Save" /></dd>
+				<dd><s:submit name="action" type="button" value="Save" class="fn1-btn"/></dd>
 			</dl>
-		  </s:if>
-		  <s:elseif test="project.canHaveMoreUpdates()">
-			  <dl class="fn1-input-field">
-				<dt><s:submit name="action" type="button" value="Save Changes" /></dt>
-				<dd><a href="<s:property value='#application.url' />projectUpdate.action?project_id=<s:property value='project.id' />">Add Project Updates </a></dd>
-			</dl>
-		  </s:elseif>
-		</dl>
+		</s:if>
+		<s:elseif test="project.canHaveMoreUpdates()">
+			
+			<s:submit name="action" type="button" value="Save Changes" class="fn1-btn"/>
+			<a href="<s:property value='#application.url'/>projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
+		</s:elseif>
 	</div>
 </div>
 </s:form>
@@ -121,14 +132,12 @@
 	<s:set var="updates" value="updates" />
 	<s:set var="showProject" value="false" />
 	<s:set var="updatesTitle" value="updatesTitle" />
-	<%@  include file="updates.jsp" %>
+	<%@ include file="updates.jsp" %>
 </s:if>
 <s:else>
 	<s:set var="projects" value="projects" />
 	<s:set var="projectsTitle" value="projectsTitle" />
 	<%@  include file="projects.jsp" %>
 </s:else>
-
-
 
 <%@  include file="footer.jsp" %>

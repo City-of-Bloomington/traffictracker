@@ -22,7 +22,7 @@ public class ProjectList implements java.io.Serializable{
     boolean canBeUpdated = false, canNotBeUpdated = false;
 		static Logger logger = Logger.getLogger(ProjectList.class);
 		static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");	
-		String id="", which_date="r.request_date", type_id="", category_id="",funding_source_id= "", lead_id="", owner_id="", phase_rank_id="";
+		String id="", which_date="r.date", type_id="", feature_id="",funding_source_id= "", lead_id="", owner_id="", phase_rank_id="";
 		String eng_lead_id="", length_from="", length_to="", name="", des_no="";
 		String date_from="", date_to="", sortBy="r.id DESC";
 		String est_cost_from = "", est_cost_to="", actual_cost_from="", actual_cost_to="", status="-1";
@@ -58,9 +58,9 @@ public class ProjectList implements java.io.Serializable{
 				if(val != null && !val.equals("-1"))
 						lead_id = val;
 		}
-		public void setCategory_id(String val){
+		public void setFeature_id(String val){
 				if(val != null && !val.equals("-1"))
-						category_id = val;
+						feature_id = val;
 		}		
 		public void setEng_lead_id(String val){
 				if(val != null && !val.equals("-1"))
@@ -128,8 +128,8 @@ public class ProjectList implements java.io.Serializable{
 		public String getId(){
 				return id;
 		}
-		public String getCategory_id(){
-				return category_id;
+		public String getFeature_id(){
+				return feature_id;
 		}
 		public String getName(){
 				return name;
@@ -195,7 +195,7 @@ public class ProjectList implements java.io.Serializable{
 		//
 		String find(){
 
-				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.category_id, r.sub_category_id,r.sub_sub_category_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.request_date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost ";
+				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost ";
 				
 				String qf = " from projects r ";
 				String qw = "";
@@ -220,9 +220,10 @@ public class ProjectList implements java.io.Serializable{
 								if(!qw.equals("")) qw += " and ";
 								qw += " r.type_id = ? ";
 						}
-						if(!category_id.equals("")){
+						if(!feature_id.equals("")){
 								if(!qw.equals("")) qw += " and ";
-								qw += " r.category_id = ? ";
+								qf += " left join project_features pf on pf.project_id=r.id ";
+								qw += " pf.feature_id = ? ";
 						}						
 						if(!owner_id.equals("")){
 								if(!qw.equals("")) qw += " and ";
@@ -313,8 +314,8 @@ public class ProjectList implements java.io.Serializable{
 								if(!type_id.equals("")){
 										pstmt.setString(jj++,type_id);
 								}
-								if(!category_id.equals("")){
-										pstmt.setString(jj++,category_id);
+								if(!feature_id.equals("")){
+										pstmt.setString(jj++,feature_id);
 								}
 								if(!owner_id.equals("")){
 										pstmt.setString(jj++,owner_id);
@@ -374,10 +375,7 @@ public class ProjectList implements java.io.Serializable{
 																					rs.getString(13),
 																					rs.getString(14),
 																					rs.getString(15),
-																					rs.getString(16),
-																					rs.getString(17),
-																					rs.getString(18),
-																					rs.getString(19)
+																					rs.getString(16)
 																					);
 								projects.add(one);
 						}

@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 
 public class TypeList{
 
-    String whichList ="project_types";
+    String whichList ="types";
 		static final long serialVersionUID = 120L;		
 		static Logger logger = Logger.getLogger(TypeList.class);
 		List<Type> types = null;

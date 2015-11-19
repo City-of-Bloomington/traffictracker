@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 public class Type implements java.io.Serializable{
 
-    String id = "", name="", tableName="vendors";
+    String id = "", name="", tableName="types";
     boolean debug = false;
 		static final long serialVersionUID = 110L;		
 		static Logger logger = Logger.getLogger(Type.class);

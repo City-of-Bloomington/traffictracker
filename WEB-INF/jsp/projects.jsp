@@ -14,27 +14,29 @@
 			<th align="center"><b>Date</b></th>
 			<th align="center"><b>Type</b></th>
 			<th align="center"><b>Owner</b></th>
-			<th align="center"><b>Category</b></th>
+			<th align="center"><b>Features</b></th>
 			<th align="center"><b>Funding</b></th>
-			<th align="center"><b>Lead</b></th>
-			<th align="center"><b>Est End Date</b></th>
-			<th align="center"><b>Est Cost</b></th>
+			<th align="center"><b>PM Lead</b></th>
+			<th align="center"><b>Eng Lead</b></th>
 			<th align="center"><b>Latest Phase Rank</b></th>
 		</tr>
 	</thead>
 	<tbody>
 		<s:iterator var="one" value="#projects">
 			<tr>
-				<td><a href="<s:property value='#application.url' />project.action?id=<s:property value='id' />">Details <s:property value="id" /></a></td>
+				<td><a href="<s:property value='#application.url' />project.action?id=<s:property value='id' />"><s:property value="id" /> Details</a></td>
 				<td><s:property value="name" /></td>
-				<td><s:property value="request_date" /></td>
+				<td><s:property value="date" /></td>
 				<td><s:property value="type" /></td>
 				<td><s:property value="owner" /></td>
-				<td><s:property value="category" /></td>
+				<td>
+					<s:if test="hasFeatures()">
+						<s:property value="allFeaturesText" />
+					</s:if>
+				</td>
 				<td><s:property value="funding_source" /></td>
 				<td><s:property value="lead" /></td>
-				<td><s:property value="est_end_date" /></td>
-				<td align="right">$<s:property value="est_cost" /></td>
+				<td><s:property value="eng_lead" /></td>				
 				<s:if test="hasProjectUpdates()">
 					<td><s:property value="lastProjectUpdate.phase_rank" /></td>
 				</s:if>

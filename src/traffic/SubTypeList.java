@@ -13,12 +13,12 @@ import org.apache.log4j.Logger;
 
 public class SubTypeList{
 
-    String whichList ="sub_categories";
+    String whichList ="sub_features";
 		static final long serialVersionUID = 130L;		
 		static Logger logger = Logger.getLogger(SubTypeList.class);
 		
 		List<SubType> subTypes = null;
-		String name = "", category_id="", sub_id="";
+		String name = "", feature_id="", sub_id="";
     public SubTypeList(){
     }	
     public SubTypeList(String val){
@@ -36,9 +36,9 @@ public class SubTypeList{
 						name = val;
     }
  
-    public void setCategory_id(String val){
+    public void setFeature_id(String val){
 				if(val != null)
-						category_id = val;
+						feature_id = val;
     }
     public void setSub_id(String val){
 				if(val != null)
@@ -54,8 +54,8 @@ public class SubTypeList{
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
 
-				if(!category_id.equals("")){
-						qw += " category_id = ? ";
+				if(!feature_id.equals("")){
+						qw += " feature_id = ? ";
 				}
 				if(!sub_id.equals("")){
 						qw += " sub_id = ? ";
@@ -78,8 +78,8 @@ public class SubTypeList{
 						}
 						pstmt = con.prepareStatement(qq);
 						int jj=1;
-						if(!category_id.equals("")){
-								pstmt.setString(jj++, category_id);
+						if(!feature_id.equals("")){
+								pstmt.setString(jj++, feature_id);
 						}
 						if(!sub_id.equals("")){
 								pstmt.setString(jj++, sub_id);

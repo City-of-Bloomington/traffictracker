@@ -28,13 +28,14 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 		static Logger logger = Logger.getLogger(ProjectAction.class);
 		//
 		Project project = null;
+		Feature feature = null;
 		List<Project> projects = null;
 		List<Type> types = null,
-				categories = null,
+				features = null,
 				owners = null,
 				sources=null,
 				ranks=null;
-		List<SubType> sub_categories = null, sub_sub_categories = null;
+		List<SubType> sub_features = null, sub_sub_features = null;
 		List<ProjectUpdate> updates = null;
 		List<User> leads = null;
 		private Map<String, Object> sessionMap;
@@ -63,7 +64,18 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 						}
 						else{
 								id = project.getId();
-								addActionMessage("Saved Successfully");
+								if(feature.hasData()){
+										feature.setProject_id(id);
+										back = feature.doSave();
+										if(!back.equals("")){
+												addActionError(back);
+										}
+										else{
+												feature = new Feature();
+										}
+								}
+								if(back.equals(""))
+										addActionMessage("Saved Successfully");
 						}
 				}				
 				else if(action.equals("Save Changes")){ 
@@ -73,7 +85,18 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 								addActionError(back);
 						}
 						else{
-								addActionMessage("Updated Successfully");
+								if(feature.hasData()){
+										feature.setProject_id(id);
+										back = feature.doSave();
+										if(!back.equals("")){
+												addActionError(back);
+										}
+										else{
+												feature = new Feature();
+										}
+								}
+								if(back.equals(""))
+										addActionMessage("Updated Successfully");
 						}
 				}
 				else if(action.equals("Delete")){ 
@@ -129,7 +152,7 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 				return back;
 		}
 
-		public Project getProject(){ // starting a new redeem
+		public Project getProject(){ 
 				if(project == null){
 						if(!id.equals("")){
 								project = new Project(id);
@@ -140,10 +163,20 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 				}		
 				return project;
 		}
+		public Feature getFeature(){ 
+				if(feature == null){
+						feature = new Feature();
+				}		
+				return feature;
+		}		
 		public void setProject(Project val){
 				if(val != null)
 						project = val;
 		}
+		public void setFeature(Feature val){
+				if(val != null)
+						feature = val;
+		}		
 		public String getUpdatesTitle(){
 				return updatesTitle;
 		}
@@ -189,18 +222,18 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 				}		
 				return types;
 		}
-		public List<Type> getCategories(){ 
-				if(categories == null){
-						TypeList dl = new TypeList("categories");
+		public List<Type> getFeatures(){ 
+				if(features == null){
+						TypeList dl = new TypeList("features");
 						String back = dl.find();
 						if(back.equals(""))
-								categories = dl.getTypes();
+								features = dl.getTypes();
 				}		
-				return categories;
+				return features;
 		}
 		public List<Type> getOwners(){ 
 				if(owners == null){
-						TypeList dl = new TypeList("project_owners");
+						TypeList dl = new TypeList("owners");
 						String back = dl.find();
 						if(back.equals(""))
 								owners = dl.getTypes();
@@ -225,26 +258,26 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 				}		
 				return ranks;
 		}
-		public List<SubType> getSub_categories(){
-				if(project == null) getProject();
-				if(sub_categories == null && project.hasSubCategory()){
-						SubTypeList dl = new SubTypeList("sub_categories");
-						dl.setCategory_id(project.getCategory_id());
+		public List<SubType> getSub_features(){
+				if(feature == null) getFeature();
+				if(sub_features == null && feature.hasSubFeature()){
+						SubTypeList dl = new SubTypeList("sub_features");
+						dl.setFeature_id(feature.getFeature_id());
 						String back = dl.find();
 						if(back.equals(""))
-								sub_categories = dl.getSubTypes();
+								sub_features = dl.getSubTypes();
 				}		
-				return sub_categories;
+				return sub_features;
 		}
-		public List<SubType> getSub_sub_categories(){ 
-				if(sub_sub_categories == null && project.hasSubSubCategory()){
-						SubTypeList dl = new SubTypeList("sub_sub_categories");
-						dl.setSub_id(project.getSub_category_id());
+		public List<SubType> getSub_sub_features(){ 
+				if(sub_sub_features == null && feature.hasSubSubFeature()){
+						SubTypeList dl = new SubTypeList("sub_sub_features");
+						dl.setSub_id(feature.getSub_id());
 						String back = dl.find();
 						if(back.equals(""))
-								sub_sub_categories = dl.getSubTypes();
+								sub_sub_features = dl.getSubTypes();
 				}		
-				return sub_sub_categories;
+				return sub_sub_features;
 		}
 		public List<ProjectUpdate> getUpdates(){
 				if(!id.equals("") && updates == null){

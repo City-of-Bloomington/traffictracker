@@ -17,24 +17,36 @@
     <s:actionmessage/>
 	</div>
 </s:elseif>
-	<dl>
-		<dt>Project </dt>
-		<dd><a href="<s:property value='#application.url' />project.action?id=<s:property value='projectUpdate.project_id' />"> <s:property value="projectUpdate.project" /> </a></dd>
-		
-		<dt>Phase Rank</dt>
-		<dd><s:property value="%{projectUpdate.phase_rank}" /></dd>
-		<dt>Date</dt>
-		<dd><s:property value="%{projectUpdate.date}" /></dd>
-		
-		<dt>Notes</dt>
-		<dd><s:property value="%{projectUpdate.notes}" /></dd>
-		<dt>Update By</dt>
-		<dd><s:property value="%{projectUpdate.user}" /></dd>
-	  <s:if test="projectUpdate.project.canHaveMoreUpdates()">
-			<dt></dt>
-			<dd><a href="<s:property value='#application.url' />projectUpdate.action?project_id=<s:property value='projectUpdate.project_id' />">Add New Project Update </a></dd>
+<div class="tt-row-container">
+	<div class="tt-split-container">
+		<dl class="fn1-output-field">
+			<dt>Project </dt>
+			<dd><a href="<s:property value='#application.url' />project.action?id=<s:property value='projectUpdate.project_id' />"> <s:property value="projectUpdate.project" /> </a></dd>
+		</dl>
+		<dl class="fn1-output-field">		
+			<dt>Phase Rank</dt>
+			<dd><s:property value="%{projectUpdate.phase_rank}" /></dd>
+		</dl>
+		<dl class="fn1-output-field">
+			<dt>Date</dt>
+			<dd><s:property value="%{projectUpdate.date}" /></dd>
+		</dl>
+		<dl class="fn1-output-field">		
+			<dt>Notes</dt>
+			<dd><s:property value="%{projectUpdate.notes}" /></dd>
+		</dl>
+		<dl class="fn1-output-field">
+			<dt>Update By</dt>
+			<dd><s:property value="%{projectUpdate.user}" /></dd>
+		</dl>
+		<s:if test="projectUpdate.project.canHaveMoreUpdates()">
+			<dl class="fn1-output-field">
+				<dt></dt>
+				<dd><a href="<s:property value='#application.url' />projectUpdate.action?project_id=<s:property value='projectUpdate.project_id' />">Add New Project Update </a></dd>
+			</dl>
 	  </s:if>
-	</dl>
+	</div>
+</div>
 <s:if test="updates != null && updates.size() > 0">
 	<s:set var="updates" value="updates" />
 	<s:set var="showProject" value="false" />		
