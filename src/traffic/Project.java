@@ -23,6 +23,11 @@ public class Project implements java.io.Serializable{
 		static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		String id="", name=""; 
 		String owner_id ="", type_id="", funding_source_id="",date_time="", description="",lead_id="",eng_lead_id="",date = "", length="", file_path="", des_no = "", est_end_date="", actual_end_date="", est_cost="", actual_cost="";
+		// example of geometry POINT(18 23), LINESTRING(0 0, 1 2,2 4)
+		// polygons consist of linestrings, a closed exterior boundary and 
+		// POLYGON((0 0,8 0,12 9,0 9,0 0),(5 3,4 5,7 9,3 7, 2 5))
+		//
+		String geometry ="";// holds map info lines, points, polys 
 		//
 		// objects
 		//
@@ -55,7 +60,8 @@ public class Project implements java.io.Serializable{
 									 String val13,
 									 String val14,
 									 String val15,
-									 String val16
+									 String val16,
+									 String val17
 									 ){
 				setValues( val,
 									 val2,
@@ -72,7 +78,8 @@ public class Project implements java.io.Serializable{
 									 val13,
 									 val14,
 									 val15,
-									 val16
+									 val16,
+									 val17
 									 );
 		
 		}
@@ -92,7 +99,8 @@ public class Project implements java.io.Serializable{
 									 String val13,
 									 String val14,
 									 String val15,
-									 String val16
+									 String val16,
+									 String val17
 									 ){
 				setId(val);
 				setName(val2);
@@ -110,8 +118,8 @@ public class Project implements java.io.Serializable{
 				setActual_end_date(val14);
 				setEst_cost(val15);
 				setActual_cost(val16);
+				setGeometry(val17);
 		}
-				 
 
 		public void setId(String val){
 				if(val != null)
@@ -181,6 +189,12 @@ public class Project implements java.io.Serializable{
 				if(val != null)
 						user = val;
 		}
+		public void setGeometry(String val){
+				if(val != null){
+						geometry = val;
+				}
+				System.err.println(" G geom * "+geometry);
+		}		
 		// delete features
 		public void setDel_feature(String[] vals){
 				del_feature = vals;
@@ -246,6 +260,9 @@ public class Project implements java.io.Serializable{
 		public String toString(){
 				return name;
 		}
+		public String getGeometry(){
+				return geometry;
+		}		
 		public Type getOwner(){
 				if(!owner_id.equals("") && owner == null){
 						Type one = new Type(owner_id, null, "owners");
@@ -336,9 +353,33 @@ public class Project implements java.io.Serializable{
 				}
 				return lastProjectUpdate;
 		}
+		@Override
+		public int hashCode() {
+				int hash = 3, id_int = 0;
+				if(!id.equals("")){
+						try{
+								id_int = Integer.parseInt(id);
+						}catch(Exception ex){}
+				}
+				hash = 53 * hash + id_int;
+				return hash;
+		}
+		@Override
+		public boolean equals(Object obj) {
+				if (obj == null) {
+						return false;
+				}
+				if (getClass() != obj.getClass()) {
+						return false;
+				}
+				final Project other = (Project) obj;
+				return this.id.equals(other.id);
+		}
+		//
 		public boolean hasProjectUpdates(){
 				return getLastProjectUpdate() != null;
 		}
+		
 		/**
 		 * check if we can add more updates to this project
 		 */
@@ -357,7 +398,13 @@ public class Project implements java.io.Serializable{
 				if(date.equals(""))
 						date = Helper.getToday();
 				String qq = "insert into projects values(0,?,?,?,?, ?,?, "+
-						"?,?,?,?,?, ?,?,?,?)";
+						"?,?,?,?,?, ?,?,?,?,";
+				if(geometry.equals("")){
+						qq += "null)";
+				}
+				else{
+						qq += " GeomFromText(?))";
+				}
 				logger.debug(qq);
 				try{
 						con = Helper.getConnection();
@@ -448,6 +495,8 @@ public class Project implements java.io.Serializable{
 								pstmt.setString(15, actual_cost);
 						else
 								pstmt.setNull(15, Types.DECIMAL);
+						if(!geometry.equals(""))
+								pstmt.setString(16, geometry);
 				}
 				catch(Exception ex){
 						msg += ex;
@@ -462,12 +511,19 @@ public class Project implements java.io.Serializable{
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
+				int cc = 17;
 				String qq = "update projects set name=?,owner_id=?,type_id=?,"+
 						"funding_source_id=?,"+
 						"description=?,lead_id=?,eng_lead_id=?,"+
 						"date=?,length=?,file_path=?,DES_no=?,est_end_date=?,"+
-						"actual_end_date=?,est_cost=?,actual_cost=? "+
-						"where id=?";
+						"actual_end_date=?,est_cost=?,actual_cost=?,";
+				if(geometry.equals("")){
+						qq += "geometry=null ";
+						cc = 16;
+				}
+				else
+						qq += "geometry=GeomFromText(?) ";
+				qq += "where id=?";
 				logger.debug(qq);
 				try{
 						con = Helper.getConnection();
@@ -477,7 +533,7 @@ public class Project implements java.io.Serializable{
 						}
 						pstmt = con.prepareStatement(qq);
 						fillData(pstmt);
-						pstmt.setString(16, id);
+						pstmt.setString(cc, id);
 						pstmt.executeUpdate();
 				}
 				catch(Exception ex){
@@ -556,7 +612,7 @@ public class Project implements java.io.Serializable{
 		}
 		String doSelect(){
 		
-				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost from projects r where r.id=? ";
+				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry) from projects r where r.id=? ";
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
@@ -587,7 +643,8 @@ public class Project implements java.io.Serializable{
 													rs.getString(13),
 													rs.getString(14),
 													rs.getString(15),
-													rs.getString(16)
+													rs.getString(16),
+													rs.getString(17)
 													);
 						}
 				}catch(Exception e){

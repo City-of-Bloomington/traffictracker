@@ -25,22 +25,19 @@
 <div class="tt-row-container">
 	<div class="tt-split-container">
 		<dl class="fn1-output-field">
+			<dt>Project ID</dt>
+			<dd><s:property value="%{project.id}" /></dd>
+		</dl>
+		<dl class="fn1-output-field">
 			<dt>Project Owner</dt>
 			<dd><s:property value="%{project.owner}" /></dd>
 		</dl>
-	</div>
-	<div class="tt-split-container">
 		<dl class="fn1-output-field">
 			<dt>Project Type</dt>
 			<dd><s:property value="%{project.type}" /></dd>
 		</dl>
-	</div>
-</div>
-
-<div class="tt-row-container">
-	<div class="tt-split-container">
 		<dl class="fn1-output-field">
-			<dt>New/Improved Features</dt>
+			<dt>Features</dt>
 			<dd><s:property value="%{project.allFeaturesText}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
@@ -59,12 +56,13 @@
 			<dt>Length </dt>
 			<dd><s:property value="%{project.length}" /> </dd>
 		</dl>
+	</div>
+	<div class="tt-split-container">
+		
 		<dl class="fn1-output-field">
 			<dt>File Folder Path </dt>
 			<dd><s:property value="%{project.file_path}" /> </dd>
 		</dl>
-	</div>
-	<div class="tt-split-container">
 		<dl class="fn1-output-field">
 			<dt>DES No.</dt>
 			<dd><s:property value="%{project.des_no}" /> </dd>

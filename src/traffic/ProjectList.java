@@ -26,6 +26,7 @@ public class ProjectList implements java.io.Serializable{
 		String eng_lead_id="", length_from="", length_to="", name="", des_no="";
 		String date_from="", date_to="", sortBy="r.id DESC";
 		String est_cost_from = "", est_cost_to="", actual_cost_from="", actual_cost_to="", status="-1";
+		String phase_rank_from="", phase_rank_to="";
 		List<Project> projects = null;
 	
 		public ProjectList(){
@@ -105,6 +106,14 @@ public class ProjectList implements java.io.Serializable{
 		public void setPhase_rank_id(String val){
 				if(val != null && !val.equals("-1"))
 						phase_rank_id = val;
+		}
+		public void setPhase_rank_from(String val){
+				if(val != null && !val.equals("-1"))
+						phase_rank_from = val;
+		}
+		public void setPhase_rank_to(String val){
+				if(val != null && !val.equals("-1"))
+						phase_rank_to = val;
 		}		
 		public void setSortBy(String val){
 				if(val != null)
@@ -163,7 +172,13 @@ public class ProjectList implements java.io.Serializable{
 		}
 		public String getPhase_rank_id(){
 				return phase_rank_id ;
-		}		
+		}
+		public String getPhase_rank_from(){
+				return phase_rank_from ;
+		}
+		public String getPhase_rank_to(){
+				return phase_rank_to ;
+		}
 		public String getSortBy(){
 				return sortBy ;
 		}
@@ -195,8 +210,7 @@ public class ProjectList implements java.io.Serializable{
 		//
 		String find(){
 
-				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost ";
-				
+				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry) ";
 				String qf = " from projects r ";
 				String qw = "";
 				Connection con = null;
@@ -263,9 +277,22 @@ public class ProjectList implements java.io.Serializable{
 						}						
 						if(!phase_rank_id.equals("")){
 								if(!qw.equals("")) qw += " and ";
-								qw += " u.phase_rank_id = ?";
-								qf += " left join project_updates u on u.project_id=r.id ";
+								qw += " u.phase_rank_id = ? ";
+								qw += " and u.id in (select max(id) from project_updates u2 where u2.project_id=r.id) ";
+								qf += " inner join project_updates u on u.project_id=r.id ";
+								
 						}
+						else if(!phase_rank_from.equals("") || !phase_rank_to.equals("")){
+								qf += " inner join project_updates u on u.project_id=r.id ";
+								if(!qw.equals("")) qw += " and ";
+								qw += " u.id in (select max(id) from project_updates u2 where u2.project_id=r.id) ";								
+								if(!phase_rank_from.equals("")){
+										qw += " and u.phase_rank_id >= ? ";
+								}
+								if(!phase_rank_to.equals("")){
+										qw += " and u.phase_rank_id <= ? ";
+								}								
+						}						
 						if(!which_date.equals("")){
 								if(!date_from.equals("")){
 										if(!qw.equals("")) qw += " and ";					
@@ -325,6 +352,7 @@ public class ProjectList implements java.io.Serializable{
 								}								
 								if(!lead_id.equals("")){
 										pstmt.setString(jj++,lead_id);
+										pstmt.setString(jj++,lead_id);										
 								}
 								if(!length_from.equals("")){
 										pstmt.setString(jj++,length_from);
@@ -346,7 +374,15 @@ public class ProjectList implements java.io.Serializable{
 								}								
 								if(!phase_rank_id.equals("")){
 										pstmt.setString(jj++,phase_rank_id);
-								}								
+								}
+								else{
+										if(!phase_rank_from.equals("")){
+												pstmt.setString(jj++,phase_rank_from);
+										}
+										if(!phase_rank_to.equals("")){
+												pstmt.setString(jj++,phase_rank_to);
+										}
+								}
 								if(!which_date.equals("")){
 										if(!date_from.equals("")){
 												pstmt.setDate(jj++, new java.sql.Date(dateFormat.parse(date_from).getTime()));
@@ -375,9 +411,11 @@ public class ProjectList implements java.io.Serializable{
 																					rs.getString(13),
 																					rs.getString(14),
 																					rs.getString(15),
-																					rs.getString(16)
+																					rs.getString(16),
+																					rs.getString(17)
 																					);
-								projects.add(one);
+								if(!projects.contains(one))
+										projects.add(one);
 						}
 				}catch(Exception e){
 						msg += e+":"+qq;

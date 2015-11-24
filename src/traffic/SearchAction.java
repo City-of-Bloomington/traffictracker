@@ -29,7 +29,7 @@ public class SearchAction extends ActionSupport implements SessionAware, Servlet
 		ProjectList projectList = null;
 		List<Project> projects = null;
 		List<Type> types = null,
-				categories = null,
+				features = null,
 				owners = null,
 				sources=null,
 				ranks=null;
@@ -133,18 +133,18 @@ public class SearchAction extends ActionSupport implements SessionAware, Servlet
 				}		
 				return types;
 		}
-		public List<Type> getCategories(){ 
-				if(categories == null){
-						TypeList dl = new TypeList("categories");
+		public List<Type> getFeatures(){ 
+				if(features == null){
+						TypeList dl = new TypeList("features");
 						String back = dl.find();
 						if(back.equals(""))
-								categories = dl.getTypes();
+								features = dl.getTypes();
 				}		
-				return categories;
+				return features;
 		}
 		public List<Type> getOwners(){ 
 				if(owners == null){
-						TypeList dl = new TypeList("project_owners");
+						TypeList dl = new TypeList("owners");
 						String back = dl.find();
 						if(back.equals(""))
 								owners = dl.getTypes();

@@ -33,22 +33,6 @@ $(function() {
     $(".need_focus").focus();
 });
 
-$("#div3").change(function() {
-    var xx = $("#div3").val();
-    if( xx % 3 > 0){
-        alert("The amount is not divisible by 3");
-        $("#div3").focus();
-    }
-});
-
-
-$("#div5").change(function() {
-    var xx = $("#div5").val();
-    if( xx % 5 > 0){
-        alert("The amount is not divisible by 5");
-        $("#div5").focus();
-    }
-});
 
 jQuery(function ($) {
     var launcherClick = function(e)  {
@@ -73,12 +57,32 @@ jQuery(function ($) {
 $(document).on("click","button", function (event) {
 	clicked_button_id = event.target.id;
 });
-function confirmForCancel(){
-	if(clicked_button_id == 'cancel_button'){
-		clicked_button_id = "";		
-		return confirm("Are you sure you want to cancel the transaction and void all MB/GC");
-	}
-	return true;
+function projectValidate(){
+		var xx = document.getElementById("project_name");		
+		if(xx && xx.value.trim() == ""){
+				alert("Project Name is required");
+				xx.focus();
+				return false;
+		}
+		xx = document.getElementById("project_type_id");
+		if(xx){
+				var yy = xx.value;
+				if(yy == "-1"){
+						alert("Project type is required");
+						xx.focus();
+						return false;
+				}
+		}
+		xx = document.getElementById("phase_rank_id");
+		if(xx){
+				var yy = xx.value;
+				if(yy == "-1"){
+						xx.focus();						
+						alert("Phase rank is required");
+						return false;
+				}
+		}		
+		return true;
 }
 function doRefresh(){
 		document.getElementById("action2").value="Refresh";		

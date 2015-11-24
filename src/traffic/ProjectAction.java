@@ -29,6 +29,7 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 		//
 		Project project = null;
 		Feature feature = null;
+		ProjectUpdate projectUpdate = null;
 		List<Project> projects = null;
 		List<Type> types = null,
 				features = null,
@@ -73,6 +74,12 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 										else{
 												feature = new Feature();
 										}
+								}
+								projectUpdate.setProject_id(id);
+								projectUpdate.setUser_id(user.getId());
+								back = projectUpdate.doSave();
+								if(!back.equals("")){
+										addActionError(back);
 								}
 								if(back.equals(""))
 										addActionMessage("Saved Successfully");
@@ -163,16 +170,27 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 				}		
 				return project;
 		}
+		
 		public Feature getFeature(){ 
 				if(feature == null){
 						feature = new Feature();
 				}		
 				return feature;
+		}
+		public ProjectUpdate getProjectUpdate(){ 
+				if(projectUpdate == null){
+						projectUpdate = new ProjectUpdate();
+				}		
+				return projectUpdate;
 		}		
 		public void setProject(Project val){
 				if(val != null)
 						project = val;
 		}
+		public void setProjectUpdate(ProjectUpdate val){
+				if(val != null)
+						projectUpdate = val;
+		}		
 		public void setFeature(Feature val){
 				if(val != null)
 						feature = val;

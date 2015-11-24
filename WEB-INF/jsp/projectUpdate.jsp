@@ -6,7 +6,7 @@
  *
 	-->
 <%@  include file="header.jsp" %>
-<s:form action="projectUpdate" method="post">
+<s:form action="projectUpdate" method="post" onsubmit="return projectValidate()">
 	<s:if test="id == ''">
 		<h4>New Project Update</h4>
 	</s:if>
@@ -25,7 +25,7 @@
       <s:actionmessage/>
 		</div>
   </s:elseif>
-  <p>*indicate a required field </p>
+  <p>* indicate a required field </p>
 	<div class="tt-row-container">
 		<div class="tt-split-container">
 			<dl class="fn1-output-field">		
@@ -34,14 +34,14 @@
 			</dl>
 			<dl class="fn1-input-field--select">		
 				<dt>Phase Rank</dt>
-				<dd><s:select name="projectUpdate.phase_rank_id" value="%{projectUpdate.phase_rank_id}" list="ranks" listKey="id" listValue="name" requiredLabel="true" headerKey="-1" headerValue="Pick Rank" /></dd>
+				<dd><s:select name="projectUpdate.phase_rank_id" value="%{projectUpdate.phase_rank_id}" list="ranks" listKey="id" listValue="name" requiredLabel="true" headerKey="-1" headerValue="Pick Rank" required="true" id="phase_rank_id" />*</dd>
 			</dl>
 			<dl class="fn1-input-field">				
 				<dt>Date</dt>
-				<dd><s:textfield name="projectUpdate.date" value="%{projectUpdate.date}" size="10" maxlength="10" cssClass="date" /></dd>
+				<dd><s:textfield name="projectUpdate.date" value="%{projectUpdate.date}" size="10" maxlength="10" cssClass="date" requiredLabel="true" required="true" />*</dd>
 		</dl>
 		<dl class="fn1-input-field">						
-			<dt>Notes</dt>
+			<dt>Update Notes</dt>
 			<dd><s:textarea name="projectUpdate.notes" value="%{projectUpdate.notes}" rows="5" cols="70" /></dd>
 		</dl>
 		<dl class="fn1-input-field--select">				

@@ -115,6 +115,8 @@ public class ProjectUpdate implements java.io.Serializable{
 				return project_id;
 		}
 		public String getDate(){
+				if(date.equals(""))
+						date = Helper.getToday();
 				return date;
 		}	
 		public String getPhase_rank_id(){
