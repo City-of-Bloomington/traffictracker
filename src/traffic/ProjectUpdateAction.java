@@ -27,7 +27,7 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 		static Logger logger = Logger.getLogger(ProjectUpdateAction.class);
 		//
 		ProjectUpdate projectUpdate = null;
-		
+		//
 		List<Project> projects = null;
 		List<Type> ranks = null;
 		List<User> users = null;		
@@ -60,20 +60,16 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 						else{
 								addActionMessage("Saved Successfully");
 								ret = "view";
+								try{
+										HttpServletResponse res = ServletActionContext.getResponse();
+										String str = url+"project.action?id="+projectUpdate.getProject_id();
+										res.sendRedirect(str);
+										return super.execute();
+								}catch(Exception ex){
+										System.err.println(ex);
+								}									
 						}
 				}				
-				else if(action.equals("Save Changes")){
-						/*
-						projectUpdate.setUser(user);
-						back = projectUpdate.doUpdate();
-						if(!back.equals("")){
-								addActionError(back);
-						}
-						else{
-								addActionMessage("Updated Successfully");
-						}
-						*/
-				}
 				else if(action.equals("Delete")){ 
 						back = projectUpdate.doDelete();
 						if(!back.equals("")){

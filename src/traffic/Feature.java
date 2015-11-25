@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 public class Feature implements java.io.Serializable{
 
     String id = "", project_id="", feature_id="", sub_id="", sub_sub_id="",
-				name="", sub_name="", sub_sub_name="", tableName="features";
+				name="", sub_name="", sub_sub_name="", tableName="features", type="";
     boolean debug = false;
 		static final long serialVersionUID = 115L;		
 		static Logger logger = Logger.getLogger(Feature.class);
@@ -32,9 +32,10 @@ public class Feature implements java.io.Serializable{
 									 String val5,
 									 String val6,
 									 String val7,
-									 String val8
+									 String val8,
+									 String val9
 									 ){
-				setValues(val, val2, val3, val4, val5, val6, val7, val8);
+				setValues(val, val2, val3, val4, val5, val6, val7, val8, val9);
     }
 		void setValues(String val,
 									 String val2,
@@ -43,7 +44,8 @@ public class Feature implements java.io.Serializable{
 									 String val5,
 									 String val6,
 									 String val7,
-									 String val8){
+									 String val8,
+									 String val9){
 				setId(val);
 				setProject_id(val2);
 				setFeature_id(val3);
@@ -51,7 +53,8 @@ public class Feature implements java.io.Serializable{
 				setSub_sub_id(val5);
 				setName(val6);
 				setSub_name(val7);
-				setSub_sub_name(val8);		
+				setSub_sub_name(val8);
+				setType(val9);
 		}
     //
     //
@@ -78,7 +81,10 @@ public class Feature implements java.io.Serializable{
     }
     public String getSub_sub_name(){
 				return sub_sub_name;
-    }		
+    }
+		public String getType(){
+				return type;
+    }
     //
     // setters
     //
@@ -90,6 +96,10 @@ public class Feature implements java.io.Serializable{
 				if(val != null)
 						name = val;
     }
+    public void setType (String val){
+				if(val != null)
+						type = val;
+    }		
     public void setSub_name (String val){
 				if(val != null)
 						sub_name = val;
@@ -123,7 +133,10 @@ public class Feature implements java.io.Serializable{
 				if(!sub_sub_name.equals("")){
 						if(!ret.equals("")) ret += "/";
 						ret += sub_sub_name;
-				}				
+				}
+				if(!type.equals("")){
+						ret += " ("+type+")";
+				}
 				return ret;
     }
 		public boolean hasSubFeature(){
@@ -146,7 +159,7 @@ public class Feature implements java.io.Serializable{
 		}
 		String doSelect(){
 				String msg = "";
-				String qq = " select pf.id,pf.project_id,pf.feature_id,pf.sub_id,pf.sub_sub_id,f.name,sf.name,ssf.name "+
+				String qq = " select pf.id,pf.project_id,pf.feature_id,pf.sub_id,pf.sub_sub_id,f.name,sf.name,ssf.name,pf.type "+
 						"from project_features pf "+
 						"left join features f on f.id=pf.feature_id "+
 						"left join sub_features sf on sf.id=pf.sub_id "+
@@ -174,7 +187,8 @@ public class Feature implements java.io.Serializable{
 								setSub_sub_id(rs.getString(5));
 								setName(rs.getString(6));
 								setSub_name(rs.getString(7));
-								setSub_sub_name(rs.getString(8));																
+								setSub_sub_name(rs.getString(8));
+								setType(rs.getString(9));
 						}
 				}catch(Exception e){
 						msg += e+":"+qq;
@@ -199,7 +213,7 @@ public class Feature implements java.io.Serializable{
 						msg = " no feature set";
 						return msg;
 				}
-				String qq = "insert into project_features values(0,?,?,?,?)";
+				String qq = "insert into project_features values(0,?,?,?,?,?)";
 				logger.debug(qq);
 				try{
 						con = Helper.getConnection();
@@ -245,6 +259,10 @@ public class Feature implements java.io.Serializable{
 								pstmt.setNull(4, Types.INTEGER);
 						else
 								pstmt.setString(4, sub_sub_id);
+						if(type.equals(""))
+								pstmt.setNull(5, Types.INTEGER);
+						else
+								pstmt.setString(5, type);						
 				}
 				catch(Exception ex){
 						msg += ex;

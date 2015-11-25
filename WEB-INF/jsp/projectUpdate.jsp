@@ -25,7 +25,7 @@
       <s:actionmessage/>
 		</div>
   </s:elseif>
-  <p>* indicate a required field </p>
+  <p>*  Required field </p>
 	<div class="tt-row-container">
 		<div class="tt-split-container">
 			<dl class="fn1-output-field">		

@@ -29,6 +29,10 @@ log4j.logger.org.apache.struts2.util=ERROR
 log4j.logger.org.apache.struts2.util.StrutsTypeConverter=ERROR
 
 log4j.logger.freemarker=ERROR
+# for HikariCP
+log4j.logger.com.zaxxer.hikari.proxy=ERROR
+log4j.logger.com.zaxxer.hikari.pool=ERROR 
+log4j.logger.com.zaxxer.hikari.pool.HikariPool=ERROR 
 #
 # quartz stuff
 log4j.logger.com.quartz=WARNING

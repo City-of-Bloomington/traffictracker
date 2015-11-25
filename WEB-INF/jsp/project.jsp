@@ -26,10 +26,14 @@
       <s:actionmessage/>
 		</div>
   </s:elseif>
-  <p>* indicate a required field <br />
+  <p>* Required field <br />
 			<s:if test="id != ''">
-				** indicate delete after clicking on "Save Changes"
+				** Check box to delete feature <br />
+				If you make any change, please hit the 'Save Changes' button
 			</s:if>
+			<s:else>
+				You must hit 'Save' button to save data
+			</s:else>
 	</p>
   	<s:if test="project.id != ''">
 		<dl class="fn1-output-field">
@@ -58,7 +62,7 @@
 		<s:if test="%{project.hasFeatures()}" >
 			<dl class="fn1-output-field">			
 				<dt></dt>
-				<dd>New/Imporve Features </dd>
+				<dd>Features </dd>
 			</dl>
 			<s:iterator var="one" value="%{project.features}">
 				<dl class="fn1-input-field--select">							
@@ -68,9 +72,13 @@
 			</s:iterator>
 		</s:if>
 		<dl class="fn1-input-field--select">
-			<dt>New/Improve</dt>
+			<dt>Feature</dt>
 			<dd><s:select name="feature.feature_id" value="%{feature.feature_id}" list="features" listKey="id" listValue="name" onchange="doRefresh()" headerKey="-1" headerValue="Pick Feature" /><s:if test="feature.hasSubFeature()"><s:select name="feature.sub_id" value="%{feature.sub_id}" list="sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" onchange="doRefresh()" /><s:if test="feature.hasSubSubFeature()"><s:select name="feature.sub_sub_id" value="%{feature.sub_sub_id}" list="sub_sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" /></s:if></s:if></dd>
 		</dl>
+<dl class="fn1-output-field">
+			<dt>Feature Type</dt>
+			<dd><s:radio name="feature.type" list="{'New','Improved'}" value="%{feature.type}"/></dd>
+		</dl>		
 		<dl class="fn1-input-field--select">
 			<dt>Funding Source</dt>
 			<dd><s:select name="project.funding_source_id" value="%{project.funding_source_id}" list="sources" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Funding" /></dd>

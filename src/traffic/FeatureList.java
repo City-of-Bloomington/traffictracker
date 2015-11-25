@@ -39,7 +39,7 @@ public class FeatureList{
 		}
 		String find(){
 				String msg = "";
-				String qq = " select pf.id,pf.project_id,pf.feature_id,pf.sub_id,pf.sub_sub_id,f.name,sf.name,ssf.name "+
+				String qq = " select pf.id,pf.project_id,pf.feature_id,pf.sub_id,pf.sub_sub_id,f.name,sf.name,ssf.name,pf.type "+
 						"from project_features pf "+
 						"left join features f on f.id=pf.feature_id "+
 						"left join sub_features sf on sf.id=pf.sub_id "+
@@ -79,7 +79,8 @@ public class FeatureList{
 																					rs.getString(5),
 																					rs.getString(6),
 																					rs.getString(7),
-																					rs.getString(8)
+																					rs.getString(8),
+																					rs.getString(9)
 																		);
 								features.add(one);
 						}
