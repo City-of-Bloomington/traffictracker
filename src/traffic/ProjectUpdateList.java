@@ -25,7 +25,8 @@ public class ProjectUpdateList implements java.io.Serializable{
 		String id="", which_date="r.date", project_id="",
 				phase_rank_id="", user_id="";
 
-		String date_from="", date_to="", sortBy="r.id DESC";
+		String date_from="", date_to="", sortBy=" r.id DESC ";
+		String limit = " limit 15 ";
 		List<ProjectUpdate> updates = null;
 	
 		public ProjectUpdateList(){
@@ -64,6 +65,9 @@ public class ProjectUpdateList implements java.io.Serializable{
 		public void setSortBy(String val){
 				if(val != null)
 						sortBy = val;
+		}
+		public void setNoLimit(){
+				limit = "";
 		}
 		//
 		public String getId(){
@@ -137,6 +141,9 @@ public class ProjectUpdateList implements java.io.Serializable{
 						qq += " where "+qw;
 				if(!sortBy.equals("")){
 						qq += " order by "+sortBy;
+				}
+				if(!limit.equals("")){
+						qq += limit;
 				}
 				logger.debug(qq);
 				try{

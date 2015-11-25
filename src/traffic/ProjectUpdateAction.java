@@ -36,7 +36,7 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 		private ServletContext ctx;
 		private User user;
 		
-		String updatesTitle = "Most Recent Updates";
+		String updatesTitle = "Most Recent Project Updates";
 		String projectsTitle = "Most Recent Projects";		
 		public String execute(){
 				String ret = SUCCESS;
@@ -51,7 +51,6 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 								System.err.println(ex);
 						}	
 				}
-
 				if(action.equals("Save")){ 
 						projectUpdate.setUser(user);
 						back = projectUpdate.doSave();
@@ -104,7 +103,7 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 				}
 				else {
 						ret = "noproject";
-						addActionMessage("You need to pick a project so that you can add updates");
+						addActionMessage("You can pick a project to edit or add updates");
 				}
 				return ret;
 		}
@@ -216,8 +215,13 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 				return users;
 		}		
 		public List<ProjectUpdate> getUpdates(){
-				if(!project_id.equals("") && updates == null){
-						ProjectUpdateList pul = new ProjectUpdateList(project_id);
+				
+				if(updates == null){
+						ProjectUpdateList pul = new ProjectUpdateList();
+						if(!project_id.equals("")){
+								pul.setProject_id(project_id);
+								pul.setNoLimit();
+						}
 						String back = pul.find();
 						if(back.equals("")){
 								updates = pul.getUpdates();

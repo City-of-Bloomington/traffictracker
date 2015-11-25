@@ -16,13 +16,18 @@
       <s:actionmessage/>
 		</div>
   </s:elseif>
-  <p>Pick a project to add updates </p>
-
-<s:if test="projects != null && projects.size() > 0">
+<s:if test="updates != null && updates.size() > 0">
+	<s:set var="updates" value="updates" />
+	<s:set var="showProject" value="true" />
+	<s:set var="updatesTitle" value="'Most Recent Project Updates'" />
+	<%@  include file="updates.jsp" %>
+</s:if>
+<s:elseif test="projects != null && projects.size() > 0">
+  <p>Pick a project to add updates </p>	
 	<s:set var="projects" value="projects" />
 	<s:set var="projectsTitle" value="projectsTitle" />
 	<%@  include file="projects.jsp" %>
-</s:if>
+</s:elseif>
 
 
 <%@  include file="footer.jsp" %>	
