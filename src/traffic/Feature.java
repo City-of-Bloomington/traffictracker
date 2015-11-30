@@ -12,8 +12,7 @@ import org.apache.log4j.Logger;
 public class Feature implements java.io.Serializable{
 
     String id = "", project_id="", feature_id="", sub_id="", sub_sub_id="",
-				name="", sub_name="", sub_sub_name="", tableName="features", type="";
-    boolean debug = false;
+				name="", sub_name="", sub_sub_name="", tableName="features", type="New";
 		static final long serialVersionUID = 115L;		
 		static Logger logger = Logger.getLogger(Feature.class);
     public Feature(){
@@ -168,8 +167,7 @@ public class Feature implements java.io.Serializable{
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
-				if(debug)
-						logger.debug(qq);
+				logger.debug(qq);
 				try{
 						con = Helper.getConnection();
 						if(con == null){

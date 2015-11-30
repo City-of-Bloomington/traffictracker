@@ -59,75 +59,51 @@
 			<dt>Type</dt>
 			<dd><s:select name="project.type_id" value="%{project.type_id}" list="types" listKey="id" headerKey="-1" headerValue="Pick Type" listValue="name" requiredLabel="true" id="project_type_id" required="true" />*</dd>
 		</dl>
-		<s:if test="%{project.hasFeatures()}" >
-			<dl class="fn1-output-field">			
-				<dt></dt>
-				<dd>Features </dd>
-			</dl>
-			<s:iterator var="one" value="%{project.features}">
-				<dl class="fn1-input-field--select">							
-					<dt><input type="checkbox" name="project.del_feature" value="<s:property value='id' />" />**</dt><dd><s:property />
-					</dd>
-				</dl>
-			</s:iterator>
-		</s:if>
-		<dl class="fn1-input-field--select">
-			<dt>Feature</dt>
-			<dd><s:select name="feature.feature_id" value="%{feature.feature_id}" list="features" listKey="id" listValue="name" onchange="doRefresh()" headerKey="-1" headerValue="Pick Feature" /><s:if test="feature.hasSubFeature()"><s:select name="feature.sub_id" value="%{feature.sub_id}" list="sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" onchange="doRefresh()" /><s:if test="feature.hasSubSubFeature()"><s:select name="feature.sub_sub_id" value="%{feature.sub_sub_id}" list="sub_sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" /></s:if></s:if></dd>
-		</dl>
-<dl class="fn1-output-field">
-			<dt>Feature Type</dt>
-			<dd><s:radio name="feature.type" list="{'New','Improved'}" value="%{feature.type}"/></dd>
-		</dl>		
 		<dl class="fn1-input-field--select">
 			<dt>Funding Source</dt>
 			<dd><s:select name="project.funding_source_id" value="%{project.funding_source_id}" list="sources" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Funding" /></dd>
 		</dl>
+		<s:if test="project.id != ''">
+	</div>
+	<div class="tt-split-container">
+		</s:if>		
 		<dl class="fn1-input-field--select">
 			<dt>PM Lead</dt>
 			<dd><s:select name="project.lead_id" value="%{project.lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Lead" /></dd>
 		</dl>
-		<s:if test="project.id != ''">
-	</div>
-	<div class="tt-split-container">
-		</s:if>
 		<dl class="fn1-input-field--select">
 			<dt>Eng Lead</dt>
 			<dd><s:select name="project.eng_lead_id" value="%{project.eng_lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Eng Lead" /></dd>
-		</dl>
-		<dl class="fn1-input-field">
+		</dl>		
+		<dl class="fn1-output-field">
 			<dt>Length </dt>
 			<dd><s:textfield name="project.length" value="%{project.length}" size="10" maxlength="10" /> </dd>
-		</dl>
-		<dl class="fn1-input-field">
-			<dt>File Folder Path </dt>
-			<dd><s:textfield name="project.file_path" value="%{project.file_path}" size="70" maxlength="150" /> </dd>
 		</dl>
 		<s:if test="project.id == ''">
 	</div>
 	<div class="tt-split-container">
 		</s:if>
-		<dl class="fn1-input-field">
+		<dl class="fn1-output-field">
 			<dt>DES No.</dt>
-			<dd><s:textfield name="project.des_no" value="%{project.des_no}" size="20" maxlength="30" /> </dd>
+			<dd><s:textfield name="project.des_no" value="%{project.des_no}" size="12" maxlength="12" /> </dd>
 		</dl>
-		<dl class="fn1-input-field">
+		<dl class="fn1-output-field">
 			<dt>Created Date</dt>
 			<dd><s:textfield name="project.date" value="%{project.date}" size="10" cssClass="date" /> </dd>
 		</dl>
-		<dl class="fn1-input-field">
+		<dl class="fn1-output-field">
 			<dt>Est. End Date</dt>
 			<dd><s:textfield name="project.est_end_date" value="%{project.est_end_date}" size="10" maxlength="10" cssClass="date" /> </dd>
 		</dl>
-		<dl class="fn1-input-field">
+		<dl class="fn1-output-field">
 			<dt>Actual End Date</dt>
 			<dd><s:textfield name="project.actual_end_date" value="%{project.actual_end_date}" size="10" maxlength="10" cssClass="date" /> </dd>
 		</dl>
-		<dl class="fn1-input-field">
+		<dl class="fn1-output-field">
 			<dt>Est. Cost</dt>
-			<dd>$<s:textfield name="project.est_cost" value="%{project.est_cost}" size="22" maxlength="12" /> </dd>
+			<dd>$<s:textfield name="project.est_cost" value="%{project.est_cost}" size="12" maxlength="12" /> </dd>
 		</dl>
-		<dl class="fn1-input-field">
+		<dl class="fn1-output-field">
 			<dt>Actual Cost</dt>
 			<dd>$<s:textfield name="project.actual_cost" value="%{project.actual_cost}" size="12" maxlength="12" /> </dd>
 		</dl>
@@ -143,13 +119,35 @@
 		</s:if>			
 	</div>
 </div>
-<s:if test="project.id == ''">
-	<s:submit name="action" type="button" value="Save" class="fn1-btn"/></dd>
-</s:if>
-<s:elseif test="project.canHaveMoreUpdates()">
-	<s:submit name="action" type="button" value="Save Changes" class="fn1-btn"/>
-	<a href="<s:property value='#application.url'/>projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
-</s:elseif>
+<s:if test="project.id != ''">
+	<dl class="fn1-output-field">
+		<dt></dt>
+				<dd>Current Feature(s)</dd>
+			</dl>
+			<s:iterator var="one" value="%{project.features}">
+				<dl class="fn1-input-field--select">							
+					<dt><input type="checkbox" name="project.del_feature" value="<s:property value='id' />" />**</dt><dd><s:property />
+					</dd>
+				</dl>
+			</s:iterator>
+		</s:if>
+		
+		<dl class="fn1-output-field">
+			<dt>Feature</dt>
+			<dd><s:select name="feature.feature_id" value="%{feature.feature_id}" list="features" listKey="id" listValue="name" onchange="doRefresh()" headerKey="-1" headerValue="Pick Feature" /><s:if test="feature.hasSubFeature()"><s:select name="feature.sub_id" value="%{feature.sub_id}" list="sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" onchange="doRefresh()" /><s:if test="feature.hasSubSubFeature()"><s:select name="feature.sub_sub_id" value="%{feature.sub_sub_id}" list="sub_sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" /></s:if></s:if>
+				Type: <s:radio name="feature.type" list="{'New','Improved'}" value="%{feature.type}" /></dd>
+		</dl>
+		<dl class="fn1-output-field">
+			<dt>File Folder Path </dt>
+			<dd><s:textfield name="project.file_path" value="%{project.file_path}" size="70" maxlength="150" /> </dd>
+		</dl>
+		<s:if test="project.id == ''">
+			<s:submit name="action" type="button" value="Save" class="fn1-btn"/></dd>
+		</s:if>
+		<s:elseif test="project.canHaveMoreUpdates()">
+			<s:submit name="action" type="button" value="Save Changes" class="fn1-btn"/>
+			<a href="<s:property value='#application.url'/>projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
+		</s:elseif>
 </s:form>
 <s:if test="id != '' && updates.size() > 0">
 	<s:set var="updates" value="updates" />

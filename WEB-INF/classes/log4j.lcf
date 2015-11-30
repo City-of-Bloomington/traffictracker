@@ -1,4 +1,4 @@
-log4j.rootLogger=DEGUG, stdout, R
+log4j.rootLogger=DEBUG, stdout, R
 
 log4j.appender.stdout=org.apache.log4j.ConsoleAppender
 log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
@@ -29,6 +29,11 @@ log4j.logger.org.apache.struts2.util=ERROR
 log4j.logger.org.apache.struts2.util.StrutsTypeConverter=ERROR
 
 log4j.logger.freemarker=ERROR
+# disable apache low level logging
+log4j.category.com.opensymphony.xwork2=OFF
+log4j.category.org.apache.struts2=OFF
+log4j.category.freemarker.beans=OFF
+log4j.category.freemarker.cache=OFF
 # for HikariCP
 log4j.logger.com.zaxxer.hikari.proxy=ERROR
 log4j.logger.com.zaxxer.hikari.pool=ERROR 
