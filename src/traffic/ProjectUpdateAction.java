@@ -59,7 +59,7 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 						}
 						else{
 								addActionMessage("Saved Successfully");
-								ret = "view";
+								/*
 								try{
 										HttpServletResponse res = ServletActionContext.getResponse();
 										String str = url+"project.action?id="+projectUpdate.getProject_id();
@@ -67,7 +67,8 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 										return super.execute();
 								}catch(Exception ex){
 										System.err.println(ex);
-								}									
+								}
+								*/
 						}
 				}				
 				else if(action.equals("Delete")){ 
@@ -92,6 +93,7 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 						}
 				}
 				else if(!project_id.equals("")){
+						ret = INPUT;
 						if(projectUpdate == null)
 								projectUpdate = new ProjectUpdate();
 

@@ -7,6 +7,10 @@
    <constant name="struts.devMode" value="true" />
    <constant name="struts.ui.theme" value="simple" />
    <constant name="struts.action.excludePattern" value="/Login*" />
+	 <!-- we need these to pass messages in chaining but does not w
+				ork for redirect-->
+	 <constant name="struts.xwork.chaining.copyErrors" value="true"/>
+	 <constant name="struts.xwork.chaining.copyMessages" value="true"/>	 
    <!-- to use this we need to use annotation
 				<constant name="struts.convention.result.path" value="/WEB-INF/jsp/" />
    -->
@@ -43,10 +47,16 @@
 		<action name="projectUpdate" 
 						class="traffic.ProjectUpdateAction" 
 						method="execute">
-			<result>/WEB-INF/jsp/projectUpdate.jsp</result>
+			<result name="input">/WEB-INF/jsp/projectUpdate.jsp</result>			
 			<result name="error">/WEB-INF/jsp/projectUpdate.jsp</result>
 			<result name="view">/WEB-INF/jsp/projectUpdateView.jsp</result>
-			<result name="noproject">/WEB-INF/jsp/noproject.jsp</result>			
+			<result name="noproject">/WEB-INF/jsp/noproject.jsp</result>
+			<result name="success" type="redirectAction">
+        <param name="actionName">project</param>
+        <param name="action">Edit</param>
+        <param name="id">${project_id}</param>
+				<param name="actionMessages">${actionMessages}</param>				
+      </result>					
 		</action>	  
 
 		<action name="search" 
@@ -62,7 +72,12 @@
 						method="execute">
 			<result name="input">/WEB-INF/jsp/editMap.jsp</result>		
 			<result name="error">/WEB-INF/jsp/editMap.jsp</result>
-			<result name="success">/WEB-INF/jsp/editMap.jsp</result>
+			<result name="success" type="redirectAction">
+        <param name="actionName">project</param>
+        <param name="action">Edit</param>
+        <param name="id">${id}</param>
+				<param name="actionMessages">${actionMessages}</param>				
+      </result>			
 		</action>		
 		<!--		
 		<action name="report" 

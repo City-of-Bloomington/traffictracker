@@ -68,11 +68,6 @@
 	</div>
 	<div class="tt-split-container">
 		<dl class="fn1-output-field">
-			<dt></dt>
-			<dd>
-			<a href="<s:property value='#application.url' />map.action?id=<s:property value='project.id' />"> Add/Edit map features</a>
-			</dd>
-		</dl>
 		</s:if>
 		<dl class="fn1-input-field--select">
 			<dt>PM Lead</dt>
@@ -154,6 +149,7 @@
 		<s:elseif test="project.canHaveMoreUpdates()">
 			<s:submit name="action" type="button" value="Save Changes" class="fn1-btn"/>
 			<a href="<s:property value='#application.url'/>projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
+			<a href="<s:property value='#application.url'/>map.action?id=<s:property value='project.id' />" class="fn1-btn"> Add/Edit Map Features</a>						
 		</s:elseif>
 </s:form>
 <s:if test="id != '' && updates.size() > 0">

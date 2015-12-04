@@ -50,7 +50,7 @@ function toggle() {
 	</ul>
 </div>
 <br />
-<a href="<s:property value='#application.url' />project.action?id=<s:property value='mapItem.id' />"> Project <s:property value="mapItem.id" /></a>		
+<a href="<s:property value='#application.url' />project.action?id=<s:property value='mapItem.id' />&action=Edit"> Project <s:property value="mapItem.id" /></a>		
 <s:form action="map" id="form_id" method="post">
 	<s:hidden name="id" value="%{id}" />
 	<s:hidden name="mapItem.geometry" id="geometry" value="%{mapItem.geometry}" />

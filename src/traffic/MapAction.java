@@ -10,7 +10,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.util.ServletContextAware;
-import org.apache.struts2.interceptor.SessionAware;  
+import org.apache.struts2.interceptor.SessionAware;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 public class MapAction extends ActionSupport implements SessionAware, ServletContextAware{
@@ -20,26 +21,44 @@ public class MapAction extends ActionSupport implements SessionAware, ServletCon
 		private Map<String, Object> sessionMap;
 		private MapItem mapItem = null;
 		private User user;
-		String action = "", id="";
+		String action = "", id="", url="";
 		//
 		// if we have global list we can set them here and will
 		// be available for all pages
 		//
     @Override
 		public String execute(){
-				String ret = SUCCESS;
-				String back = "";
-				doPrepare();
-				if(user == null){
-						ret = LOGIN;
-				}
-				if(action.startsWith("Save")){ 
+				String ret = INPUT;
+				String back = doPrepare();
+				if(!back.equals("")){
+						try{
+								HttpServletResponse res = ServletActionContext.getResponse();
+								String str = url+"Login";
+								res.sendRedirect(str);
+								return super.execute();
+						}catch(Exception ex){
+								System.err.println(ex);
+						}	
+				}				
+				if(action.startsWith("Save")){
+						ret = SUCCESS;
 						back = mapItem.doSave();
 						if(!back.equals("")){
 								addActionError(back);
 						}
 						else{
 								addActionMessage("Saved Successfully");
+								/*
+								sessionMap.put("message","Saved Successfully");
+								try{
+										HttpServletResponse res = ServletActionContext.getResponse();
+										String str = url+"project.action?action=Edit&id="+mapItem.getId();
+										res.sendRedirect(str);
+										return super.execute();
+								}catch(Exception ex){
+										System.err.println(ex);
+								}
+								*/
 						}
 				}
 				else if(!id.equals("")){ 
@@ -51,13 +70,19 @@ public class MapAction extends ActionSupport implements SessionAware, ServletCon
 				}		
 				return ret;
 		}
-		void doPrepare(){
+		String doPrepare(){
 				String back = "";
 				try{
 						user = (User)sessionMap.get("user");
+						if(url.equals("")){
+								String val = ctx.getInitParameter("url");
+								if(val != null)
+										url = val;
+						}						
 				}catch(Exception ex){
 						System.out.println(ex);
-				}		
+				}
+				return back;
 		}	
 
 		public void setAction(String val){

@@ -57,14 +57,6 @@
 		</dl>
 	</div>
 	<div class="tt-split-container">
-		<s:if test="project.hasGeometry()">
-			<dl class="fn1-output-field">
-				<dt> </dt>
-				<dd> 
-					<a href="<s:property value='#application.url' />project.action?action=map&id=<s:property value='project.id' />">Show on map</a>
-				</dd>
-			</dl>
-		</s:if>
 		<dl class="fn1-output-field">
 			<dt>File Folder Path </dt>
 			<dd><s:property value="%{project.file_path}" /> </dd>
@@ -100,6 +92,9 @@
 		<a href="<s:property value='#application.url' />project.action?id=<s:property value='project.id' />&action=Edit" class="fn1-btn">Edit Project</a>
 
 		<a href="<s:property value='#application.url' />projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
+		<s:if test="project.hasGeometry()">
+			<a href="<s:property value='#application.url' />project.action?action=map&id=<s:property value='project.id' />" class="fn1-btn">Show Map</a>
+		</s:if>
 	</s:if>
 
 <s:if test="updates.size() > 0">

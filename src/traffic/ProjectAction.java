@@ -122,6 +122,13 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 						if(!back.equals("")){
 								addActionError(back);
 						}
+						/*
+						String msg = (String)sessionMap.get("message");
+						if(msg != null && !msg.equals("")){
+								sessionMap.remove("message");
+								addActionMessage(msg);
+						}
+						*/
 				}
 				else if(action.equals("map")){ 
 						project = new Project(id);
