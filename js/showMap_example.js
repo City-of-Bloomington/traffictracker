@@ -1,9 +1,85 @@
 "use strict";
+var maplayers  = [
+    {
+        "source": "XYZ",
+        "options": {
+            "url": "http:\/\/api.tiles.mapbox.com\/v4\/mapbox.streets\/{z}\/{x}\/{y}.png?access_token=your token goes here"
+        }
+    }
+];
+var eventTypes = [
+    {
+        "code": 1,
+        "name": "Bike/Ped",
+        "description": null,
+        "default": true,
+        "color": [
+            215,
+            0,
+            0
+        ]
+    },
+    {
+        "code": 2,
+        "name": "Signal",
+        "description": null,
+        "default": true,
+        "color": [
+            214,
+            81,
+            0
+        ]
+    },
+    {
+        "code": 3,
+        "name": "Stop Control",
+        "description": null,
+        "default": true,
+        "color": [
+            235,
+            150,
+            2
+        ]
+    },
+    {
+        "code": 4,
+        "name": "Roundabout",
+        "description": null,
+        "default": false,
+        "color": [
+            0,
+            88,
+            235
+        ]
+    },
+    {
+        "code": 5,
+        "name": "Realignment",
+        "description": null,
+        "default": false,
+        "color": [
+            0,
+            182,
+            235
+        ]
+    },
+    {
+        "code": 6,
+        "name": "Conversion",
+        "description": null,
+        "default": false,
+        "color": [
+            124,
+            83,
+            29
+        ]
+    }
+];
 var MAPDISPLAY = {
     map: new ol.Map({
         target: 'map',
         view: new ol.View({
-            center: ol.proj.transform([-86.5368060, 39.169927], 'EPSG:4326', 'EPSG:3857'),
+            center: ol.proj.transform([-86.536806, 39.169927], 'EPSG:4326', 'EPSG:3857'),
             zoom: 14,
             minZoom: 1,
             maxZoom: 20
@@ -251,30 +327,38 @@ MAPDISPLAY.map.on('click', MAPDISPLAY.handleMapClick);
     // We have to remember to write the PHP variables out as Javascript,
     // so we can reference them here.
     // See: blocks/html/events/map.inc
-    len = PHP.maplayers.length;
+    len = maplayers.length;
     for (i=0; i<len; i++) {
         MAPDISPLAY.map.addLayer(new ol.layer.Tile({
-            source: new ol.source[PHP.maplayers[i].source](PHP.maplayers[i].options)
+            source: new ol.source[maplayers[i].source](maplayers[i].options)
         }));
     }
-
     // Colors for features are also defined in site_conf.
     // We need to remember to write the PHP variables out as Javascript,
     // so we can load them here
     // See: blocks/html/events/map.inc
-    MAPDISPLAY.loadEventTypeStyles(PHP.eventTypes);
+    MAPDISPLAY.loadEventTypeStyles(eventTypes);
 		//
     // Event data can be in either the eventList or the single event view.
-    events = document.querySelectorAll('#events article');
+		// article is a tag name
+		// <div id="events"> <article id= class= > <div class="geography"
+		// for us we are using .project and div
+		//
+		//  events = document.querySelectorAll('#events article');
+		// if (!events.length) {
+    //   events = document.querySelectorAll('#event article');
+    //}
+    events = document.querySelectorAll('.project div');
     if (!events.length) {
-        events = document.querySelectorAll('#event article');
-    }
+        events = document.querySelectorAll('.project div');
+    }		
     len = events.length;
     for (i=0; i<len; i++) {
         id   = events[i].getAttribute('id');
         type = events[i].className;
 
         // tagName case varies from browser to browser and from XHMTL to HTML
+				/*
         if (events[i].parentElement.tagName === 'a' ||
             events[i].parentElement.tagName === 'A') {
             // Register the event listener for older, desktop-centric browsers
@@ -285,7 +369,7 @@ MAPDISPLAY.map.on('click', MAPDISPLAY.handleMapClick);
             }
 
         }
-
+				*/
         geography = events[i].querySelector('.geography');//class type geography
         if (geography && geography.innerHTML) {
             f = features.length;

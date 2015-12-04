@@ -193,7 +193,6 @@ public class Project implements java.io.Serializable{
 				if(val != null){
 						geometry = val;
 				}
-				System.err.println(" G geom * "+geometry);
 		}		
 		// delete features
 		public void setDel_feature(String[] vals){
@@ -262,6 +261,9 @@ public class Project implements java.io.Serializable{
 		}
 		public String getGeometry(){
 				return geometry;
+		}
+		public boolean hasGeometry(){
+				return !geometry.equals("");
 		}		
 		public Type getOwner(){
 				if(!owner_id.equals("") && owner == null){
@@ -282,6 +284,15 @@ public class Project implements java.io.Serializable{
 						}
 				}
 				return features;
+		}
+		public String getFirstFeatureId(){
+				String ret = "0"; // no feature for map purpose
+				if(features == null) getFeatures();
+				if(features != null){
+						Feature one = features.get(0);
+						ret = one.getFeature_id();
+				}
+				return ret;
 		}
 		public boolean hasFeatures(){
 				getFeatures();

@@ -31,6 +31,9 @@ MAPDISPLAY.activateDrawMode = function (geometryType) {
         features: MAPDISPLAY.featureOverlay.getFeatures(),
         type: geometryType
     });
+		MAPDISPLAY.draw.on('drawend',function(event){
+				document.getElementById('geometry').value = MAPDISPLAY.getWkt();
+		});
     MAPDISPLAY.map.addInteraction(MAPDISPLAY.draw);
 }
 
@@ -57,7 +60,8 @@ document.getElementById('clearFeaturesButton').addEventListener('click', functio
     MAPDISPLAY.featureOverlay.getFeatures().clear();
 });
 
-
-document.getElementById('eventUpdateForm').addEventListener('submit', function () {
+	 // not needed anymore
+document.getElementById('form_id').addEventListener('submit', function () {
     document.getElementById('geometry').value = MAPDISPLAY.getWkt();
 }, false);
+

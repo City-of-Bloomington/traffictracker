@@ -6,7 +6,7 @@
  *
 	-->
 <%@  include file="header.jsp" %>
-<s:form action="projectUpdate" method="post" onsubmit="return projectValidate()">
+<s:form action="projectUpdate" method="post" id="form_id" onsubmit="return projectValidate()">
 	<s:if test="id == ''">
 		<h4>New Project Update</h4>
 	</s:if>
@@ -40,7 +40,7 @@
 			</dl>
 		</div>
 		<div class="tt-split-container">		
-			<dl class="fn1-input-field">				
+			<dl class="fn1-output-field">				
 				<dt>Date</dt>
 				<dd><s:textfield name="projectUpdate.date" value="%{projectUpdate.date}" size="10" maxlength="10" cssClass="date" requiredLabel="true" required="true" />*</dd>
 			</dl>
@@ -78,7 +78,11 @@
 </s:if>
 
 <%@  include file="footer.jsp" %>	
-
+<script type="text/javascript">
+ $(function() {
+  $('#form_id').areYouSure();
+});
+</script>
 
 
 

@@ -37,7 +37,8 @@
 						method="execute">
 			<result>/WEB-INF/jsp/project.jsp</result>
 			<result name="error">/WEB-INF/jsp/project.jsp</result>
-			<result name="view">/WEB-INF/jsp/projectView.jsp</result>			
+			<result name="view">/WEB-INF/jsp/projectView.jsp</result>
+			<result name="map">/WEB-INF/jsp/viewMap.jsp</result>			
 		</action>
 		<action name="projectUpdate" 
 						class="traffic.ProjectUpdateAction" 
@@ -54,7 +55,15 @@
 			<result name="input">/WEB-INF/jsp/search.jsp</result>		
 			<result name="error">/WEB-INF/jsp/search.jsp</result>
 			<result name="success">/WEB-INF/jsp/search.jsp</result>
+			<result name="showMap">/WEB-INF/jsp/showMap.jsp</result>			
 		</action>
+		<action name="map" 
+						class="traffic.MapAction" 
+						method="execute">
+			<result name="input">/WEB-INF/jsp/editMap.jsp</result>		
+			<result name="error">/WEB-INF/jsp/editMap.jsp</result>
+			<result name="success">/WEB-INF/jsp/editMap.jsp</result>
+		</action>		
 		<!--		
 		<action name="report" 
 						class="traffic.ReportAction" 

@@ -123,6 +123,17 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 								addActionError(back);
 						}
 				}
+				else if(action.equals("map")){ 
+						project = new Project(id);
+						back = project.doSelect();
+						if(!back.equals("")){
+								addActionError(back);
+						}
+						else{
+								return "map";
+						}
+				}
+								
 				else if(action.equals("Refresh")){
 						// nothing
 				}				

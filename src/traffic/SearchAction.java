@@ -60,6 +60,7 @@ public class SearchAction extends ActionSupport implements SessionAware, Servlet
 								projects = projectList.getProjects();
 								if(projects != null && projects.size() > 0){
 										projectsTitle = "Matching Projects "+projects.size();
+										ret = "showMap";
 								}
 								else{
 										addActionMessage("No match found");

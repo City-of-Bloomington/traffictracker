@@ -17,10 +17,9 @@
     <s:actionmessage/>
 	</div>
 </s:elseif>
-	<!--
-	<dt>Project ID</dt>
-	<dd><s:property value="project.id" /></dd>
-	-->
+<s:if test="project.hasGeometry()">
+
+</s:if>
 	<p><s:property value="%{project.description}" /></p>
 <div class="tt-row-container">
 	<div class="tt-split-container">
@@ -58,7 +57,14 @@
 		</dl>
 	</div>
 	<div class="tt-split-container">
-		
+		<s:if test="project.hasGeometry()">
+			<dl class="fn1-output-field">
+				<dt> </dt>
+				<dd> 
+					<a href="<s:property value='#application.url' />project.action?action=map&id=<s:property value='project.id' />">Show on map</a>
+				</dd>
+			</dl>
+		</s:if>
 		<dl class="fn1-output-field">
 			<dt>File Folder Path </dt>
 			<dd><s:property value="%{project.file_path}" /> </dd>

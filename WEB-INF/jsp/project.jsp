@@ -35,14 +35,15 @@
 				You must hit 'Save' button to save data
 			</s:else>
 	</p>
-  	<s:if test="project.id != ''">
-		<dl class="fn1-output-field">
-			  <dt>Project ID</dt>
-				<dd><s:property value="project.id" /></dd>
-		</dl>
-	</s:if>
+
 <div class="tt-row-container">
 	<div class="tt-split-container">
+  	<s:if test="project.id != ''">
+		<dl class="fn1-output-field">
+			  <dt>ID </dt>
+				<dd><s:property value="project.id" /> 
+		</dl>
+	</s:if>		
 		<dl class="fn1-input-field">
 			<dt>Name </dt>
 			<dd><s:textfield name="project.name" value="%{project.name}" size="30" maxlength="70" requiredLabel="true" id="project_name" required="true" />* </dd>
@@ -66,7 +67,13 @@
 		<s:if test="project.id != ''">
 	</div>
 	<div class="tt-split-container">
-		</s:if>		
+		<dl class="fn1-output-field">
+			<dt></dt>
+			<dd>
+			<a href="<s:property value='#application.url' />map.action?id=<s:property value='project.id' />"> Add/Edit map features</a>
+			</dd>
+		</dl>
+		</s:if>
 		<dl class="fn1-input-field--select">
 			<dt>PM Lead</dt>
 			<dd><s:select name="project.lead_id" value="%{project.lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Lead" /></dd>
@@ -160,5 +167,9 @@
 	<s:set var="projectsTitle" value="projectsTitle" />
 	<%@  include file="projects.jsp" %>
 </s:else>
-
 <%@  include file="footer.jsp" %>
+<script type="text/javascript">
+ $(function() {
+  $('#form_id').areYouSure();
+});
+</script>
