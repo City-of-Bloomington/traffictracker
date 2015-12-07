@@ -58,6 +58,7 @@
         <a href="<s:property value='#application.url'/>project.action">New Project</a>
         <a href="<s:property value='#application.url'/>projectUpdate.action">Project Updates</a>
         <a href="<s:property value='#application.url'/>search.action">Search</a>
+				<a href="<s:property value='#application.url'/>report.action">Reports</a>				
       </nav>
     </div>
   </header>

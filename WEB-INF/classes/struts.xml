@@ -76,7 +76,7 @@
 				<param name="actionMessages">${actionMessages}</param>				
       </result>			
 		</action>		
-		<!--		
+
 		<action name="report" 
 						class="traffic.ReportAction" 
 						method="execute">
@@ -84,7 +84,6 @@
 			<result name="error">/WEB-INF/jsp/reportInput.jsp</result>
 			<result name="success">/WEB-INF/jsp/reportResult.jsp</result>
 		</action>
-		-->
    </package>
 
 </struts>
