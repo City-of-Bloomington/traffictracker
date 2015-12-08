@@ -7,23 +7,17 @@ package traffic;
 import java.util.*;
 import java.io.*;
 import java.text.*;
+
 import com.opensymphony.xwork2.ModelDriven;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;  
-import org.apache.struts2.dispatcher.SessionMap;  
-import org.apache.struts2.interceptor.SessionAware;  
-import org.apache.struts2.util.ServletContextAware;  
+
 import org.apache.log4j.Logger;
 
-public class SearchAction extends ActionSupport implements SessionAware, ServletContextAware{
+public class SearchAction extends TopAction{
 
 		static final long serialVersionUID = 33L;	
-		static private String url="";		
-		String id = "", action="";
 		static Logger logger = Logger.getLogger(SearchAction.class);
 		//
 		ProjectList projectList = null;
@@ -34,9 +28,6 @@ public class SearchAction extends ActionSupport implements SessionAware, Servlet
 				sources=null,
 				ranks=null;
 		List<User> leads = null;
-		private Map<String, Object> sessionMap;
-		private ServletContext ctx;
-		private User user;
 		String projectsTitle = "Most Recent Projects";		
 		public String execute(){
 				String ret = SUCCESS;
@@ -80,26 +71,6 @@ public class SearchAction extends ActionSupport implements SessionAware, Servlet
 				}
 				return ret;
 		}
-		/**
-		 * this method is used to get user param
-		 */
-		String doPrepare(){
-				String back = "";
-				try{
-						user = (User)sessionMap.get("user");
-						if(user == null){
-								back = LOGIN;
-						}
-						if(url.equals("")){
-								String val = ctx.getInitParameter("url");
-								if(val != null)
-										url = val;
-						}
-				}catch(Exception ex){
-						System.out.println(ex);
-				}		
-				return back;
-		}
 
 		public ProjectList getProjectList(){ // starting a new redeem
 				if(projectList == null){
@@ -114,13 +85,6 @@ public class SearchAction extends ActionSupport implements SessionAware, Servlet
 		public String getProjectsTitle(){
 				return projectsTitle;
 		}		
-		public void setAction(String val){
-				if(val != null && !val.equals(""))		
-						action = val;
-		}
-		public String getAction(){
-				return action;
-		}
 		// most recent
 		public List<Project> getProjects(){ 
 				return projects;
@@ -179,14 +143,7 @@ public class SearchAction extends ActionSupport implements SessionAware, Servlet
 				}		
 				return leads;
 		}				
-		@Override  
-		public void setSession(Map<String, Object> map) {  
-				sessionMap=map;  
-		}
-		@Override  	
-		public void setServletContext(ServletContext ctx) {  
-        this.ctx = ctx;  
-    }  	
+
 }
 
 

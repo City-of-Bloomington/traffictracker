@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 public class ReportRow implements java.io.Serializable{
 
     String row[]={"",""};
+		boolean types[]={true, false}; // text or not (number)
 		int size = 2;
 		static final long serialVersionUID = 90L;		
 		static Logger logger = Logger.getLogger(ReportRow.class);
@@ -21,6 +22,11 @@ public class ReportRow implements java.io.Serializable{
     public ReportRow(int size){
 				setSize(size);
     }
+    public ReportRow(int size, boolean vals[]){
+				setSize(size);
+				setTypes(vals);
+    }
+		
     //
     public String getRowItem(int jj){
 				if(jj < 0 || jj >= size) return null;
@@ -44,7 +50,10 @@ public class ReportRow implements java.io.Serializable{
 				if(3 < size)
 						return row[3];
 				return "";
-    }	
+    }
+		public boolean isTypeText(int jj){
+				return types[jj];
+		}
     //
     // setters
     //
@@ -55,11 +64,19 @@ public class ReportRow implements java.io.Serializable{
 		public void setSize(int size){
 				if(size > this.size){
 						row = new String[size];
+						types = new boolean[size];
 						for(int jj=0;jj<size;jj++){
 								row[jj] = "0"; // initialize;
+								if(jj == 0)
+										types[jj] = true; // text
+								else
+										types[jj] = false; // number
 						}
 				}
 				this.size = size;
+		}
+		public void setTypes(boolean vals[]){
+				types = vals;
 		}
     public void setRow(int jj, String val){
 				if(val != null && jj < size)

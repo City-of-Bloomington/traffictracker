@@ -198,8 +198,6 @@ public class Report{
 				//
 				qq = " select o.name name, count(*) amount from projects p left join owners o on p.owner_id=o.id ";
 				qg = " group by name ";
-				qq2 = " select count(*) from projects p ";
-
 		
 				if(!year.equals("")){
 						if(!qw.equals("")){
@@ -232,11 +230,9 @@ public class Report{
 				}
 				if(!qw.equals("")){
 						qq += qw;
-						qq2 += qw;
 				}
 				qq += qg;
 				logger.debug(qq);
-				logger.debug(qq2);
 				try{
 						con = Helper.getConnection();
 						if(con == null){
@@ -244,28 +240,22 @@ public class Report{
 								return msg;
 						}
 						pstmt = con.prepareStatement(qq);
-						qq = qq2;
-						pstmt2 = con.prepareStatement(qq2);
 						int jj=1;
 						if(!year.equals("")){
 								pstmt.setString(jj, year);
-								pstmt2.setString(jj, year);
 								jj++;
 						}
 						else {
 								if(!date_from.equals("")){
 										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_from).getTime()));
-										pstmt2.setDate(jj, new java.sql.Date(dateFormat.parse(date_from).getTime()));
 										jj++;
 								}
 								if(!date_to.equals("")){
 										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_to).getTime()));
-										pstmt2.setDate(jj, new java.sql.Date(dateFormat.parse(date_to).getTime()));
 										jj++;
 								}
 						}
-
-						title = "Projects classified by Owners ";
+						title = "Projects Classified by Owners ";
 						setTitle();
 						rows = new ArrayList<ReportRow>();
 						ReportRow one = new ReportRow();
@@ -318,9 +308,7 @@ public class Report{
 				//
 				qq = " select t.name name, count(*) amount from projects p left join types t on p.type_id=t.id ";
 				qg = " group by name ";
-				qq2 = " select count(*) from projects p ";
-
-		
+				//		
 				if(!year.equals("")){
 						if(!qw.equals("")){
 								qw += " and ";
@@ -352,11 +340,9 @@ public class Report{
 				}
 				if(!qw.equals("")){
 						qq += qw;
-						qq2 += qw;
 				}
 				qq += qg;
 				logger.debug(qq);
-				logger.debug(qq2);
 				try{
 						con = Helper.getConnection();
 						if(con == null){
@@ -364,23 +350,18 @@ public class Report{
 								return msg;
 						}
 						pstmt = con.prepareStatement(qq);
-						qq = qq2;
-						pstmt2 = con.prepareStatement(qq2);
 						int jj=1;
 						if(!year.equals("")){
 								pstmt.setString(jj, year);
-								pstmt2.setString(jj, year);
 								jj++;
 						}
 						else {
 								if(!date_from.equals("")){
 										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_from).getTime()));
-										pstmt2.setDate(jj, new java.sql.Date(dateFormat.parse(date_from).getTime()));
 										jj++;
 								}
 								if(!date_to.equals("")){
 										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_to).getTime()));
-										pstmt2.setDate(jj, new java.sql.Date(dateFormat.parse(date_to).getTime()));
 										jj++;
 								}
 						}
@@ -436,10 +417,8 @@ public class Report{
 				String qq = "", qw="", qg="", qq2="", qq3="";
 				which_date="p.date ";
 				//
-				qq = " select f.name name, count(*) amount from projects p left join funding_sources f on p.funding_source_id=f.id ";
+				qq = " select f.name name, count(*) amount,sum(actual_cost) cost from projects p left join funding_sources f on p.funding_source_id=f.id ";
 				qg = " group by name ";
-				qq2 = " select count(*) from projects p ";
-
 		
 				if(!year.equals("")){
 						if(!qw.equals("")){
@@ -472,11 +451,9 @@ public class Report{
 				}
 				if(!qw.equals("")){
 						qq += qw;
-						qq2 += qw;
 				}
 				qq += qg;
 				logger.debug(qq);
-				logger.debug(qq2);
 				try{
 						con = Helper.getConnection();
 						if(con == null){
@@ -484,52 +461,50 @@ public class Report{
 								return msg;
 						}
 						pstmt = con.prepareStatement(qq);
-						qq = qq2;
-						pstmt2 = con.prepareStatement(qq2);
 						int jj=1;
 						if(!year.equals("")){
 								pstmt.setString(jj, year);
-								pstmt2.setString(jj, year);
 								jj++;
 						}
 						else {
 								if(!date_from.equals("")){
 										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_from).getTime()));
-										pstmt2.setDate(jj, new java.sql.Date(dateFormat.parse(date_from).getTime()));
 										jj++;
 								}
 								if(!date_to.equals("")){
 										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_to).getTime()));
-										pstmt2.setDate(jj, new java.sql.Date(dateFormat.parse(date_to).getTime()));
 										jj++;
 								}
 						}
 
-						title = "Projects classified by Funding Resources ";
+						title = "Projects Classified by Funding Resources ";
 						setTitle();
 						rows = new ArrayList<ReportRow>();
 						ReportRow one = new ReportRow();
 						one.setRow("Title", title);
 						rows.add(one);
-						one = new ReportRow();
-						one.setRow("Funding Type","Count");
+						one = new ReportRow(3);
+						one.setRow("Funding Type","Count","Actual Cost $");
 						rows.add(one);						
 						int total = 0, count = 0;
 
-						total = 0; count = 0;						
+						total = 0; count = 0;
+						double total2 = 0.;
 						rs = pstmt.executeQuery();
 						while(rs.next()){
 								String str = rs.getString(1);
 								if(str == null) str = "Unspecified";
-								one = new ReportRow(2);
+								one = new ReportRow(3);
 								one.setRow(str,
-													 rs.getString(2)
+													 rs.getString(2),
+													 decFormat.format(rs.getDouble(3))
 													 );
 								total += rs.getInt(2);
+								total2 += rs.getDouble(3);
 								rows.add(one);
 						}
-						one = new ReportRow(2);
-						one.setRow("Total",total);
+						one = new ReportRow(3);
+						one.setRow("Total",""+total, decFormat.format(total2));
 						rows.add(one);
 						all.add(rows);
 				}catch(Exception e){
@@ -554,6 +529,7 @@ public class Report{
 				String msg = "";
 				String which_date = "";
 				String qq = "", qw="", qg="", qq2="", qq3="";
+				boolean types[] = {true, true, false};
 				which_date="p.date ";
 				//
 				qq = " select f.name name, pf.type type, count(*) amount from projects p left join project_features pf on pf.project_id=p.id left join features f on f.id=pf.feature_id ";
@@ -622,7 +598,7 @@ public class Report{
 										jj++;
 								}
 						}
-						title = "Projects classified by Features ";
+						title = "Projects Classified by Features ";
 						setTitle();
 						rows = new ArrayList<ReportRow>();
 						ReportRow one = new ReportRow();
@@ -640,7 +616,7 @@ public class Report{
 								if(str == null) str = "Unspecified";
 								String str2 = rs.getString(2);
 								if(str2 == null) str2 = "Unspecified";								
-								one = new ReportRow(3);
+								one = new ReportRow(3, types);
 								one.setRow(str,
 													 str2,
 													 rs.getString(3)
@@ -677,6 +653,8 @@ public class Report{
 				String msg = "";
 				String which_date = "";
 				String qq = "", qw="", qg="", qq2="", qq3="";
+				boolean types[] = {true, true, false};
+
 				which_date="p.date ";
 				//
 				qq = " select u.fullname name, u2.fullname name2, count(*) amount from projects p left join users u on p.lead_id=u.id left join users u2 on u2.id=p.eng_lead_id ";
@@ -746,8 +724,7 @@ public class Report{
 										jj++;
 								}
 						}
-
-						title = "Projects classified by Leads ";
+						title = "Projects Classified by Leads ";
 						setTitle();
 						rows = new ArrayList<ReportRow>();
 						ReportRow one = new ReportRow();
@@ -765,7 +742,7 @@ public class Report{
 								if(str == null) str = "Unspecified";
 								String str2 = rs.getString(2);
 								if(str2 == null) str2 = "Unspecified";								
-								one = new ReportRow(3);
+								one = new ReportRow(3, types);
 								one.setRow(str,
 													 str2,
 													 rs.getString(3)
@@ -776,7 +753,7 @@ public class Report{
 						if(rs.next()){
 								count = rs.getInt(1);
 						}
-						one = new ReportRow(3);
+						one = new ReportRow(3, types);
 						one.setRow("Total","", count);
 						rows.add(one);
 						all.add(rows);
@@ -809,12 +786,7 @@ public class Report{
 				qw = " where pu.id in "+
 						" (select max(id) from project_updates u2 where u2.project_id=p.id) ";
 				qg = " group by name order by ph.id ";
-				//
-				// we do not really need this
-				//
-				qq2 = " select count(*) from projects p left join project_updates pu on p.id=pu.project_id  ";
-
-		
+				//		
 				if(!year.equals("")){
 						if(!qw.equals("")){
 								qw += " and ";
@@ -846,11 +818,9 @@ public class Report{
 				}
 				if(!qw.equals("")){
 						qq += qw;
-						// qq2 += qw;
 				}
 				qq += qg;
 				logger.debug(qq);
-				// logger.debug(qq2);
 				try{
 						con = Helper.getConnection();
 						if(con == null){
@@ -858,28 +828,22 @@ public class Report{
 								return msg;
 						}
 						pstmt = con.prepareStatement(qq);
-						// qq = qq2;
-						// pstmt2 = con.prepareStatement(qq2);
 						int jj=1;
 						if(!year.equals("")){
 								pstmt.setString(jj, year);
-								// pstmt2.setString(jj, year);
 								jj++;
 						}
 						else {
 								if(!date_from.equals("")){
 										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_from).getTime()));
-										// pstmt2.setDate(jj, new java.sql.Date(dateFormat.parse(date_from).getTime()));
 										jj++;
 								}
 								if(!date_to.equals("")){
 										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_to).getTime()));
-										// pstmt2.setDate(jj, new java.sql.Date(dateFormat.parse(date_to).getTime()));
 										jj++;
 								}
 						}
-
-						title = "Projects classified by Phase Rank ";
+						title = "Projects Classified by Phase Rank ";
 						setTitle();
 						rows = new ArrayList<ReportRow>();
 						ReportRow one = new ReportRow();

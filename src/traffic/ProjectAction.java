@@ -7,24 +7,13 @@ package traffic;
 import java.util.*;
 import java.io.*;
 import java.text.*;
-import com.opensymphony.xwork2.ModelDriven;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;  
-import org.apache.struts2.dispatcher.SessionMap;  
-import org.apache.struts2.interceptor.SessionAware;  
-import org.apache.struts2.util.ServletContextAware;  
 import org.apache.log4j.Logger;
 
-
-public class ProjectAction extends ActionSupport implements SessionAware, ServletContextAware{
+public class ProjectAction extends TopAction{
 
 		static final long serialVersionUID = 28L;	
-		static private String url="";		
-		String id = "", action="";
 		static Logger logger = Logger.getLogger(ProjectAction.class);
 		//
 		Project project = null;
@@ -39,9 +28,6 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 		List<SubType> sub_features = null, sub_sub_features = null;
 		List<ProjectUpdate> updates = null;
 		List<User> leads = null;
-		private Map<String, Object> sessionMap;
-		private ServletContext ctx;
-		private User user;
 		String updatesTitle = "Most Recent Updates";
 		String projectsTitle = "Most Recent Projects";		
 		public String execute(){
@@ -122,13 +108,6 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 						if(!back.equals("")){
 								addActionError(back);
 						}
-						/*
-						String msg = (String)sessionMap.get("message");
-						if(msg != null && !msg.equals("")){
-								sessionMap.remove("message");
-								addActionMessage(msg);
-						}
-						*/
 				}
 				else if(action.equals("map")){ 
 						project = new Project(id);
@@ -156,27 +135,6 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 				}		
 				return ret;
 		}
-		/**
-		 * this method is used to get user param
-		 */
-		String doPrepare(){
-				String back = "";
-				try{
-						user = (User)sessionMap.get("user");
-						if(user == null){
-								back = LOGIN;
-						}
-						if(url.equals("")){
-								String val = ctx.getInitParameter("url");
-								if(val != null)
-										url = val;
-						}
-				}catch(Exception ex){
-						System.out.println(ex);
-				}		
-				return back;
-		}
-
 		public Project getProject(){ 
 				if(project == null){
 						if(!id.equals("")){
@@ -219,21 +177,10 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 		public String getProjectsTitle(){
 				return projectsTitle;
 		}		
-		public void setAction(String val){
-				if(val != null && !val.equals(""))		
-						action = val;
-		}
 		public void setAction2(String val){
 				if(val != null && !val.equals(""))		
 						action = val;
 		}		
-		public String getAction(){
-				return action;
-		}
-		public void setId(String val){
-				if(val != null && !val.equals(""))		
-						id = val;
-		}
 		public String getId(){
 				if(id.equals("") && project != null){
 						id = project.getId();
@@ -334,14 +281,7 @@ public class ProjectAction extends ActionSupport implements SessionAware, Servle
 				}		
 				return leads;
 		}				
-		@Override  
-		public void setSession(Map<String, Object> map) {  
-				sessionMap=map;  
-		}
-		@Override  	
-		public void setServletContext(ServletContext ctx) {  
-        this.ctx = ctx;  
-    }  	
+
 }
 
 

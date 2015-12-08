@@ -27,6 +27,7 @@ public class ProjectUpdateList implements java.io.Serializable{
 
 		String date_from="", date_to="", sortBy=" r.id DESC ";
 		String limit = " limit 15 ";
+		boolean lastPerProject = false;
 		List<ProjectUpdate> updates = null;
 	
 		public ProjectUpdateList(){
@@ -68,6 +69,9 @@ public class ProjectUpdateList implements java.io.Serializable{
 		}
 		public void setNoLimit(){
 				limit = "";
+		}
+		public void setLasPerProject(){
+				lastPerProject = true;
 		}
 		//
 		public String getId(){
@@ -134,6 +138,10 @@ public class ProjectUpdateList implements java.io.Serializable{
 										if(!qw.equals("")) qw += " and ";
 										qw += which_date+" <= ? ";					
 								}
+						}
+						if(lastPerProject){
+								if(!qw.equals("")) qw += " and ";								
+								qw += " r.id in (select max(id) from project_updates u2 where u2.project_id=r.project_id) ";				
 						}
 				}
 				qq += qf;

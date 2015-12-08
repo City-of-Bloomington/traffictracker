@@ -7,23 +7,14 @@ package traffic;
 import java.util.*;
 import java.io.*;
 import java.text.*;
-import com.opensymphony.xwork2.ModelDriven;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;  
-import org.apache.struts2.dispatcher.SessionMap;  
-import org.apache.struts2.interceptor.SessionAware;  
-import org.apache.struts2.util.ServletContextAware;  
 import org.apache.log4j.Logger;
 
-public class ProjectUpdateAction extends ActionSupport implements SessionAware, ServletContextAware{
+public class ProjectUpdateAction extends TopAction{
 
 		static final long serialVersionUID = 29L;	
-		static private String url="";		
-		String id ="", project_id="", action="";
+		String project_id="";
 		static Logger logger = Logger.getLogger(ProjectUpdateAction.class);
 		//
 		ProjectUpdate projectUpdate = null;
@@ -32,9 +23,6 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 		List<Type> ranks = null;
 		List<User> users = null;		
 		List<ProjectUpdate> updates = null;
-		private Map<String, Object> sessionMap;
-		private ServletContext ctx;
-		private User user;
 		
 		String updatesTitle = "Most Recent Project Updates";
 		String projectsTitle = "Most Recent Projects";		
@@ -59,28 +47,8 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 						}
 						else{
 								addActionMessage("Saved Successfully");
-								/*
-								try{
-										HttpServletResponse res = ServletActionContext.getResponse();
-										String str = url+"project.action?id="+projectUpdate.getProject_id();
-										res.sendRedirect(str);
-										return super.execute();
-								}catch(Exception ex){
-										System.err.println(ex);
-								}
-								*/
 						}
 				}				
-				else if(action.equals("Delete")){ 
-						back = projectUpdate.doDelete();
-						if(!back.equals("")){
-								// back to the same page 
-								addActionError(back);
-						}
-						else{
-								ret = "search";
-						}
-				}		
 				else if(!id.equals("")){
 						projectUpdate = new ProjectUpdate(id);
 						back = projectUpdate.doSelect();
@@ -104,26 +72,6 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 						addActionMessage("You can pick a project to edit or add updates");
 				}
 				return ret;
-		}
-		/**
-		 * this method is used to get user param
-		 */
-		String doPrepare(){
-				String back = "";
-				try{
-						user = (User)sessionMap.get("user");
-						if(user == null){
-								back = LOGIN;
-						}
-						if(url.equals("")){
-								String val = ctx.getInitParameter("url");
-								if(val != null)
-										url = val;
-						}
-				}catch(Exception ex){
-						System.out.println(ex);
-				}		
-				return back;
 		}
 		//
 		public ProjectUpdate getProjectUpdate(){ // starting a new redeem
@@ -152,17 +100,6 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 		public String getProjectsTitle(){
 				return projectsTitle;
 		}		
-		public void setAction(String val){
-				if(val != null && !val.equals(""))		
-						action = val;
-		}
-		public String getAction(){
-				return action;
-		}
-		public void setId(String val){
-				if(val != null && !val.equals(""))		
-						id = val;
-		}
 		public String getId(){
 				if(id.equals("") && projectUpdate != null){
 						id = projectUpdate.getId();
@@ -220,6 +157,9 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 								pul.setProject_id(project_id);
 								pul.setNoLimit();
 						}
+						else{
+								pul.setLasPerProject();
+						}
 						String back = pul.find();
 						if(back.equals("")){
 								updates = pul.getUpdates();
@@ -227,15 +167,7 @@ public class ProjectUpdateAction extends ActionSupport implements SessionAware, 
 				}
 				return updates;
 		}
-		
-		@Override  
-		public void setSession(Map<String, Object> map) {  
-				sessionMap=map;  
-		}
-		@Override  	
-		public void setServletContext(ServletContext ctx) {  
-        this.ctx = ctx;  
-    }  	
+
 }
 
 

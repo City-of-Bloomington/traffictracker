@@ -21,9 +21,12 @@
 		  <s:if test="size == 2">		  
 			<td align="right"><s:property value="second" /></td>
 		  </s:if>
-		  <s:else>
+		  <s:elseif test="isTypeText(1)">
 			<td align="left"><s:property value="second" /></td>
-		  </s:else>
+		  </s:elseif>
+			<s:else>
+				<td align="right"><s:property value="second" /></td>
+			</s:else>
 		  <s:if test="size == 3">
 			<td align="right"><s:property value="third" /></td>
 		  </s:if>		

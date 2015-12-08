@@ -14,20 +14,29 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import org.apache.log4j.Logger;
 
-public class ReportAction extends ActionSupport{
+public class ReportAction extends TopAction{
 
 		static final long serialVersionUID = 80L;	
    
-		String action="";
 		static Logger logger = Logger.getLogger(ReportAction.class);
 		Report report = null;
-		User user = null;
 		List<String> years = null;
 		public String execute(){
-				String ret = INPUT;            // default
+				String ret = INPUT;
+				String back = doPrepare();
+				if(!back.equals("")){
+						try{
+								HttpServletResponse res = ServletActionContext.getResponse();
+								String str = url+"Login";
+								res.sendRedirect(str);
+								return super.execute();
+						}catch(Exception ex){
+								System.err.println(ex);
+						}	
+				}				
 				if(action.equals("Submit")){
 						ret = SUCCESS;
-						String back = report.find();
+						back = report.find();
 						if(!back.equals("")){
 								addActionError(back);
 								ret = INPUT;
@@ -45,12 +54,7 @@ public class ReportAction extends ActionSupport{
 				if(val != null)
 						report = val;
 		}
-		public void setAction(String val){
-				action = val;
-		}
-		public String getAction(){
-				return action;
-		}
+
 		public List<String> getYears(){
 				if(years == null){
 						int yy = Helper.getCurrentYear();
