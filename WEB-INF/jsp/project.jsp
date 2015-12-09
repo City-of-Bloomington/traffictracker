@@ -136,7 +136,7 @@
 		
 		<dl class="fn1-output-field">
 			<dt>Feature</dt>
-			<dd><s:select name="feature.feature_id" value="%{feature.feature_id}" list="features" listKey="id" listValue="name" onchange="doRefresh()" headerKey="-1" headerValue="Pick Feature" /><s:if test="feature.hasSubFeature()"><s:select name="feature.sub_id" value="%{feature.sub_id}" list="sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" onchange="doRefresh()" /><s:if test="feature.hasSubSubFeature()"><s:select name="feature.sub_sub_id" value="%{feature.sub_sub_id}" list="sub_sub_features" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Sub Feature" /></s:if></s:if>
+			<dd><s:select name="feature.feature_id" value="%{feature.feature_id}" list="features" listKey="id" listValue="name" onchange="getSubFeatures()" headerKey="-1" headerValue="Pick Feature" id="feature_id" /><select name="feature.sub_id" value="%{feature.sub_id}" onchange="getSubSubFeatures()" id="sub_feature_id" style="display:none"><option value="-1">Pick Sub Feature</option></select><select name="feature.sub_sub_id" value="%{feature.sub_sub_id}" id="sub_sub_feature_id" style="display:none"><option value="-1">Pick Sub Sub Feature</option></select>
 				Type: <s:radio name="feature.type" list="{'New','Improved'}" value="%{feature.type}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
@@ -164,8 +164,91 @@
 	<%@  include file="projects.jsp" %>
 </s:else>
 <%@  include file="footer.jsp" %>
+
 <script type="text/javascript">
  $(function() {
   $('#form_id').areYouSure();
 });
+/**
+ * populate sub features select list
+ */
+function getSubFeatures(){
+		var select_id = document.getElementById("sub_feature_id");
+		var selected_id = document.getElementById("feature_id").value;
+		// we are interested in the features that have sub_features only
+		if(selected_id && (selected_id == "1" ||
+											 selected_id == "5" ||
+											 selected_id == "6")){
+				$.getJSON("<s:property value='#application.url' />FeatureService?id="+selected_id+"&type=feature",function(data){
+						// reomve the old ones if the user switched to another item
+						var len = select_id.length;
+						if(len > 1){
+								for(var jj=len-1;jj>0;jj--){
+										select_id.remove(jj);
+								}
+						}
+						$.each( data, function(key, val) {
+								var option = document.createElement("option");
+								option.value=val.id;
+								option.text=val.value;
+								select_id.appendChild(option);
+						});
+						select_id.style.display="inline";
+				}); 
+		}
+		else{
+				var len = select_id.length;
+				if(len > 1){
+						for(var jj=len-1;jj>0;jj--){
+								select_id.remove(jj);
+						}
+				}
+				select_id.style.display="none";
+				select_id = document.getElementById("sub_sub_feature_id");
+				len = selected_id.length;
+				if(len > 1){
+						for(var jj=len-1;jj>0;jj--){
+								select_id.remove(jj);
+						}
+				}
+				select_id.style.display="none";				
+		}
+}
+/**
+ * poplute sub sub feature select list
+ */
+function getSubSubFeatures(){
+	var select_id = document.getElementById("sub_sub_feature_id");
+	var selected_id = document.getElementById("sub_feature_id").value;
+	// we are interested in the sub features that have sub sub features only
+	if(selected_id && (selected_id == "4" ||
+										selected_id == "5")){
+			$.getJSON("<s:property value='#application.url' />FeatureService?id="+selected_id+"&type=sub_feature",function(data){
+				//
+				// reomve the old ones if the user switched to another item
+				var len = select_id.length;
+				if(len > 1){
+					for(var jj=len-1;jj>0;jj--){
+						select_id.remove(jj);
+					}
+				}
+				$.each( data, function(key, val) {
+					var option = document.createElement("option");
+					option.value=val.id;
+					option.text=val.value;
+					select_id.appendChild(option);
+				});
+				select_id.style.display="inline";
+			}); 
+	}
+	else{
+		var len = select_id.length;
+		if(len > 1){
+			for(var jj=len-1;jj>0;jj--){
+				select_id.remove(jj);
+			}
+		}
+		select_id.style.display="none";				
+	}
+}
 </script>

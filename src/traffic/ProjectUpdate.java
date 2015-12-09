@@ -193,8 +193,9 @@ public class ProjectUpdate implements java.io.Serializable{
 						msg = " phase_rank not set";
 						return msg;
 				}
-				date = Helper.getToday();
-				String qq = "insert into project_updates values(0,?,?,now(),?, ?)";
+				if(date.equals(""))
+						date = Helper.getToday();
+				String qq = "insert into project_updates values(0,?,?,?,?,?)";
 				logger.debug(qq);
 				try{
 						con = Helper.getConnection();
@@ -229,11 +230,12 @@ public class ProjectUpdate implements java.io.Serializable{
 				try{
 						pstmt.setString(1, project_id);
 						pstmt.setString(2, phase_rank_id);
+						pstmt.setDate(3, new java.sql.Date(dateFormat.parse(date).getTime()));						
 						if(notes.equals(""))
-								pstmt.setNull(3, Types.VARCHAR);
+								pstmt.setNull(4, Types.VARCHAR);
 						else
-								pstmt.setString(3, notes);
-						pstmt.setString(4, user_id);
+								pstmt.setString(4, notes);
+						pstmt.setString(5, user_id);
 				}
 				catch(Exception ex){
 						msg += ex;

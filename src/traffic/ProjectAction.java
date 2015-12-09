@@ -205,15 +205,7 @@ public class ProjectAction extends TopAction{
 				}		
 				return types;
 		}
-		public List<Type> getFeatures(){ 
-				if(features == null){
-						TypeList dl = new TypeList("features");
-						String back = dl.find();
-						if(back.equals(""))
-								features = dl.getTypes();
-				}		
-				return features;
-		}
+		
 		public List<Type> getOwners(){ 
 				if(owners == null){
 						TypeList dl = new TypeList("owners");
@@ -240,6 +232,15 @@ public class ProjectAction extends TopAction{
 								ranks = dl.getTypes();
 				}		
 				return ranks;
+		}
+		public List<Type> getFeatures(){ 
+				if(features == null){
+						TypeList dl = new TypeList("features");
+						String back = dl.find();
+						if(back.equals(""))
+								features = dl.getTypes();
+				}		
+				return features;
 		}
 		public List<SubType> getSub_features(){
 				if(feature == null) getFeature();

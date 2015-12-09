@@ -26,14 +26,6 @@ $("#vendorName").autocomplete({
     }
 });
 
-
-$(function() {
-    $("#bar_code_id").focus();
-    $("#vendor_id").focus();
-    $(".need_focus").focus();
-});
-
-
 jQuery(function ($) {
     var launcherClick = function(e)  {
             var openMenus   = $('.menuLinks.open'),
@@ -88,4 +80,5 @@ function doRefresh(){
 		document.getElementById("action2").value="Refresh";		
 		document.getElementById("form_id").submit();				
 }
+		
 

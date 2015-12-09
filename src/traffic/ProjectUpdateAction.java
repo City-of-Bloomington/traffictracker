@@ -87,7 +87,6 @@ public class ProjectUpdateAction extends TopAction{
 								}
 						}
 				}
-				
 				return projectUpdate;
 		}
 		public void setProjectUpdate(ProjectUpdate val){
