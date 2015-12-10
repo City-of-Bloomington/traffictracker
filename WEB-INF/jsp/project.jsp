@@ -171,73 +171,82 @@
 });
 /**
  * populate sub features select list
+ * using jquery
  */
 function getSubFeatures(){
-		var select_id = document.getElementById("sub_feature_id");
-		var selected_id = document.getElementById("feature_id").value;
-		// we are interested in the features that have sub_features only
-		if(selected_id && (selected_id == "1" ||
-											 selected_id == "5" ||
-											 selected_id == "6")){
-				$.getJSON("<s:property value='#application.url' />FeatureService?id="+selected_id+"&type=feature",function(data){
-						// reomve the old ones if the user switched to another item
-						var len = select_id.length;
-						if(len > 1){
-								for(var jj=len-1;jj>0;jj--){
-										select_id.remove(jj);
-								}
+
+	var selected_id = $("#feature_id").val();
+	//
+	// we are interested in the features that have sub_features only
+	//
+	if(selected_id && (selected_id == "1" ||
+											selected_id == "5" ||
+											selected_id == "6")){
+					$.getJSON("<s:property value='#application.url' />FeatureService?id="+selected_id+"&type=feature",function(data){
+					//
+					// reomve the old ones if the user selected another item
+					//
+					var len = $('#sub_feature_id option').length;
+					if(len > 1){
+						for(var jj=len-1;jj>0;jj--){
+							$('#sub_feature_id option').eq(jj).remove();
 						}
-						$.each( data, function(key, val) {
-								var option = document.createElement("option");
-								option.value=val.id;
-								option.text=val.value;
-								select_id.appendChild(option);
-						});
-						select_id.style.display="inline";
+					}
+					$.each( data, function(key, item) {
+						$('#sub_feature_id').append($('<option>', { 
+							value: item.id,
+							text : item.value 
+						}));
+					});
+					$('#sub_feature_id').css({'display':'inline'});
 				}); 
+	}
+	else{
+		var len = $('#sub_feature_id option').length;
+		if(len > 1){
+			for(var jj=len-1;jj>0;jj--){
+				$('#sub_feature_id option').eq(jj).remove();
+			}
+		}		
+		$('#sub_feature_id').css({'display':'none'});			
+		len = $('#sub_sub_feature_id option').length;		
+		if(len > 1){
+			for(var jj=len-1;jj>0;jj--){
+				$('#sub_sub_feature_id option').eq(jj).remove();				
+			}
 		}
-		else{
-				var len = select_id.length;
-				if(len > 1){
-						for(var jj=len-1;jj>0;jj--){
-								select_id.remove(jj);
-						}
-				}
-				select_id.style.display="none";
-				select_id = document.getElementById("sub_sub_feature_id");
-				len = selected_id.length;
-				if(len > 1){
-						for(var jj=len-1;jj>0;jj--){
-								select_id.remove(jj);
-						}
-				}
-				select_id.style.display="none";				
-		}
+		$('#sub_sub_feature_id').css({'display':'none'});			
+	}
 }
 /**
  * poplute sub sub feature select list
+ * using jquery and DOM
  */
 function getSubSubFeatures(){
+	//
 	var select_id = document.getElementById("sub_sub_feature_id");
-	var selected_id = document.getElementById("sub_feature_id").value;
+	var selected_id = $("#sub_feature_id").val();
+	//
 	// we are interested in the sub features that have sub sub features only
+	//
 	if(selected_id && (selected_id == "4" ||
 										selected_id == "5")){
 			$.getJSON("<s:property value='#application.url' />FeatureService?id="+selected_id+"&type=sub_feature",function(data){
 				//
-				// reomve the old ones if the user switched to another item
+				// reomve the old ones if the user selected  another item
+				//
 				var len = select_id.length;
 				if(len > 1){
 					for(var jj=len-1;jj>0;jj--){
 						select_id.remove(jj);
 					}
 				}
-				$.each( data, function(key, val) {
-					var option = document.createElement("option");
-					option.value=val.id;
-					option.text=val.value;
-					select_id.appendChild(option);
-				});
+				$.each( data, function(key, item) {
+					$('#sub_sub_feature_id').append($('<option>', { 
+						value: item.id,
+						text : item.value 
+					}));
+				});					
 				select_id.style.display="inline";
 			}); 
 	}

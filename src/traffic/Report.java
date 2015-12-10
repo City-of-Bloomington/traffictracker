@@ -30,9 +30,7 @@ public class Report{
 		//
 		int totalIndex = 2; // DB index for row with 2 items
 		public Report(){
-
 		}
-
 		public void setYear(String val){
 				if(val != null && !val.equals("-1"))
 						year = val;

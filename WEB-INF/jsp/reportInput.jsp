@@ -22,10 +22,6 @@
 				<dd><s:checkbox name="report.byLead" value="report.byLead"  />Projects classified by Leads</dd>
 				<dd><s:checkbox name="report.byRank" value="report.byRank"  />Projects classified by Phase Rank</dd>						
 			</dl>
-			<dl class="fn1-output-field">
-				<dt>Day: </label></dt>
-				<dd><s:textfield name="report.day" value="%{report.day}" size="10" cssClass="date" />, </dd>
-			</dl>
 			<dl class="fn1-output-field">			
 				<dt>Year: </label></dt>
 				<dd><s:select name="report.year" list="years" value="%{report.year}" /> or</dd>
