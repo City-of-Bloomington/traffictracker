@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="//bloomington.in.gov/static/fn1-releases/dev/css/kirkwood.css" type="text/css" />
   <link rel="stylesheet" href="<s:property value='#application.url' />css/screen.css" type="text/css" />
   <link rel="stylesheet" href="<s:property value='#application.url' />css/ol.css" type="text/css" />
+  <link rel="stylesheet" href="<s:property value='#application.url' />css/ol3-popup.css" type="text/css" />	
   <title>Traffic Tracker</title>
   <script type="text/javascript">
     var APPLICATION_URL = '<s:property value='#application.url' />';

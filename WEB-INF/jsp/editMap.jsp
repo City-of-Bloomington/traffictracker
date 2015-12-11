@@ -65,6 +65,7 @@ function toggle() {
 
 </s:form>
 <script type="text/javascript" src="<s:property value='#application.url' />js/ol.js"></script>
+<script type="text/javascript" src="<s:property value='#application.url' />js/ol3-popup.js"></script>
 <script type="text/javascript" src="<s:property value='#application.url' />js/showMap.js"></script>
 <script type="text/javascript" src="<s:property value='#application.url' />js/mapEdit.js"></script>
 

@@ -6,8 +6,10 @@
     <s:actionerror/>
   </div>
 </s:if>
+<p>Note: You can click on any of the lines/points (if there is any) in the map to get the project name and link</p>
 <div id="map" class="mapPanel"></div>
 <div id="marker"></div>
+
 <table class="fn1-table">
 	<caption><s:property value="projectsTitle" /></caption>
 	<thead>
@@ -42,7 +44,13 @@
 					<td>&nbsp;</td>
 				</s:else>
 				<s:if test="hasGeometry()">
-					<td class="project">Yes <div id="<s:property value='id' />" class="<s:property value='firstFeatureId' />" ><div class="geography" style="display:none"><s:property value="geometry" /></div></div></td>
+					<td class="project">Yes
+						<div id="<s:property value='id' />" class="<s:property value='firstFeatureId' />" >
+							<div class="geography" style="display:none"><s:property value="geometry" /></div>
+							<div class="project_name" style="display:none"><s:property value="name" /></div>
+							<div class="url" style="display:none"><s:property value="#application.url" /></div>							
+						</div>
+					</td>
 				</s:if>
 				<s:else>
 					<td>&nbsp;</td>
@@ -53,6 +61,7 @@
 </table>
 
 <script type="text/javascript" src="<s:property value='#application.url' />js/ol.js"></script>
+<script type="text/javascript" src="<s:property value='#application.url' />js/ol3-popup.js"></script>
 <script type="text/javascript" src="<s:property value='#application.url' />js/showMap.js"></script>
 
 <%@  include file="footer.jsp" %>
