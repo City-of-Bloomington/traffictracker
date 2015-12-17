@@ -23,6 +23,7 @@ public class Project implements java.io.Serializable{
 		static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		String id="", name=""; 
 		String owner_id ="", type_id="", funding_source_id="",date_time="", description="",lead_id="",eng_lead_id="",date = "", length="", file_path="", des_no = "", est_end_date="", actual_end_date="", est_cost="", actual_cost="";
+		String status = "Active";
 		// example of geometry POINT(18 23), LINESTRING(0 0, 1 2,2 4)
 		// polygons consist of linestrings, a closed exterior boundary and 
 		// POLYGON((0 0,8 0,12 9,0 9,0 0),(5 3,4 5,7 9,3 7, 2 5))
@@ -61,7 +62,8 @@ public class Project implements java.io.Serializable{
 									 String val14,
 									 String val15,
 									 String val16,
-									 String val17
+									 String val17,
+									 String val18
 									 ){
 				setValues( val,
 									 val2,
@@ -79,7 +81,8 @@ public class Project implements java.io.Serializable{
 									 val14,
 									 val15,
 									 val16,
-									 val17
+									 val17,
+									 val18
 									 );
 		
 		}
@@ -100,7 +103,8 @@ public class Project implements java.io.Serializable{
 									 String val14,
 									 String val15,
 									 String val16,
-									 String val17
+									 String val17,
+									 String val18
 									 ){
 				setId(val);
 				setName(val2);
@@ -119,6 +123,7 @@ public class Project implements java.io.Serializable{
 				setEst_cost(val15);
 				setActual_cost(val16);
 				setGeometry(val17);
+				setStatus(val18);
 		}
 
 		public void setId(String val){
@@ -193,6 +198,10 @@ public class Project implements java.io.Serializable{
 				if(val != null){
 						geometry = val;
 				}
+		}
+		public void setStatus(String val){
+				if(val != null)
+						status = val;
 		}		
 		// delete features
 		public void setDel_feature(String[] vals){
@@ -264,6 +273,9 @@ public class Project implements java.io.Serializable{
 		}
 		public boolean hasGeometry(){
 				return !geometry.equals("");
+		}
+		public String getStatus(){
+				return status;
 		}		
 		public Type getOwner(){
 				if(!owner_id.equals("") && owner == null){
@@ -411,11 +423,12 @@ public class Project implements java.io.Serializable{
 				String qq = "insert into projects values(0,?,?,?,?, ?,?, "+
 						"?,?,?,?,?, ?,?,?,?,";
 				if(geometry.equals("")){
-						qq += "null)";
+						qq += "null,";
 				}
 				else{
-						qq += " GeomFromText(?))";
+						qq += " GeomFromText(?),";
 				}
+				qq += "?)";
 				logger.debug(qq);
 				try{
 						con = Helper.getConnection();
@@ -447,68 +460,75 @@ public class Project implements java.io.Serializable{
 		}
 		String fillData(PreparedStatement pstmt){
 				String msg = "";
+				int jj=1;
 				try{
-						pstmt.setString(1, name);
+						pstmt.setString(jj++, name);
 						if(owner_id.equals(""))
-								pstmt.setNull(2, Types.INTEGER);		
+								pstmt.setNull(jj++, Types.INTEGER);		
 						else
-								pstmt.setString(2, owner_id);
+								pstmt.setString(jj++, owner_id);
 						if(type_id.equals(""))
-								pstmt.setNull(3, Types.INTEGER);
+								pstmt.setNull(jj++, Types.INTEGER);
 						else
-								pstmt.setString(3, type_id);
+								pstmt.setString(jj++, type_id);
 						if(funding_source_id.equals(""))
-								pstmt.setNull(4, Types.INTEGER);
+								pstmt.setNull(jj++, Types.INTEGER);
 						else
-								pstmt.setString(4, funding_source_id);
+								pstmt.setString(jj++, funding_source_id);
 						if(!description.equals(""))
-								pstmt.setString(5, description);
+								pstmt.setString(jj++, description);
 						else
-								pstmt.setNull(5, Types.VARCHAR);				
+								pstmt.setNull(jj++, Types.VARCHAR);				
 						if(!lead_id.equals(""))
-								pstmt.setString(6, lead_id);
+								pstmt.setString(jj++, lead_id);
 						else
-								pstmt.setNull(6, Types.INTEGER);
+								pstmt.setNull(jj++, Types.INTEGER);
 						if(!eng_lead_id.equals(""))
-								pstmt.setString(7, eng_lead_id);
+								pstmt.setString(jj++, eng_lead_id);
 						else
-								pstmt.setNull(7, Types.INTEGER);
+								pstmt.setNull(jj++, Types.INTEGER);
 						// 
 						if(!date.equals(""))
-								pstmt.setDate(8, new java.sql.Date(dateFormat.parse(date).getTime()));
+								pstmt.setDate(jj++, new java.sql.Date(dateFormat.parse(date).getTime()));
 						else
-								pstmt.setNull(8, Types.DATE);
+								pstmt.setNull(jj++, Types.DATE);
 						if(!length.equals(""))
-								pstmt.setString(9, length);
+								pstmt.setString(jj++, length);
 						else
-								pstmt.setNull(9, Types.INTEGER);
+								pstmt.setNull(jj++, Types.INTEGER);
 						if(!file_path.equals(""))
-								pstmt.setString(10, file_path);
+								pstmt.setString(jj++, file_path);
 						else
-								pstmt.setNull(10, Types.VARCHAR);
+								pstmt.setNull(jj++, Types.VARCHAR);
 						if(!des_no.equals(""))
-								pstmt.setString(11, des_no);
+								pstmt.setString(jj++, des_no);
 						else
-								pstmt.setNull(11, Types.VARCHAR);
+								pstmt.setNull(jj++, Types.VARCHAR);
 						if(!est_end_date.equals(""))
-								pstmt.setDate(12, new java.sql.Date(dateFormat.parse(est_end_date).getTime()));
+								pstmt.setDate(jj++, new java.sql.Date(dateFormat.parse(est_end_date).getTime()));
 						else
-								pstmt.setNull(12, Types.DATE);
+								pstmt.setNull(jj++, Types.DATE);
 						if(!actual_end_date.equals(""))
-								pstmt.setDate(13, new java.sql.Date(dateFormat.parse(actual_end_date).getTime()));
+								pstmt.setDate(jj++, new java.sql.Date(dateFormat.parse(actual_end_date).getTime()));
 						else
-								pstmt.setNull(13, Types.DATE);
+								pstmt.setNull(jj++, Types.DATE);
 						if(!est_cost.equals(""))
-								pstmt.setString(14, est_cost);
+								pstmt.setString(jj++, est_cost);
 						else
-								pstmt.setNull(14, Types.DECIMAL);
+								pstmt.setNull(jj++, Types.DECIMAL);
 						if(!actual_cost.equals(""))
-								pstmt.setString(15, actual_cost);
+								pstmt.setString(jj++, actual_cost);
 						else
-								pstmt.setNull(15, Types.DECIMAL);
+								pstmt.setNull(jj++, Types.DECIMAL);
 						if(!geometry.equals(""))
-								pstmt.setString(16, geometry);
+								pstmt.setString(jj++, geometry);
+						if(status.equals(""))
+								pstmt.setNull(jj++, Types.INTEGER);								
+						else
+								pstmt.setString(jj++,status);
+
 				}
+				
 				catch(Exception ex){
 						msg += ex;
 						logger.error(msg);
@@ -522,18 +542,19 @@ public class Project implements java.io.Serializable{
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
-				int cc = 17;
+				int cc = 18;
 				String qq = "update projects set name=?,owner_id=?,type_id=?,"+
 						"funding_source_id=?,"+
 						"description=?,lead_id=?,eng_lead_id=?,"+
 						"date=?,length=?,file_path=?,DES_no=?,est_end_date=?,"+
 						"actual_end_date=?,est_cost=?,actual_cost=?,";
 				if(geometry.equals("")){
-						qq += "geometry=null ";
-						cc = 16;
+						qq += "geometry=null, ";
+						cc = 17;
 				}
 				else
-						qq += "geometry=GeomFromText(?) ";
+						qq += "geometry=GeomFromText(?), ";
+				qq += " status=? ";
 				qq += "where id=?";
 				logger.debug(qq);
 				try{
@@ -623,7 +644,7 @@ public class Project implements java.io.Serializable{
 		}
 		String doSelect(){
 		
-				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry) from projects r where r.id=? ";
+				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry),r.status from projects r where r.id=? ";
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
@@ -655,7 +676,8 @@ public class Project implements java.io.Serializable{
 													rs.getString(14),
 													rs.getString(15),
 													rs.getString(16),
-													rs.getString(17)
+													rs.getString(17),
+													rs.getString(18) 
 													);
 						}
 				}catch(Exception e){

@@ -21,7 +21,7 @@ public class Report{
 		NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();	
 		String year = "",date_from="",date_to="", type="";
 		String title = "", which_date="p.date",by="", day="", prev_year="", next_year="";
-		boolean byType=false, byOwner=true, byFund=false, byFeature=false, byLead=false, byRank=false;
+		boolean byType=false, byOwner=true, byFund=false, byFeature=false, byLead=false, byRank=false, byStatus=false;
 		List<List<ReportRow>> all = new ArrayList<List<ReportRow>>();
 		Hashtable<String, ReportRow> all2 = new Hashtable<String, ReportRow>(4);
 		DecimalFormat decFormat = new DecimalFormat("###,###.##");
@@ -73,6 +73,9 @@ public class Report{
 		}
 		public void setByRank(Boolean val){
 				byRank = val;
+		}
+		public void setByStatus(Boolean val){
+				byStatus = val;
 		}		
 		//
 		// getters
@@ -112,6 +115,9 @@ public class Report{
 		}
 		public boolean getByRank(){
 				return byRank;
+		}
+		public boolean getByStatus(){
+				return byStatus;
 		}		
 		public String getTitle(){
 				return title;
@@ -158,6 +164,9 @@ public class Report{
 				}
 				if(byRank){
 						msg +=  byRank();
+				}
+				if(byStatus){
+						msg +=  byStatus();
 				}				
 				return msg;
 		}
@@ -655,8 +664,9 @@ public class Report{
 
 				which_date="p.date ";
 				//
-				qq = " select u.fullname name, u2.fullname name2, count(*) amount from projects p left join users u on p.lead_id=u.id left join users u2 on u2.id=p.eng_lead_id ";
-				qg = " group by name,name2 order by name,name2 ";
+				qq = "select tt.name,tt.name2,sum(tt.amount) from ( ";
+				qq += " select u.fullname name, u2.fullname name2, count(*) amount from projects p left join users u on p.lead_id=u.id left join users u2 on u2.id=p.eng_lead_id ";
+				qg = " group by name,name2 order by name,name2) tt group by tt.name,tt.name2 ";
 				qq2 = " select count(*) from projects p ";
 		
 				if(!year.equals("")){
@@ -877,6 +887,117 @@ public class Report{
 				}		
 				return msg;
 		}		
+		/**
+		 * project classified by status
+		 */
+		public String byStatus(){
+		
+				Connection con = null;
+				PreparedStatement pstmt = null;
+				PreparedStatement pstmt2 = null;
+				ResultSet rs = null;
+
+				String msg = "";
+				String which_date = "";
+				String qq = "", qw="", qg="", qq2="", qq3="";
+				which_date="p.date ";
+				//
+				qq = " select p.status status, count(*) amount from projects p ";
+				qg = " group by status ";
+		
+				if(!year.equals("")){
+						if(!qw.equals("")){
+								qw += " and ";
+						}
+						else{
+								qw  = " where ";
+						}
+						qw += " year("+which_date+") = ? ";
+				}
+				else {
+						if(!date_from.equals("")){
+								if(!qw.equals("")){
+										qw += " and ";
+								}
+								else{
+										qw = " where ";
+								}
+								qw += which_date+" >= ? ";
+						}
+						if(!date_to.equals("")){
+								if(!qw.equals("")){
+										qw += " and ";
+								}
+								else{
+										qw = " where ";
+								}
+								qw += which_date+" <= ? ";
+						}
+				}
+				if(!qw.equals("")){
+						qq += qw;
+				}
+				qq += qg;
+				logger.debug(qq);
+				try{
+						con = Helper.getConnection();
+						if(con == null){
+								msg = "Could not connect ";
+								return msg;
+						}
+						pstmt = con.prepareStatement(qq);
+						int jj=1;
+						if(!year.equals("")){
+								pstmt.setString(jj, year);
+								jj++;
+						}
+						else {
+								if(!date_from.equals("")){
+										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_from).getTime()));
+										jj++;
+								}
+								if(!date_to.equals("")){
+										pstmt.setDate(jj, new java.sql.Date(dateFormat.parse(date_to).getTime()));
+										jj++;
+								}
+						}
+						title = "Projects Classified by Status ";
+						setTitle();
+						rows = new ArrayList<ReportRow>();
+						ReportRow one = new ReportRow();
+						one.setRow("Title", title);
+						rows.add(one);
+						one = new ReportRow();
+						one.setRow("Status","Count");
+						rows.add(one);						
+						int total = 0, count = 0;
+
+						total = 0; count = 0;						
+						rs = pstmt.executeQuery();
+						while(rs.next()){
+								String str = rs.getString(1);
+								if(str == null) str = "Unspecified";
+								one = new ReportRow(2);
+								one.setRow(str,
+													 rs.getString(2)
+													 );
+								total += rs.getInt(2);
+								rows.add(one);
+						}
+						one = new ReportRow(2);
+						one.setRow("Total",total);
+						rows.add(one);
+						all.add(rows);
+				}catch(Exception e){
+						msg += e+":"+qq;
+						logger.error(msg);
+				}
+				finally{
+						Helper.databaseDisconnect(con, rs, pstmt, pstmt2);
+				}		
+				return msg;
+		}
+
 }
 
 

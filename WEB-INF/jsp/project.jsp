@@ -67,19 +67,22 @@
 		<s:if test="project.id != ''">
 	</div>
 	<div class="tt-split-container">
-		<dl class="fn1-output-field">
 		</s:if>
-		<dl class="fn1-input-field--select">
-			<dt>PM Lead</dt>
+		<dl class="fn1-output-field">
+			<dt>Status</dt>
+			<dd><s:radio name="project.status" value="%{project.status}" list="#{'Active':'Active','On hold':'On hold','Closed':'Closed'}" /> </dd>
+		</dl>		
+		<dl class="fn1-output-field">
+			<dt>Staff Lead</dt>
 			<dd><s:select name="project.lead_id" value="%{project.lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Lead" /></dd>
 		</dl>
-		<dl class="fn1-input-field--select">
+		<dl class="fn1-output-field">
 			<dt>Eng Lead</dt>
-			<dd><s:select name="project.eng_lead_id" value="%{project.eng_lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Eng Lead" /></dd>
+			<dd><s:select name="project.eng_lead_id" value="%{project.eng_lead_id}" list="eng_leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Eng Lead" /></dd>
 		</dl>		
 		<dl class="fn1-output-field">
 			<dt>Length </dt>
-			<dd><s:textfield name="project.length" value="%{project.length}" size="10" maxlength="10" /> </dd>
+			<dd><s:textfield name="project.length" value="%{project.length}" size="10" maxlength="10" /> (feet)</dd>
 		</dl>
 		<s:if test="project.id == ''">
 	</div>
@@ -115,7 +118,7 @@
 				<dd><s:select name="projectUpdate.phase_rank_id" value="%{projectUpdate.phase_rank_id}" list="ranks" listKey="id" listValue="name" requiredLabel="true" headerKey="-1" headerValue="Pick Rank" id="phase_rank_id" required="true" />*</dd>
 			</dl>
 			<dl class="fn1-input-field">						
-				<dt>Status Notes</dt>
+				<dt>Phase Rank Notes</dt>
 				<dd><s:textarea name="projectUpdate.notes" value="%{projectUpdate.notes}" rows="5" cols="70" /></dd>
 			</dl>
 		</s:if>			
@@ -146,11 +149,11 @@
 		<s:if test="project.id == ''">
 			<s:submit name="action" type="button" value="Save" class="fn1-btn"/></dd>
 		</s:if>
-		<s:elseif test="project.canHaveMoreUpdates()">
+		<s:else>
 			<s:submit name="action" type="button" value="Save Changes" class="fn1-btn"/>
 			<a href="<s:property value='#application.url'/>projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
-			<a href="<s:property value='#application.url'/>map.action?id=<s:property value='project.id' />" class="fn1-btn"> Add/Edit Map Features</a>						
-		</s:elseif>
+			<a href="<s:property value='#application.url'/>map.action?id=<s:property value='project.id' />" class="fn1-btn"> Add/Edit Map Features</a>
+		</s:else>
 </s:form>
 <s:if test="id != '' && updates.size() > 0">
 	<s:set var="updates" value="updates" />

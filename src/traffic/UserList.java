@@ -16,6 +16,7 @@ public class UserList{
 		static final long serialVersionUID = 1120L;		
 		static Logger logger = Logger.getLogger(UserList.class);
 		String fullname = "";
+		boolean eng_only = false;
 		List<User> users = null;
 		String name = "";
 
@@ -27,6 +28,9 @@ public class UserList{
 		public List<User> getUsers(){
 				return users;
 		}
+		public void setEngOnly(){
+				eng_only = true;
+		}
 		String find(){
 				String msg = "";
 				String qq = " select * from users ";
@@ -36,6 +40,9 @@ public class UserList{
 				qq += " where type is not null and active is not null"; // type Plan, Eng All to avoid IT staff
 				if(!fullname.equals("")){
 						qq += " and fullname like ? ";
+				}
+				if(eng_only){
+						qq += " and type = 'Eng' ";
 				}
 				String qo = " order by fullname ";
 				qq += qo;

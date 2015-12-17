@@ -51,14 +51,18 @@
 				<dd><s:select name="projectList.funding_source_id" value="%{projectList.funding_source_id}" list="sources" listKey="id" listValue="name" headerKey="-1" headerValue="All" /></dd>
 			</dl>
 			<dl class="fn1-output-field">
-				<dt>Lead (PM or Eng)</dt>
+				<dt>Staff Lead</dt>
 				<dd><s:select name="projectList.lead_id" value="%{projectList.lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="All" /></dd>
 			</dl>
+			<dl class="fn1-output-field">
+				<dt>Eng Lead</dt>
+				<dd><s:select name="projectList.eng_lead_id" value="%{projectList.eng_lead_id}" list="eng_leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="All" /></dd>
+			</dl>			
 		</div>
 	</div>
 	<dl class="fn1-output-field">
 		<dt>Length </dt>
-		<dd> From:<s:textfield name="projectList.length_from" value="%{projectList.length_from}" size="10" maxlength="10" /> To:<s:textfield name="projectList.length_to" value="%{projectList.length_to}" size="10" maxlength="10" /></dd>
+		<dd> From:<s:textfield name="projectList.length_from" value="%{projectList.length_from}" size="10" maxlength="10" /> To:<s:textfield name="projectList.length_to" value="%{projectList.length_to}" size="10" maxlength="10" />(feet)</dd>
 	</dl>
 	<dl class="fn1-output-field">
 		<dt>Date</dt>
@@ -77,8 +81,8 @@
 		<dd>From:<s:textfield name="projectList.actual_cost_from" value="%{projectList.actual_cost_from}" size="12" maxlength="12" /> To:<s:textfield name="projectList.actual_cost_to" value="%{projectList.actual_cost_to}" size="12" maxlength="12" /></dd>
 	</dl>
 	<dl class="fn1-output-field">
-		<dt>Project Status</dt>
-		<dd><s:radio name="projectList.status" value="%{projectList.status}" list="#{'-1':'All','open':'Open','closed':'Cancelled/Completed'}" /> </dd>
+		<dt>Status</dt>
+		<dd><s:radio name="projectList.status" value="%{projectList.status}" list="#{'-1':'All','Active':'Active','On hold':'On hold','Closed':'Closed'}" /> </dd>
 	</dl>
 	<dl class="fn1-output-field">
 		<dt>Phase Rank</dt>

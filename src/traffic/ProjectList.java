@@ -25,7 +25,7 @@ public class ProjectList implements java.io.Serializable{
 		String id="", which_date="r.date", type_id="", feature_id="",funding_source_id= "", lead_id="", owner_id="", phase_rank_id="";
 		String eng_lead_id="", length_from="", length_to="", name="", des_no="";
 		String date_from="", date_to="", sortBy="r.id DESC";
-		String est_cost_from = "", est_cost_to="", actual_cost_from="", actual_cost_to="", status="-1";
+		String est_cost_from = "", est_cost_to="", actual_cost_from="", actual_cost_to="", status="";
 		String phase_rank_from="", phase_rank_to="";
 		List<Project> projects = null;
 	
@@ -123,14 +123,8 @@ public class ProjectList implements java.io.Serializable{
 				canBeUpdated = true;
 		}
 		public void setStatus(String val){
-				if(val != null){
+				if(val != null && !val.equals("-1")){
 						status = val;
-						if(val.equals("open")){
-								canBeUpdated = true;
-						}
-						else if(val.equals("closed")){
-								canNotBeUpdated = true;
-						}
 				}
 		}
 		//
@@ -201,6 +195,8 @@ public class ProjectList implements java.io.Serializable{
 				return length_to ;
 		}
 		public String getStatus(){
+				if(status.equals(""))
+						return "-1";
 				return status;
 		}				
 		public List<Project> getProjects(){
@@ -210,7 +206,7 @@ public class ProjectList implements java.io.Serializable{
 		//
 		String find(){
 
-				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry) ";
+				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry),r.status ";
 				String qf = " from projects r ";
 				String qw = "";
 				Connection con = null;
@@ -249,7 +245,11 @@ public class ProjectList implements java.io.Serializable{
 						}
 						if(!lead_id.equals("")){
 								if(!qw.equals("")) qw += " and ";
-								qw += " (r.lead_id = ? || r.eng_lead_id=?)";
+								qw += " r.lead_id = ? ";
+						}
+						if(!eng_lead_id.equals("")){
+								if(!qw.equals("")) qw += " and ";
+								qw += " r.eng_lead_id = ? ";
 						}						
 						if(!length_from.equals("")){
 								if(!qw.equals("")) qw += " and ";
@@ -274,6 +274,11 @@ public class ProjectList implements java.io.Serializable{
 						if(!actual_cost_to.equals("")){
 								if(!qw.equals("")) qw += " and ";
 								qw += " r.actual_cost <= ?";
+						}
+						
+						if(!status.equals("")){
+								if(!qw.equals("")) qw += " and ";								
+								qw += " r.status = ? ";
 						}						
 						if(!phase_rank_id.equals("")){
 								if(!qw.equals("")) qw += " and ";
@@ -303,6 +308,8 @@ public class ProjectList implements java.io.Serializable{
 										qw += which_date+" <= ? ";					
 								}
 						}
+						
+						/*
 						if(canBeUpdated){
 								if(!qw.equals("")) qw += " and ";
 								qw += " r.id not in (select project_id from project_updates pu where pu.phase_rank_id = 1 or pu.phase_rank_id = 13) ";
@@ -311,6 +318,7 @@ public class ProjectList implements java.io.Serializable{
 								if(!qw.equals("")) qw += " and ";
 								qw += " r.id in (select project_id from project_updates pu where pu.phase_rank_id = 1 or pu.phase_rank_id = 13) ";
 						}
+						*/
 				}
 				qq += qf;
 				if(!qw.equals(""))
@@ -352,7 +360,9 @@ public class ProjectList implements java.io.Serializable{
 								}								
 								if(!lead_id.equals("")){
 										pstmt.setString(jj++,lead_id);
-										pstmt.setString(jj++,lead_id);										
+								}
+								if(!eng_lead_id.equals("")){								
+										pstmt.setString(jj++,eng_lead_id);										
 								}
 								if(!length_from.equals("")){
 										pstmt.setString(jj++,length_from);
@@ -371,6 +381,9 @@ public class ProjectList implements java.io.Serializable{
 								}
 								if(!actual_cost_to.equals("")){
 										pstmt.setString(jj++,actual_cost_to);
+								}
+								if(!status.equals("")){
+										pstmt.setString(jj++,status);
 								}								
 								if(!phase_rank_id.equals("")){
 										pstmt.setString(jj++,phase_rank_id);
@@ -412,7 +425,8 @@ public class ProjectList implements java.io.Serializable{
 																					rs.getString(14),
 																					rs.getString(15),
 																					rs.getString(16),
-																					rs.getString(17)
+																					rs.getString(17),
+																					rs.getString(18) 
 																					);
 								if(!projects.contains(one))
 										projects.add(one);

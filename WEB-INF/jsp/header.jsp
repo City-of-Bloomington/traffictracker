@@ -56,8 +56,10 @@
 
 	<div class="fn1-nav1">
       <nav class="fn1-nav1-container">
-        <a href="<s:property value='#application.url'/>project.action">New Project</a>
-        <a href="<s:property value='#application.url'/>projectUpdate.action">Project Updates</a>
+				<s:if test="#session != null && #session.user != null && #session.user.canEdit()">				
+					<a href="<s:property value='#application.url'/>project.action">New Project</a>
+					<a href="<s:property value='#application.url'/>projectUpdate.action">Project Updates</a>
+				</s:if>
         <a href="<s:property value='#application.url'/>search.action">Search</a>
 				<a href="<s:property value='#application.url'/>report.action">Reports</a>				
       </nav>

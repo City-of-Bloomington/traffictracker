@@ -28,6 +28,7 @@ public class ProjectAction extends TopAction{
 		List<SubType> sub_features = null, sub_sub_features = null;
 		List<ProjectUpdate> updates = null;
 		List<User> leads = null;
+		List<User> eng_leads = null;
 		String updatesTitle = "Most Recent Updates";
 		String projectsTitle = "Most Recent Projects";		
 		public String execute(){
@@ -281,7 +282,17 @@ public class ProjectAction extends TopAction{
 								leads = dl.getUsers();
 				}		
 				return leads;
-		}				
+		}
+		public List<User> getEng_leads(){ 
+				if(eng_leads == null){
+						UserList dl = new UserList();
+						dl.setEngOnly();
+						String back = dl.find();
+						if(back.equals(""))
+								eng_leads = dl.getUsers();
+				}		
+				return eng_leads;
+		}					
 
 }
 

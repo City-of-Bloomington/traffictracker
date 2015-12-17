@@ -28,6 +28,7 @@ public class SearchAction extends TopAction{
 				sources=null,
 				ranks=null;
 		List<User> leads = null;
+		List<User> eng_leads = null;		
 		String projectsTitle = "Most Recent Projects";		
 		public String execute(){
 				String ret = SUCCESS;
@@ -134,6 +135,7 @@ public class SearchAction extends TopAction{
 				}		
 				return ranks;
 		}
+		
 		public List<User> getLeads(){ 
 				if(leads == null){
 						UserList dl = new UserList();
@@ -143,7 +145,16 @@ public class SearchAction extends TopAction{
 				}		
 				return leads;
 		}				
-
+		public List<User> getEng_leads(){ 
+				if(eng_leads == null){
+						UserList dl = new UserList();
+						dl.setEngOnly();
+						String back = dl.find();
+						if(back.equals(""))
+								eng_leads = dl.getUsers();
+				}		
+				return eng_leads;
+		}		
 }
 
 

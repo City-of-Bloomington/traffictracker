@@ -48,7 +48,7 @@
 		<div class="tt-split-container">
 			<dl class="fn1-input-field--select">				
 				<dt>Update By</dt>
-				<dd><s:select name="projectUpdate.user_id" value="%{projectUpdate.user_id}" list="users" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick User" /></dd>
+				<dd><s:property value="%{user.fullname}"/></dd>
 			</dl>
 		</div>
 	</div>

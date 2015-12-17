@@ -45,6 +45,9 @@ public abstract class TopAction extends ActionSupport implements SessionAware, S
 		}
 		public String getId(){
 				return id;
+		}
+		public User getUser(){
+				return user;
 		}		
 		String doPrepare(){
 				String back = "";

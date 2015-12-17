@@ -20,7 +20,8 @@
 				<dd><s:checkbox name="report.byFund" value="report.byFund"  />Projects classified by Funding Resource</dd>
 				<dd><s:checkbox name="report.byFeature" value="report.byFeature"  />Projects classified by Features</dd>
 				<dd><s:checkbox name="report.byLead" value="report.byLead"  />Projects classified by Leads</dd>
-				<dd><s:checkbox name="report.byRank" value="report.byRank"  />Projects classified by Phase Rank</dd>						
+				<dd><s:checkbox name="report.byRank" value="report.byRank"  />Projects classified by Phase Rank</dd>
+				<dd><s:checkbox name="report.byStatus" value="report.byStatus"  />Projects classified by Status</dd>				
 			</dl>
 			<dl class="fn1-output-field">			
 				<dt>Year: </label></dt>

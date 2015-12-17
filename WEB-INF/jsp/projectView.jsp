@@ -44,7 +44,7 @@
 			<dd><s:property value="%{project.funding_source}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
-			<dt>PM Lead</dt>
+			<dt>Staff Lead</dt>
 			<dd><s:property value="%{project.lead}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
@@ -53,10 +53,14 @@
 		</dl>
 		<dl class="fn1-output-field">
 			<dt>Length </dt>
-			<dd><s:property value="%{project.length}" /> </dd>
+			<dd><s:property value="%{project.length}" /> (feet) </dd>
 		</dl>
 	</div>
 	<div class="tt-split-container">
+		<dl class="fn1-output-field">
+			<dt>Status </dt>
+			<dd><s:property value="%{project.status}" /> </dd>
+		</dl>		
 		<dl class="fn1-output-field">
 			<dt>File Folder Path </dt>
 			<dd><s:property value="%{project.file_path}" /> </dd>
@@ -88,14 +92,14 @@
 	</div>
 </div>
 
-	<s:if test="project.canHaveMoreUpdates()">
-		<a href="<s:property value='#application.url' />project.action?id=<s:property value='project.id' />&action=Edit" class="fn1-btn">Edit Project</a>
+<s:if test="#session != null && #session.user != null && #session.user.canEdit()">
+	<a href="<s:property value='#application.url' />project.action?id=<s:property value='project.id' />&action=Edit" class="fn1-btn">Edit Project</a>
 
-		<a href="<s:property value='#application.url' />projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
-		<s:if test="project.hasGeometry()">
-			<a href="<s:property value='#application.url' />project.action?action=map&id=<s:property value='project.id' />" class="fn1-btn">Show Map</a>
-		</s:if>
-	</s:if>
+	<a href="<s:property value='#application.url' />projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
+</s:if>
+<s:if test="project.hasGeometry()">
+	<a href="<s:property value='#application.url' />project.action?action=map&id=<s:property value='project.id' />" class="fn1-btn">Show Map</a>
+</s:if>
 
 <s:if test="updates.size() > 0">
 	<s:set var="updates" value="updates" />
