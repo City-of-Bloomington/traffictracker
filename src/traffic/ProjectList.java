@@ -27,6 +27,7 @@ public class ProjectList implements java.io.Serializable{
 		String date_from="", date_to="", sortBy="r.id DESC";
 		String est_cost_from = "", est_cost_to="", actual_cost_from="", actual_cost_to="", status="";
 		String phase_rank_from="", phase_rank_to="";
+		String excludeStatus = "";
 		List<Project> projects = null;
 	
 		public ProjectList(){
@@ -119,6 +120,10 @@ public class ProjectList implements java.io.Serializable{
 				if(val != null)
 						sortBy = val;
 		}
+		public void setExcludeStatus(String val){
+				if(val != null)
+						excludeStatus = val;
+		}		
 		public void setCanBeUpdated(){
 				canBeUpdated = true;
 		}
@@ -308,7 +313,10 @@ public class ProjectList implements java.io.Serializable{
 										qw += which_date+" <= ? ";					
 								}
 						}
-						
+						if(!excludeStatus.equals("")){
+								if(!qw.equals("")) qw += " and ";								
+								qw += " not r.status = ? ";
+						}
 						/*
 						if(canBeUpdated){
 								if(!qw.equals("")) qw += " and ";
@@ -404,6 +412,9 @@ public class ProjectList implements java.io.Serializable{
 												pstmt.setDate(jj++, new java.sql.Date(dateFormat.parse(date_to).getTime()));
 										}
 								}
+								if(!excludeStatus.equals("")){
+										pstmt.setString(jj++, excludeStatus);
+								}												
 						}
 						rs = pstmt.executeQuery();
 						projects = new ArrayList<Project>();

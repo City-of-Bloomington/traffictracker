@@ -588,7 +588,9 @@ public class Project implements java.io.Serializable{
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
 				//
-				String qq = "delete from projects where id=?";
+				String qq = "delete from project_features where project_id=?";
+				String qq2 = "delete from project_updates where project_id=?";
+				String qq3 = "delete from projects where id=?";				
 				//
 				logger.debug(qq);
 				try{
@@ -600,6 +602,25 @@ public class Project implements java.io.Serializable{
 						pstmt = con.prepareStatement(qq);
 						pstmt.setString(1, id);
 						pstmt.executeUpdate();
+						qq = qq2;
+						logger.debug(qq2);						
+						pstmt = con.prepareStatement(qq2);
+						pstmt.setString(1, id);
+						pstmt.executeUpdate();
+						qq = qq3;
+						logger.debug(qq3);
+						pstmt = con.prepareStatement(qq3);
+						pstmt.setString(1, id);
+						pstmt.executeUpdate();
+						//
+						// reset the values
+						//
+						owner_id =""; type_id=""; funding_source_id="";
+						date_time=""; description="";lead_id="";
+						eng_lead_id="";date = ""; length="";
+						file_path=""; des_no = ""; est_end_date=""; actual_end_date="";
+						est_cost=""; actual_cost="";
+						id="";
 				}
 				catch(Exception ex){
 						msg += ex+":"+qq;

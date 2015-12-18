@@ -30,7 +30,7 @@ public class ProjectAction extends TopAction{
 		List<User> leads = null;
 		List<User> eng_leads = null;
 		String updatesTitle = "Most Recent Updates";
-		String projectsTitle = "Most Recent Projects";		
+		String projectsTitle = "Most Recent Active Projects";		
 		public String execute(){
 				String ret = SUCCESS;
 				String back = doPrepare();
@@ -192,6 +192,8 @@ public class ProjectAction extends TopAction{
 		public List<Project> getProjects(){ 
 				if(projects == null){
 						ProjectList dl = new ProjectList();
+						//dl.setExcludeStatus("Closed");
+						dl.setStatus("Active");
 						String back = dl.find();
 						projects = dl.getProjects();
 				}		
