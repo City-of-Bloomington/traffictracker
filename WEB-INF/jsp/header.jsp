@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="<s:property value='#application.url' />css/screen.css" type="text/css" />
   <link rel="stylesheet" href="<s:property value='#application.url' />css/ol.css" type="text/css" />
   <link rel="stylesheet" href="<s:property value='#application.url' />css/ol3-popup.css" type="text/css" />	
-  <title>Traffic Tracker</title>
+  <title>Transportation Tracker</title>
   <script type="text/javascript">
     var APPLICATION_URL = '<s:property value='#application.url' />';
   </script>
@@ -31,7 +31,7 @@
   <header class="fn1-siteHeader">
     <div class="fn1-siteHeader-container">
       <div class="fn1-site-title">
-        <h1 id="application_name"><a href="<s:property value='#application.url'/>">TrafficTracker</a></h1>
+        <h1 id="application_name"><a href="<s:property value='#application.url'/>">TransportTracker</a></h1>
         <div class="fn1-site-location" id="location_name"><a href="<s:property value='#application.url'/>">City of Bloomington, IN</a></div>
       </div>
       <s:if test="#session != null && #session.user != null">

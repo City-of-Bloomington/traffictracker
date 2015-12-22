@@ -201,7 +201,7 @@ public class Helper{
 								logger.debug("Connection try "+trials);
 								Context initCtx = new InitialContext();
 								Context envCtx = (Context) initCtx.lookup("java:comp/env");
-								DataSource ds = (DataSource)envCtx.lookup("jdbc/MySQL_traffic");
+								DataSource ds = (DataSource)envCtx.lookup("jdbc/MySQL_transport");
 								con = ds.getConnection();
 								if(con == null){
 										String str = " Could not connect to DB ";

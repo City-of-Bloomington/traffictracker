@@ -100,6 +100,7 @@ public class ProjectAction extends TopAction{
 								addActionError(back);
 						}
 						else{
+								addActionMessage("Deleted Successfully");								
 								ret = "search";
 						}
 				}

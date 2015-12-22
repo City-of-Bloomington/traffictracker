@@ -82,7 +82,7 @@
 	</dl>
 	<dl class="fn1-output-field">
 		<dt>Status</dt>
-		<dd><s:radio name="projectList.status" value="%{projectList.status}" list="#{'-1':'All','Active':'Active','On hold':'On hold','Closed':'Closed'}" /> </dd>
+		<dd><s:radio name="projectList.status" value="%{projectList.status}" list="#{'-1':'All','Active':'Active','On hold':'On hold','Closed':'Closed','Pending Delete':'Pending Delete'}" /> </dd>
 	</dl>
 	<dl class="fn1-output-field">
 		<dt>Phase Rank</dt>

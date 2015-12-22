@@ -39,7 +39,11 @@
 			<result>/WEB-INF/jsp/project.jsp</result>
 			<result name="error">/WEB-INF/jsp/project.jsp</result>
 			<result name="view">/WEB-INF/jsp/projectView.jsp</result>
-			<result name="map">/WEB-INF/jsp/viewMap.jsp</result>			
+			<result name="map">/WEB-INF/jsp/viewMap.jsp</result>
+			<result name="search" type="redirectAction">
+        <param name="actionName">search</param>
+				<param name="actionMessages">${actionMessages}</param>				
+      </result>								
 		</action>
 		<action name="projectUpdate" 
 						class="traffic.ProjectUpdateAction" 

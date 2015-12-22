@@ -10,20 +10,7 @@ $(".date").datepicker({
     buttonText: "Pick Date",
     showOn: "both",
     navigationAsDateFormat: true,
-    buttonImage: "/marketbucks/js/calendar.gif"
-});
-
-$("#vendorName").autocomplete({
-    source: APPLICATION_URL + "VendorService?format=json",
-    minLength: 2,
-    delay: 100,
-    select: function( event, ui ) {
-        if(ui.item){
-            $("#vendor_id").val(ui.item.id);
-            $("#action_id").val('Next');
-            $("#form_id").submit();
-        }
-    }
+    buttonImage: "/transporttracker/js/calendar.gif"
 });
 
 jQuery(function ($) {
@@ -80,5 +67,5 @@ function doRefresh(){
 		document.getElementById("action2").value="Refresh";		
 		document.getElementById("form_id").submit();				
 }
-		
+
 

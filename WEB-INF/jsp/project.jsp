@@ -69,10 +69,6 @@
 	<div class="tt-split-container">
 		</s:if>
 		<dl class="fn1-output-field">
-			<dt>Status</dt>
-			<dd><s:radio name="project.status" value="%{project.status}" list="#{'Active':'Active','On hold':'On hold','Closed':'Closed'}" /> </dd>
-		</dl>		
-		<dl class="fn1-output-field">
 			<dt>Staff Lead</dt>
 			<dd><s:select name="project.lead_id" value="%{project.lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Lead" /></dd>
 		</dl>
@@ -136,12 +132,15 @@
 				</dl>
 			</s:iterator>
 		</s:if>
-		
 		<dl class="fn1-output-field">
 			<dt>Feature</dt>
 			<dd><s:select name="feature.feature_id" value="%{feature.feature_id}" list="features" listKey="id" listValue="name" onchange="getSubFeatures()" headerKey="-1" headerValue="Pick Feature" id="feature_id" /><select name="feature.sub_id" value="%{feature.sub_id}" onchange="getSubSubFeatures()" id="sub_feature_id" style="display:none"><option value="-1">Pick Sub Feature</option></select><select name="feature.sub_sub_id" value="%{feature.sub_sub_id}" id="sub_sub_feature_id" style="display:none"><option value="-1">Pick Sub Sub Feature</option></select>
 				Type: <s:radio name="feature.type" list="{'New','Improved'}" value="%{feature.type}" /></dd>
 		</dl>
+		<dl class="fn1-output-field">
+			<dt>Status</dt>
+			<dd><s:radio name="project.status" value="%{project.status}" list="#{'Active':'Active','On hold':'On hold','Closed':'Closed','Pending Delete':'Pending Delete'}" /> </dd>
+		</dl>		
 		<dl class="fn1-output-field">
 			<dt>File Folder Path </dt>
 			<dd><s:textfield name="project.file_path" value="%{project.file_path}" size="70" maxlength="150" /> </dd>
@@ -152,6 +151,9 @@
 		<s:else>
 			<s:submit name="action" type="button" value="Save Changes" class="fn1-btn"/>
 			<a href="<s:property value='#application.url'/>projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
+			<s:if test="#session.user != null && #session.user.canDelete() && project.canDelete()">
+			<s:submit type="button" value="Delete" class="fn1-btn" onclick="confirmDelete()"/>
+			</s:if>
 			<a href="<s:property value='#application.url'/>map.action?id=<s:property value='project.id' />" class="fn1-btn"> Add/Edit Map Features</a>
 		</s:else>
 </s:form>
@@ -263,4 +265,13 @@ function getSubSubFeatures(){
 		select_id.style.display="none";				
 	}
 }
+function confirmDelete(){
+	var x = confirm("Are you sure you want to delete this record");
+	if(x){
+		document.getElementById("action2").value="Delete";						
+		document.getElementById("form_id").submit();
+		return true;
+	}
+	return false;
+}		
 </script>

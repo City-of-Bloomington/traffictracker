@@ -402,7 +402,9 @@ public class Project implements java.io.Serializable{
 		public boolean hasProjectUpdates(){
 				return getLastProjectUpdate() != null;
 		}
-		
+		public boolean canDelete(){
+				return status.equals("Pending Delete");
+		}		
 		/**
 		 * check if we can add more updates to this project
 		 */
