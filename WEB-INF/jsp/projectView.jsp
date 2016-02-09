@@ -44,11 +44,11 @@
 			<dd><s:property value="%{project.funding_source}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
-			<dt>Staff Lead</dt>
+			<dt>Proj. Manager</dt>
 			<dd><s:property value="%{project.lead}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
-			<dt>Eng Lead</dt>
+			<dt>Eng. Lead</dt>
 			<dd><s:property value="%{project.eng_lead}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">

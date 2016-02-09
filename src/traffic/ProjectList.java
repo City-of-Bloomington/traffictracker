@@ -28,6 +28,7 @@ public class ProjectList implements java.io.Serializable{
 		String est_cost_from = "", est_cost_to="", actual_cost_from="", actual_cost_to="", status="";
 		String phase_rank_from="", phase_rank_to="";
 		String excludeStatus = "";
+		boolean no_des_no = false, yes_des_no = false;
 		List<Project> projects = null;
 	
 		public ProjectList(){
@@ -80,6 +81,18 @@ public class ProjectList implements java.io.Serializable{
 				if(val != null)
 						date_to = val;
 		}
+		public void setNo_des_no(boolean val){
+				if(val)
+						no_des_no = val;
+		}
+		public void setSet_des_no(String val){
+				if(val != null && !val.equals("-1")){
+						if(val.startsWith("no"))
+								no_des_no = true;
+						else
+								yes_des_no = true;
+				}
+		}		
 		public void setEst_cost_from(String val){
 				if(val != null)
 						est_cost_from = val;
@@ -103,7 +116,8 @@ public class ProjectList implements java.io.Serializable{
 		public void setLength_to(String val){
 				if(val != null)
 						length_to = val;
-		}		
+		}
+		
 		public void setPhase_rank_id(String val){
 				if(val != null && !val.equals("-1"))
 						phase_rank_id = val;
@@ -199,6 +213,11 @@ public class ProjectList implements java.io.Serializable{
 		public String getLength_to(){
 				return length_to ;
 		}
+		public String getSet_des_no(){
+				if(no_des_no) return "no_des_no";
+				else if(yes_des_no) return "yes_des_no";
+				return "-1";
+		}		
 		public String getStatus(){
 				if(status.equals(""))
 						return "-1";
@@ -284,7 +303,15 @@ public class ProjectList implements java.io.Serializable{
 						if(!status.equals("")){
 								if(!qw.equals("")) qw += " and ";								
 								qw += " r.status = ? ";
-						}						
+						}
+						if(no_des_no){
+								if(!qw.equals("")) qw += " and ";								
+								qw += " r.DES_no is null ";
+						}
+						else if(yes_des_no){
+								if(!qw.equals("")) qw += " and ";								
+								qw += " r.DES_no is not null ";
+						}
 						if(!phase_rank_id.equals("")){
 								if(!qw.equals("")) qw += " and ";
 								qw += " u.phase_rank_id = ? ";

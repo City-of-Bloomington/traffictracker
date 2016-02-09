@@ -11,8 +11,8 @@
 		<tr>
 			<th align="center"><b>ID</b></th>
 			<th align="center"><b>Name</b></th>
-			<th align="center"><b>Staff Lead</b></th>
-			<th align="center"><b>Eng Lead</b></th>			
+			<th align="center"><b>Proj. Manager</b></th>
+			<th align="center"><b>Eng. Lead</b></th>			
 			<th align="center"><b>Features</b></th>
 			<th align="center"><b>Actual End Date</b></th>
 			<th align="center"><b>Most Recent Phase Rank</b></th>

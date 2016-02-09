@@ -69,11 +69,11 @@
 	<div class="tt-split-container">
 		</s:if>
 		<dl class="fn1-output-field">
-			<dt>Staff Lead</dt>
+			<dt>Proj. Manager</dt>
 			<dd><s:select name="project.lead_id" value="%{project.lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Lead" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
-			<dt>Eng Lead</dt>
+			<dt>Eng. Lead</dt>
 			<dd><s:select name="project.eng_lead_id" value="%{project.eng_lead_id}" list="eng_leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Eng Lead" /></dd>
 		</dl>		
 		<dl class="fn1-output-field">

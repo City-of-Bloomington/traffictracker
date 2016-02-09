@@ -36,11 +36,15 @@
 				<dt>Type</dt>
 				<dd><s:select name="projectList.type_id" value="%{projectList.type_id}" list="types" listKey="id" headerKey="-1" headerValue="All" listValue="name" /></dd>
 			</dl>
+			<dl class="fn1-output-field">
+				<dt>DES No.</dt>
+				<dd><s:textfield name="projectList.des_no" value="%{projectList.des_no}" size="15" maxlength="20" />, or <s:checkbox name="projectList.no_des_no" value="%{projectList.no_des_no}" /> No value set </dd>
+			</dl>			
 		</div>
 		<div class="tt-split-container">
 			<dl class="fn1-output-field">
-				<dt>DES No.</dt>
-				<dd><s:textfield name="projectList.des_no" value="%{projectList.des_no}" size="20" maxlength="30" /> </dd>
+				<dt>DES No. Status</dt>
+				<dd><s:radio name="projectList.set_des_no" value="%{projectList.set_des_no}" list="#{'-1':'All','no_des_no':'Unset','yes_des_no':'Set'}" /> </dd>
 			</dl>
 			<dl class="fn1-output-field">
 				<dt>Features</dt>
@@ -51,11 +55,11 @@
 				<dd><s:select name="projectList.funding_source_id" value="%{projectList.funding_source_id}" list="sources" listKey="id" listValue="name" headerKey="-1" headerValue="All" /></dd>
 			</dl>
 			<dl class="fn1-output-field">
-				<dt>Staff Lead</dt>
+				<dt>Proj. Manager</dt>
 				<dd><s:select name="projectList.lead_id" value="%{projectList.lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="All" /></dd>
 			</dl>
 			<dl class="fn1-output-field">
-				<dt>Eng Lead</dt>
+				<dt>Eng. Lead</dt>
 				<dd><s:select name="projectList.eng_lead_id" value="%{projectList.eng_lead_id}" list="eng_leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="All" /></dd>
 			</dl>			
 		</div>

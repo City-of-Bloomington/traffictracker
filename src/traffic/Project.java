@@ -183,12 +183,22 @@ public class Project implements java.io.Serializable{
 						actual_end_date = val;
 		}
 		public void setEst_cost(String val){
-				if(val != null)
-						est_cost = val;
+				if(val != null){
+						if(val.indexOf(",") > -1){
+								est_cost = val.replace(",","");
+						}
+						else
+								est_cost = val;
+				}
 		}
 		public void setActual_cost(String val){
-				if(val != null)
-						actual_cost = val;
+				if(val != null){
+						if(val.indexOf(",") > -1){
+								actual_cost = val.replace(",","");
+						}
+						else
+								actual_cost = val;
+				}
 		}
 		public void setUser(User val){
 				if(val != null)
@@ -257,9 +267,23 @@ public class Project implements java.io.Serializable{
 				return actual_end_date;
 		}
 		public String getEst_cost(){
+				if(!est_cost.equals("")){
+						try{
+								double xx = Double.parseDouble(est_cost);
+								String yy = NumberFormat.getInstance(Locale.US).format(xx);
+								return yy;
+						}catch(Exception ex){}
+				}
 				return est_cost;
 		}
 		public String getActual_cost(){
+				if(!actual_cost.equals("")){
+						try{
+								double xx = Double.parseDouble(actual_cost);
+								String yy = NumberFormat.getInstance(Locale.US).format(xx);
+								return yy;
+						}catch(Exception ex){}
+				}				
 				return actual_cost;
 		}
 		public boolean hasDescription(){
