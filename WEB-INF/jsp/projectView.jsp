@@ -17,11 +17,10 @@
     <s:actionmessage/>
 	</div>
 </s:elseif>
-<s:if test="project.hasGeometry()">
 
-</s:if>
-	<p><s:property value="%{project.description}" /></p>
+<p><s:property value="%{project.description}" /></p>
 <div class="tt-row-container">
+	
 	<div class="tt-split-container">
 		<dl class="fn1-output-field">
 			<dt>Project ID</dt>
@@ -36,10 +35,6 @@
 			<dd><s:property value="%{project.type}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
-			<dt>Features</dt>
-			<dd><s:property value="%{project.allFeaturesText}" /></dd>
-		</dl>
-		<dl class="fn1-output-field">
 			<dt>Funding Source</dt>
 			<dd><s:property value="%{project.funding_source}" /></dd>
 		</dl>
@@ -52,15 +47,11 @@
 			<dd><s:property value="%{project.eng_lead}" /></dd>
 		</dl>
 		<dl class="fn1-output-field">
-			<dt>Length </dt>
-			<dd><s:property value="%{project.length}" /> (feet) </dd>
-		</dl>
-	</div>
-	<div class="tt-split-container">
-		<dl class="fn1-output-field">
 			<dt>Status </dt>
 			<dd><s:property value="%{project.status}" /> </dd>
 		</dl>		
+	</div>
+	<div class="tt-split-container">
 		<dl class="fn1-output-field">
 			<dt>File Folder Path </dt>
 			<dd><s:property value="%{project.file_path}" /> </dd>
@@ -90,6 +81,11 @@
 			<dd>$<s:property value="%{project.actual_cost}" /> </dd>
 		</dl>
 	</div>
+	<s:if test="project.hasFeatures()">
+		<s:set var="projectFeatures" value="%{project.features}" />
+		<s:set var="featuresTitle" value="'Project Features'" />
+		<%@  include file="features.jsp" %>					
+	</s:if>
 </div>
 
 <s:if test="#session != null && #session.user != null && #session.user.canEdit()">

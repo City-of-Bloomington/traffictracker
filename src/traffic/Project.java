@@ -62,8 +62,7 @@ public class Project implements java.io.Serializable{
 									 String val14,
 									 String val15,
 									 String val16,
-									 String val17,
-									 String val18
+									 String val17
 									 ){
 				setValues( val,
 									 val2,
@@ -81,8 +80,7 @@ public class Project implements java.io.Serializable{
 									 val14,
 									 val15,
 									 val16,
-									 val17,
-									 val18
+									 val17
 									 );
 		
 		}
@@ -103,8 +101,7 @@ public class Project implements java.io.Serializable{
 									 String val14,
 									 String val15,
 									 String val16,
-									 String val17,
-									 String val18
+									 String val17
 									 ){
 				setId(val);
 				setName(val2);
@@ -115,15 +112,14 @@ public class Project implements java.io.Serializable{
 				setLead_id(val7);
 				setEng_lead_id(val8);
 				setDate(val9);
-				setLength(val10);
-				setFile_path(val11);
-				setDes_no(val12);
-				setEst_end_date(val13);
-				setActual_end_date(val14);
-				setEst_cost(val15);
-				setActual_cost(val16);
-				setGeometry(val17);
-				setStatus(val18);
+				setFile_path(val10);
+				setDes_no(val11);
+				setEst_end_date(val12);
+				setActual_end_date(val13);
+				setEst_cost(val14);
+				setActual_cost(val15);
+				setGeometry(val16);
+				setStatus(val17);
 		}
 
 		public void setId(String val){
@@ -162,10 +158,12 @@ public class Project implements java.io.Serializable{
 				if(val != null)
 						date = val;
 		}
+		/*
 		public void setLength(String val){
 				if(val != null)
 						length = val;
 		}
+		*/
 		public void setFile_path(String val){
 				if(val != null)
 						file_path = val;
@@ -251,9 +249,11 @@ public class Project implements java.io.Serializable{
 				}
 				return date;
 		}
+		/*
 		public String getLength(){
 				return length;
 		}
+		*/
 		public String getFile_path(){
 				return file_path;
 		}
@@ -447,7 +447,7 @@ public class Project implements java.io.Serializable{
 				if(date.equals(""))
 						date = Helper.getToday();
 				String qq = "insert into projects values(0,?,?,?,?, ?,?, "+
-						"?,?,?,?,?, ?,?,?,?,";
+						"?,?,?,?,?, ?,?,?,";
 				if(geometry.equals("")){
 						qq += "null,";
 				}
@@ -518,10 +518,6 @@ public class Project implements java.io.Serializable{
 								pstmt.setDate(jj++, new java.sql.Date(dateFormat.parse(date).getTime()));
 						else
 								pstmt.setNull(jj++, Types.DATE);
-						if(!length.equals(""))
-								pstmt.setString(jj++, length);
-						else
-								pstmt.setNull(jj++, Types.INTEGER);
 						if(!file_path.equals(""))
 								pstmt.setString(jj++, file_path);
 						else
@@ -568,11 +564,11 @@ public class Project implements java.io.Serializable{
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
-				int cc = 18;
+				int cc = 17;
 				String qq = "update projects set name=?,owner_id=?,type_id=?,"+
 						"funding_source_id=?,"+
 						"description=?,lead_id=?,eng_lead_id=?,"+
-						"date=?,length=?,file_path=?,DES_no=?,est_end_date=?,"+
+						"date=?,file_path=?,DES_no=?,est_end_date=?,"+
 						"actual_end_date=?,est_cost=?,actual_cost=?,";
 				if(geometry.equals("")){
 						qq += "geometry=null, ";
@@ -691,7 +687,7 @@ public class Project implements java.io.Serializable{
 		}
 		String doSelect(){
 		
-				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry),r.status from projects r where r.id=? ";
+				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry),r.status from projects r where r.id=? ";
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
@@ -723,8 +719,7 @@ public class Project implements java.io.Serializable{
 													rs.getString(14),
 													rs.getString(15),
 													rs.getString(16),
-													rs.getString(17),
-													rs.getString(18) 
+													rs.getString(17)
 													);
 						}
 				}catch(Exception e){

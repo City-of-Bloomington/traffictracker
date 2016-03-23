@@ -15,7 +15,7 @@ public class FeatureList{
 
 		static final long serialVersionUID = 1225L;		
 		static Logger logger = Logger.getLogger(FeatureList.class);
-		String project_id = "";
+		String project_id = "", exclude_id="";
 		List<Feature> features = null;
 		String name = "";
 
@@ -31,6 +31,10 @@ public class FeatureList{
 				if(val != null)
 						project_id = val;
 		}
+		public void exclude_id(String val){
+				if(val != null)
+						exclude_id = val;
+		}		
 		//
 		// getters
 		//
@@ -39,7 +43,7 @@ public class FeatureList{
 		}
 		String find(){
 				String msg = "";
-				String qq = " select pf.id,pf.project_id,pf.feature_id,pf.sub_id,pf.sub_sub_id,f.name,sf.name,ssf.name,pf.type "+
+				String qq = " select pf.id,pf.project_id,pf.feature_id,pf.sub_id,pf.sub_sub_id,f.name,sf.name,ssf.name,pf.type,pf.length "+
 						"from project_features pf "+
 						"left join features f on f.id=pf.feature_id "+
 						"left join sub_features sf on sf.id=pf.sub_id "+
@@ -50,6 +54,10 @@ public class FeatureList{
 				String qw = "";
 				if(!project_id.equals("")){
 						qw = " pf.project_id = ? ";
+				}
+				if(!exclude_id.equals("")){
+						if(!qw.equals("")) qw += " and ";
+						qw += " not pf.id = ? ";
 				}
 				String qo = " order by pf.id ";
 				if(!qw.equals("")){
@@ -65,8 +73,12 @@ public class FeatureList{
 								return msg;
 						}
 						pstmt = con.prepareStatement(qq);
+						int jj =1;
 						if(!project_id.equals("")){
-								pstmt.setString(1, project_id);
+								pstmt.setString(jj++, project_id);
+						}
+						if(!exclude_id.equals("")){
+								pstmt.setString(jj++, exclude_id);
 						}
 						rs = pstmt.executeQuery();	
 						while(rs.next()){
@@ -80,7 +92,8 @@ public class FeatureList{
 																					rs.getString(6),
 																					rs.getString(7),
 																					rs.getString(8),
-																					rs.getString(9)
+																					rs.getString(9),
+																					rs.getString(10)
 																		);
 								features.add(one);
 						}

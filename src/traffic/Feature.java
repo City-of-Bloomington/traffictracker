@@ -4,17 +4,29 @@ package traffic;
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author W. Sibo <sibow@bloomington.in.gov>
  */
+import java.util.Arrays;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import java.sql.*;
-import javax.naming.*;
-import javax.naming.directory.*;
 import org.apache.log4j.Logger;
 
 public class Feature implements java.io.Serializable{
 
     String id = "", project_id="", feature_id="", sub_id="", sub_sub_id="",
-				name="", sub_name="", sub_sub_name="", tableName="features", type="New";
+				name="", sub_name="", sub_sub_name="", tableName="features",
+				type="New",
+				length=""; // length or count
+		// we need these to determine the length field as length or count
+		private static final Set<Integer> f_ids = new HashSet<Integer>(Arrays.asList(2, 3, 4));
+		private static final Set<Integer> s_ids = new HashSet<Integer>(Arrays.asList(6, 7, 8,9,10));
+		private static final Set<Integer> s_s_ids = new HashSet<Integer>(Arrays.asList(8,9,10,11,12));
+		
 		static final long serialVersionUID = 115L;		
 		static Logger logger = Logger.getLogger(Feature.class);
+		List<Feature> features = null;
+		List<SubType> sub_features = null, sub_sub_features = null;		
     public Feature(){
     }
     public Feature(String val){
@@ -32,9 +44,10 @@ public class Feature implements java.io.Serializable{
 									 String val6,
 									 String val7,
 									 String val8,
-									 String val9
+									 String val9,
+									 String val10
 									 ){
-				setValues(val, val2, val3, val4, val5, val6, val7, val8, val9);
+				setValues(val, val2, val3, val4, val5, val6, val7, val8, val9, val10);
     }
 		void setValues(String val,
 									 String val2,
@@ -44,7 +57,8 @@ public class Feature implements java.io.Serializable{
 									 String val6,
 									 String val7,
 									 String val8,
-									 String val9){
+									 String val9,
+									 String val10){
 				setId(val);
 				setProject_id(val2);
 				setFeature_id(val3);
@@ -54,6 +68,7 @@ public class Feature implements java.io.Serializable{
 				setSub_name(val7);
 				setSub_sub_name(val8);
 				setType(val9);
+				setLength(val10);
 		}
     //
     //
@@ -84,6 +99,9 @@ public class Feature implements java.io.Serializable{
 		public String getType(){
 				return type;
     }
+		public String getLength(){
+				return length;
+    }		
     //
     // setters
     //
@@ -98,6 +116,10 @@ public class Feature implements java.io.Serializable{
     public void setType (String val){
 				if(val != null)
 						type = val;
+    }
+		public void setLength(String val){
+				if(val != null)
+						length = val;
     }		
     public void setSub_name (String val){
 				if(val != null)
@@ -136,8 +158,45 @@ public class Feature implements java.io.Serializable{
 				if(!type.equals("")){
 						ret += " ("+type+")";
 				}
+				if(!length.equals("")){
+						ret += " ("+getLengthOrCount()+":"+length+")";
+				}
 				return ret;
     }
+		public String getLengthOrCountUnit(){
+				String ret = "ft";
+				if(getLengthOrCount().equals("Count")) ret = "";
+				return ret;
+		}
+		public String getLengthOrCount(){
+				// feature 2,3,4 count
+				// sub_feature 1,2,3 length
+				// sub_feature 6,7,8,9,10 count
+				// sub_sub_feature 1,2,3,4,5,6,7  length
+				// sub_sub_feature 8,9,10,11,12 count
+				//
+				String ret = "Length";
+				int f_id=0,s_id=0,s_s_id=0;
+				try{
+						if(!feature_id.equals("")){
+								f_id = Integer.parseInt(feature_id);
+								if(!sub_id.equals("")){
+										s_id = Integer.parseInt(sub_id);
+										if(!sub_sub_id.equals("")){
+												s_s_id = Integer.parseInt(sub_sub_id);
+										}
+								}
+						}
+				}catch(Exception ex){
+						logger.error(ex);
+				}
+				if(f_ids.contains(f_id) ||
+					 s_ids.contains(s_id) ||
+					 s_s_ids.contains(s_s_id)){
+						ret = "Count";
+				}
+				return ret;
+		}
 		public boolean hasSubFeature(){
 				return !feature_id.equals("") &&
 						(feature_id.equals("1") ||
@@ -149,6 +208,55 @@ public class Feature implements java.io.Serializable{
 						!sub_id.equals("") &&
 						(sub_id.equals("4") ||
 						 sub_id.equals("5"));
+		}
+		public List<Feature> getFeatures(){
+				if(features == null && !project_id.equals("")){
+						FeatureList dl = new FeatureList(project_id);
+						if(!id.equals("")){
+								dl.exclude_id(id);
+						}
+						String back = dl.find();
+						features = dl.getFeatures();
+				}
+				return features;
+		}
+		public boolean hasOtherFeatures(){
+				getFeatures();
+				return features != null && features.size() > 0;
+		}
+		public List<SubType> getSub_features(){
+				if(sub_features == null && hasSubFeature()){
+						SubTypeList dl = new SubTypeList("sub_features");
+						dl.setFeature_id(feature_id);
+						String back = dl.find();
+						if(back.equals("")){
+								sub_features = dl.getSubTypes();
+								sub_features.add(0, new SubType("-1",null,"Pick Sub Feature"));
+						}
+				}
+				else{
+						List<SubType> temp = new ArrayList<SubType>();
+						temp.add(new SubType("-1",null,"Pic Sub Feature"));
+						return temp;
+				}
+				return sub_features;
+		}
+		public List<SubType> getSub_sub_features(){ 
+				if(sub_sub_features == null && hasSubSubFeature()){
+						SubTypeList dl = new SubTypeList("sub_sub_features");
+						dl.setSub_id(sub_id);
+						String back = dl.find();
+						if(back.equals("")){
+								sub_sub_features = dl.getSubTypes();
+								sub_sub_features.add(0, new SubType("-1",null,"Pick Sub Feature"));
+						}
+				}
+				else{
+						List<SubType> temp = new ArrayList<SubType>();
+						temp.add(new SubType("-1",null,"Pic Sub Feature"));
+						return temp;
+				}
+				return sub_sub_features;
 		}		
 		/**
 		 * needed for the project to issue a Save or not
@@ -158,7 +266,7 @@ public class Feature implements java.io.Serializable{
 		}
 		String doSelect(){
 				String msg = "";
-				String qq = " select pf.id,pf.project_id,pf.feature_id,pf.sub_id,pf.sub_sub_id,f.name,sf.name,ssf.name,pf.type "+
+				String qq = " select pf.id,pf.project_id,pf.feature_id,pf.sub_id,pf.sub_sub_id,f.name,sf.name,ssf.name,pf.type,pf.length "+
 						"from project_features pf "+
 						"left join features f on f.id=pf.feature_id "+
 						"left join sub_features sf on sf.id=pf.sub_id "+
@@ -187,6 +295,7 @@ public class Feature implements java.io.Serializable{
 								setSub_name(rs.getString(7));
 								setSub_sub_name(rs.getString(8));
 								setType(rs.getString(9));
+								setLength(rs.getString(10));
 						}
 				}catch(Exception e){
 						msg += e+":"+qq;
@@ -211,7 +320,7 @@ public class Feature implements java.io.Serializable{
 						msg = " no feature set";
 						return msg;
 				}
-				String qq = "insert into project_features values(0,?,?,?,?,?)";
+				String qq = "insert into project_features values(0,?,?,?,?,?,?)";
 				logger.debug(qq);
 				try{
 						con = Helper.getConnection();
@@ -244,6 +353,47 @@ public class Feature implements java.io.Serializable{
 				}
 				return msg;
 		}
+		public String doUpdate(){
+
+				Connection con = null;
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				String msg = "";
+				if(project_id.equals("")){
+						msg = " project id not set";
+						return msg;
+				}
+				if(feature_id.equals("")){ // we need at least the main feature
+						msg = " no feature set";
+						return msg;
+				}
+				System.err.println(" id, length, project_id "+id+" "+length+" "+project_id);
+				String qq = "update project_features set project_id=?,feature_id=?,sub_id=?,sub_sub_id=?,type=?,length=? where id=?";
+				logger.debug(qq);
+				try{
+						con = Helper.getConnection();
+						if(con == null){
+								msg = "Could not connect ";
+								return msg;
+						}
+						pstmt = con.prepareStatement(qq);
+						msg = fillData(pstmt);
+						pstmt.setString(7, id);
+						pstmt.executeUpdate();
+				}
+				catch(Exception ex){
+						msg += ex+":"+qq;
+						logger.error(msg);
+				}
+				finally{
+						Helper.databaseDisconnect(con, pstmt, rs);
+				}
+				if(msg.equals("")){
+						msg += doSelect(); // so that we can get the names
+				}
+				return msg;
+		}		
+		
 		String fillData(PreparedStatement pstmt){
 				String msg = "";
 				try{
@@ -260,7 +410,11 @@ public class Feature implements java.io.Serializable{
 						if(type.equals(""))
 								pstmt.setNull(5, Types.INTEGER);
 						else
-								pstmt.setString(5, type);						
+								pstmt.setString(5, type);
+						if(length.equals(""))
+								pstmt.setNull(6, Types.INTEGER);
+						else
+								pstmt.setString(6, length);						
 				}
 				catch(Exception ex){
 						msg += ex;

@@ -65,8 +65,8 @@
 		</div>
 	</div>
 	<dl class="fn1-output-field">
-		<dt>Length </dt>
-		<dd> From:<s:textfield name="projectList.length_from" value="%{projectList.length_from}" size="10" maxlength="10" /> To:<s:textfield name="projectList.length_to" value="%{projectList.length_to}" size="10" maxlength="10" />(feet)</dd>
+		<dt>Length/Count </dt>
+		<dd> From:<s:textfield name="projectList.length_from" value="%{projectList.length_from}" size="10" maxlength="10" /> To:<s:textfield name="projectList.length_to" value="%{projectList.length_to}" size="10" maxlength="10" /></dd>
 	</dl>
 	<dl class="fn1-output-field">
 		<dt>Date</dt>

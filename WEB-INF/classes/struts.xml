@@ -59,7 +59,19 @@
 				<param name="actionMessages">${actionMessages}</param>				
       </result>					
 		</action>	  
-
+		<action name="feature" 
+						class="traffic.FeatureAction" 
+						method="execute">
+			<result>/WEB-INF/jsp/editFeature.jsp</result>
+			<result name="error">/WEB-INF/jsp/editFeature.jsp</result>
+			<result name="edit">/WEB-INF/jsp/editFeature.jsp</result>
+			<result name="delete" type="redirectAction">
+        <param name="actionName">project</param>
+				<param name="actionMessages">${actionMessages}</param>
+				<param name="id">${project_id}</param>				
+      </result>
+			
+		</action>
 		<action name="search" 
 						class="traffic.SearchAction" 
 						method="execute">

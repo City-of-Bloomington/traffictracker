@@ -230,7 +230,7 @@ public class ProjectList implements java.io.Serializable{
 		//
 		String find(){
 
-				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.length,r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry),r.status ";
+				String qq = "select r.id,r.name,r.owner_id,r.type_id,r.funding_source_id,r.description,r.lead_id,r.eng_lead_id,date_format(r.date,'%m/%d/%Y'),r.file_path,r.DES_no,date_format(r.est_end_date,'%m/%d/%Y'),date_format(r.actual_end_date,'%m/%d/%Y'),r.est_cost,r.actual_cost,AsText(r.geometry),r.status ";
 				String qf = " from projects r ";
 				String qw = "";
 				Connection con = null;
@@ -277,27 +277,33 @@ public class ProjectList implements java.io.Serializable{
 						}						
 						if(!length_from.equals("")){
 								if(!qw.equals("")) qw += " and ";
-								qw += " r.length >= ?";
+								if(qf.indexOf("project_features") == -1){
+										qf += " left join project_features pf on pf.project_id=r.id ";
+								}
+								qw += " pf.length >= ? ";
 						}
 						if(!length_to.equals("")){
 								if(!qw.equals("")) qw += " and ";
-								qw += " r.length <= ?";
+								if(qf.indexOf("project_features") == -1){
+										qf += " left join project_features pf on pf.project_id=r.id ";
+								}								
+								qw += " pf.length <= ? ";
 						}
 						if(!est_cost_from.equals("")){
 								if(!qw.equals("")) qw += " and ";
-								qw += " r.est_cost >= ?";
+								qw += " r.est_cost >= ? ";
 						}
 						if(!est_cost_to.equals("")){
 								if(!qw.equals("")) qw += " and ";
-								qw += " r.est_cost <= ?";
+								qw += " r.est_cost <= ? ";
 						}
 						if(!actual_cost_from.equals("")){
 								if(!qw.equals("")) qw += " and ";
-								qw += " r.actual_cost >= ?";
+								qw += " r.actual_cost >= ? ";
 						}
 						if(!actual_cost_to.equals("")){
 								if(!qw.equals("")) qw += " and ";
-								qw += " r.actual_cost <= ?";
+								qw += " r.actual_cost <= ? ";
 						}
 						
 						if(!status.equals("")){
@@ -463,8 +469,7 @@ public class ProjectList implements java.io.Serializable{
 																					rs.getString(14),
 																					rs.getString(15),
 																					rs.getString(16),
-																					rs.getString(17),
-																					rs.getString(18) 
+																					rs.getString(17)
 																					);
 								if(!projects.contains(one))
 										projects.add(one);

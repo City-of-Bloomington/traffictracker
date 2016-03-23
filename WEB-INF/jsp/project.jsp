@@ -60,14 +60,14 @@
 			<dt>Type</dt>
 			<dd><s:select name="project.type_id" value="%{project.type_id}" list="types" listKey="id" headerKey="-1" headerValue="Pick Type" listValue="name" requiredLabel="true" id="project_type_id" required="true" />*</dd>
 		</dl>
-		<dl class="fn1-input-field--select">
-			<dt>Funding Source</dt>
-			<dd><s:select name="project.funding_source_id" value="%{project.funding_source_id}" list="sources" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Funding" /></dd>
-		</dl>
 		<s:if test="project.id != ''">
 	</div>
 	<div class="tt-split-container">
 		</s:if>
+		<dl class="fn1-output-field">
+			<dt>Funding Source</dt>
+			<dd><s:select name="project.funding_source_id" value="%{project.funding_source_id}" list="sources" listKey="id" listValue="name" headerKey="-1" headerValue="Pick Funding" /></dd>
+		</dl>
 		<dl class="fn1-output-field">
 			<dt>Proj. Manager</dt>
 			<dd><s:select name="project.lead_id" value="%{project.lead_id}" list="leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Lead" /></dd>
@@ -76,10 +76,6 @@
 			<dt>Eng. Lead</dt>
 			<dd><s:select name="project.eng_lead_id" value="%{project.eng_lead_id}" list="eng_leads" listKey="id" listValue="fullname" headerKey="-1" headerValue="Pick Eng Lead" /></dd>
 		</dl>		
-		<dl class="fn1-output-field">
-			<dt>Length </dt>
-			<dd><s:textfield name="project.length" value="%{project.length}" size="10" maxlength="10" /> (feet)</dd>
-		</dl>
 		<s:if test="project.id == ''">
 	</div>
 	<div class="tt-split-container">
@@ -123,21 +119,51 @@
 <s:if test="project.id != ''">
 	<dl class="fn1-output-field">
 		<dt></dt>
-				<dd>Current Feature(s)</dd>
-			</dl>
-			<s:iterator var="one" value="%{project.features}">
-				<dl class="fn1-input-field--select">							
-					<dt><input type="checkbox" name="project.del_feature" value="<s:property value='id' />" />**</dt><dd><s:property />
-					</dd>
-				</dl>
-			</s:iterator>
-		</s:if>
-		<dl class="fn1-output-field">
-			<dt>Feature</dt>
-			<dd><s:select name="feature.feature_id" value="%{feature.feature_id}" list="features" listKey="id" listValue="name" onchange="getSubFeatures()" headerKey="-1" headerValue="Pick Feature" id="feature_id" /><select name="feature.sub_id" value="%{feature.sub_id}" onchange="getSubSubFeatures()" id="sub_feature_id" style="display:none"><option value="-1">Pick Sub Feature</option></select><select name="feature.sub_sub_id" value="%{feature.sub_sub_id}" id="sub_sub_feature_id" style="display:none"><option value="-1">Pick Sub Sub Feature</option></select>
-				Type: <s:radio name="feature.type" list="{'New','Improved'}" value="%{feature.type}" /></dd>
-		</dl>
-		<dl class="fn1-output-field">
+		<dd>
+			<table class="fn1-table">
+				<caption>Current Features</caption>
+				<tr><th>**</th><td>Feature</td><td>Sub Feature(s)</td><td>Type</td><td>Length/Count</td><td>Action</td></tr>
+				<s:iterator var="one" value="%{project.features}">
+					<tr>
+						<td>
+							<input type="checkbox" name="project.del_feature" value="<s:property value='id' />" /></td>
+							<td><s:property value="name" /></td>
+							<td>
+								<s:if test="sub_id != ''">
+									 <s:property value="sub_name" />
+								</s:if>
+								<s:else>&nbsp;
+								</s:else>
+								<s:if test="sub_sub_id != ''">
+									/ <s:property value="sub_sub_name" />
+								</s:if>
+							</td>
+							<td><s:property value="type" /></td>
+							<td>&nbsp;<s:if test="length != ''">
+								<s:property value="length" /> <s:property value="lengthOrCountUnit" /></s:if>
+							</td>
+							<td>
+								<a href="<s:property value='#application.url'/>feature.action?project_id=<s:property value='project_id' />&id=<s:property value='id' />" class="fn1-btn">Edit Feature </a>
+							</td>
+					</tr>
+				</s:iterator>						
+			</table>
+		</dd>
+	</dl>
+</s:if>
+<dl class="fn1-output-field">
+	<dt></dt>
+	<dd><table class="fn1-table"><caption>Add Feature</caption>
+		<tr><td>Feature</td><td>Sub Feature(s)</td><td>Type</td><td>Length/Count</td></tr>
+		<tr><td>
+			<s:select name="feature.feature_id" value="%{feature.feature_id}" list="features" listKey="id" listValue="name" onchange="getSubFeatures()" headerKey="-1" headerValue="Pick Feature" id="feature_id" /></td><td>&nbsp;<select name="feature.sub_id" value="%{feature.sub_id}" onchange="getSubSubFeatures()" id="sub_feature_id" style="display:none"><option value="-1">Pick Sub Feature</option></select><select name="feature.sub_sub_id" value="%{feature.sub_sub_id}" id="sub_sub_feature_id" style="display:none"><option value="-1">Pick Sub Sub Feature</option></select></td>
+			<td><s:radio name="feature.type" list="{'New','Improved'}" value="%{feature.type}" /> </td>
+			<td><s:textfield name="feature.length" value="%{feature.length}" size="6" maxlength="6" /></td>
+		</tr>
+	</table>
+	</dd>
+</dl>
+<dl class="fn1-output-field">
 			<dt>Status</dt>
 			<dd><s:radio name="project.status" value="%{project.status}" list="#{'Active':'Active','On hold':'On hold','Closed':'Closed','Pending Delete':'Pending Delete'}" /> </dd>
 		</dl>		
@@ -152,7 +178,7 @@
 			<s:submit name="action" type="button" value="Save Changes" class="fn1-btn"/>
 			<a href="<s:property value='#application.url'/>projectUpdate.action?project_id=<s:property value='project.id' />" class="fn1-btn">Add Project Updates </a>
 			<s:if test="#session.user != null && #session.user.canDelete() && project.canDelete()">
-			<s:submit type="button" value="Delete" class="fn1-btn" onclick="confirmDelete()"/>
+			<s:submit type="button" value="Delete" class="fn1-btn" onclick="return confirmDelete()"/>
 			</s:if>
 			<a href="<s:property value='#application.url'/>map.action?id=<s:property value='project.id' />" class="fn1-btn"> Add/Edit Map Features</a>
 		</s:else>
@@ -174,10 +200,6 @@
  $(function() {
   $('#form_id').areYouSure();
 });
-/**
- * populate sub features select list
- * using jquery
- */
 function getSubFeatures(){
 
 	var selected_id = $("#feature_id").val();
@@ -265,13 +287,5 @@ function getSubSubFeatures(){
 		select_id.style.display="none";				
 	}
 }
-function confirmDelete(){
-	var x = confirm("Are you sure you want to delete this record");
-	if(x){
-		document.getElementById("action2").value="Delete";						
-		document.getElementById("form_id").submit();
-		return true;
-	}
-	return false;
-}		
+
 </script>

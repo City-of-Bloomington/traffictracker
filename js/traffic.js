@@ -67,5 +67,14 @@ function doRefresh(){
 		document.getElementById("action2").value="Refresh";		
 		document.getElementById("form_id").submit();				
 }
+function confirmDelete(){
+	var x = confirm("Are you sure you want to delete this record");
+	if(x){
+		document.getElementById("action2").value="Delete";						
+		document.getElementById("form_id").submit();
+		return true;
+	}
+	return false;
+}		
 
 
