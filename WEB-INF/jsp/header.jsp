@@ -17,11 +17,11 @@
   <link rel="stylesheet" href="<s:property value='#application.url' />js/jquery-ui2.css" type="text/css" media="all" />
   <link rel="stylesheet" href="<s:property value='#application.url' />js/jquery.ui.theme.css" type="text/css" media="all" />
   <link rel="stylesheet" href="<s:property value='#application.url' />css/open-sans/open-sans.css" type="text/css" />
-  <link rel="stylesheet" href="//bloomington.in.gov/static/fn1-releases/dev/css/default.css" type="text/css" />
-  <link rel="stylesheet" href="//bloomington.in.gov/static/fn1-releases/dev/css/kirkwood.css" type="text/css" />
+  <link rel="stylesheet" href="//bloomington.in.gov/static/fn1-releases/0.2/css/default.css" type="text/css" />
+  <link rel="stylesheet" href="//bloomington.in.gov/static/fn1-releases/0.2/css/kirkwood.css" type="text/css" />
   <link rel="stylesheet" href="<s:property value='#application.url' />css/screen.css" type="text/css" />
   <link rel="stylesheet" href="<s:property value='#application.url' />css/ol.css" type="text/css" />
-  <link rel="stylesheet" href="<s:property value='#application.url' />css/ol3-popup.css" type="text/css" />	
+  <link rel="stylesheet" href="<s:property value='#application.url' />css/ol3-popup.css" type="text/css" />
   <title>Transportation Tracker</title>
   <script type="text/javascript">
     var APPLICATION_URL = '<s:property value='#application.url' />';
@@ -36,17 +36,17 @@
       </div>
       <s:if test="#session != null && #session.user != null">
         <div class="fn1-site-utilityBar">
-          <nav id="user_menu">
-            <div class="menuLauncher"><s:property value='#session.user.fullname' /></div>
-            <div class="menuLinks closed">
-              <a href="<s:property value='#application.url'/>logout.action">Logout</a>
+          <nav id="user_menu" class="fn1-dropdown">
+            <button class="fn1-dropdown-launcher" aria-haspopup="true" aria-expanded="false"><s:property value='#session.user.fullname' /></button>
+            <div class="fn1-dropdown-links" aria-haspopup="true" aria-expanded="false">
+              <a href="<s:property value='#application.url'/>logout.action" class="fn1-dropdown-link">Logout</a>
             </div>
           </nav>
-          <nav id="admin_menu">
-            <div class="menuLauncher">Admin</div>
-            <div class="menuLinks closed">
+          <nav id="admin_menu" class="fn1-dropdown">
+            <button class="fn1-dropdown-launcher" aria-haspopup="true" aria-expanded="false">Admin</button>
+            <div class="fn1-dropdown-links" >
               <s:if test="#session.user.isAdmin()">
-								<a href="<s:property value='#application.url'/>report.action">Reports</a>
+								<a href="<s:property value='#application.url'/>report.action" class="fn1-dropdown-link">Reports</a>
               </s:if>
             </div>
           </nav>
@@ -56,12 +56,12 @@
 
 	<div class="fn1-nav1">
       <nav class="fn1-nav1-container">
-				<s:if test="#session != null && #session.user != null && #session.user.canEdit()">				
+				<s:if test="#session != null && #session.user != null && #session.user.canEdit()">
 					<a href="<s:property value='#application.url'/>project.action">New Project</a>
 					<a href="<s:property value='#application.url'/>projectUpdate.action">Project Updates</a>
 				</s:if>
         <a href="<s:property value='#application.url'/>search.action">Search</a>
-				<a href="<s:property value='#application.url'/>report.action">Reports</a>				
+				<a href="<s:property value='#application.url'/>report.action">Reports</a>
       </nav>
     </div>
   </header>
