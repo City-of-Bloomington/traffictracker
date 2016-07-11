@@ -572,7 +572,7 @@ public class Project implements java.io.Serializable{
 						"actual_end_date=?,est_cost=?,actual_cost=?,";
 				if(geometry.equals("")){
 						qq += "geometry=null, ";
-						cc = 17;
+						cc = 16;
 				}
 				else
 						qq += "geometry=GeomFromText(?), ";
