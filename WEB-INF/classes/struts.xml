@@ -92,7 +92,14 @@
 				<param name="actionMessages">${actionMessages}</param>				
       </result>			
 		</action>		
-
+		<action name="timeline" 
+						class="traffic.TimelineAction" 
+						method="execute">
+			<result name="input">/WEB-INF/jsp/timelineInput.jsp</result>		
+			<result name="error">/WEB-INF/jsp/timelineInput.jsp</result>
+			<result name="success">/WEB-INF/jsp/timelineInput.jsp</result>
+			<result name="timeline">/WEB-INF/jsp/timeline.jsp</result>
+		</action>
 		<action name="report" 
 						class="traffic.ReportAction" 
 						method="execute">

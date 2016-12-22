@@ -6,7 +6,7 @@
  *
 	-->
 <%@  include file="header.jsp" %>
-<h4>View Project Update</h4>
+<h4>View Project Phase</h4>
 <s:if test="hasActionErrors()">
 	<div class="errors">
     <s:actionerror/>

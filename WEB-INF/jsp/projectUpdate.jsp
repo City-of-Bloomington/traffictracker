@@ -8,10 +8,10 @@
 <%@  include file="header.jsp" %>
 <s:form action="projectUpdate" method="post" id="form_id" onsubmit="return projectValidate()">
 	<s:if test="id == ''">
-		<h4>New Project Update</h4>
+		<h4>New Project Phase</h4>
 	</s:if>
 	<s:else>
-		<h4>View Project Update</h4>
+		<h4>View Project Phase</h4>
 		<s:hidden name="id" value="%{id}" />
 	</s:else>
 	<s:hidden name="projectUpdate.project_id" value="%{projectUpdate.project_id}" />	

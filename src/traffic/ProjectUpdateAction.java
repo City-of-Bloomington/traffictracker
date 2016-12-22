@@ -18,13 +18,14 @@ public class ProjectUpdateAction extends TopAction{
 		static Logger logger = Logger.getLogger(ProjectUpdateAction.class);
 		//
 		ProjectUpdate projectUpdate = null;
+		Project project = null;
 		//
 		List<Project> projects = null;
 		List<Type> ranks = null;
 		List<User> users = null;		
 		List<ProjectUpdate> updates = null;
 		
-		String updatesTitle = "Most Recent Project Updates";
+		String updatesTitle = "Most Recent Project Phases";
 		String projectsTitle = "Most Recent Projects";		
 		public String execute(){
 				String ret = SUCCESS;
@@ -64,12 +65,16 @@ public class ProjectUpdateAction extends TopAction{
 						ret = INPUT;
 						if(projectUpdate == null)
 								projectUpdate = new ProjectUpdate();
-
+						getProject();
+						ProjectUpdate prevPhase = project.getLastProjectUpdate();
+						if(prevPhase != null){
+								projectUpdate.setPrev_date(prevPhase.getDate());
+						}
 						projectUpdate.setProject_id(project_id);
 				}
 				else {
 						ret = "noproject";
-						addActionMessage("You can pick a project to edit or add updates");
+						addActionMessage("You can pick a project to edit or add phase rank");
 				}
 				return ret;
 		}
@@ -83,7 +88,11 @@ public class ProjectUpdateAction extends TopAction{
 								projectUpdate = new ProjectUpdate();
 								if(!project_id.equals("")){
 										projectUpdate.setProject_id(project_id);
-										System.err.println(" setting "+project_id);
+										getProject();
+										ProjectUpdate prevPhase = project.getLastProjectUpdate();
+										if(prevPhase != null){
+												projectUpdate.setPrev_date(prevPhase.getDate());
+										}										
 								}
 						}
 				}
@@ -111,9 +120,21 @@ public class ProjectUpdateAction extends TopAction{
 						if(projectUpdate == null){
 								projectUpdate = new ProjectUpdate();
 						}
+						
 						projectUpdate.setProject_id(project_id);
 				}
 		}
+		public Project getProject(){
+				getProject_id();
+				if(project == null && !project_id.equals("")){
+						Project one = new Project(project_id);
+						String back = one.doSelect();
+						if(back.equals("")){
+								project = one;
+						}
+				}
+				return project;
+		}		
 		public String getProject_id(){
 				if(project_id.equals("") && projectUpdate != null){
 						project_id = projectUpdate.getProject_id();

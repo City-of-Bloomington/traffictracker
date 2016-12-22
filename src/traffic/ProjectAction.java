@@ -29,7 +29,7 @@ public class ProjectAction extends TopAction{
 		List<ProjectUpdate> updates = null;
 		List<User> leads = null;
 		List<User> eng_leads = null;
-		String updatesTitle = "Most Recent Updates";
+		String updatesTitle = "Most Recent Projects Phases";
 		String projectsTitle = "Most Recent Active Projects";		
 		public String execute(){
 				String ret = SUCCESS;

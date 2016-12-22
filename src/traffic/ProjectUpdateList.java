@@ -26,6 +26,7 @@ public class ProjectUpdateList implements java.io.Serializable{
 				phase_rank_id="", user_id="";
 
 		String date_from="", date_to="", sortBy=" r.id DESC ";
+		String min_date="", max_date="", project_set="";
 		String limit = " limit 15 ";
 		boolean lastPerProject = false;
 		List<ProjectUpdate> updates = null;
@@ -95,10 +96,21 @@ public class ProjectUpdateList implements java.io.Serializable{
 		public String getDate_to(){
 				return date_to ;
 		}
+		public String getMin_date(){
+				return min_date;
+		}
+		public String getMax_date(){
+				return max_date;
+		}				
 		public String getSortBy(){
 				return sortBy ;
 		}
-
+		public void addToProjectSet(String val){
+				if(val != null && !val.equals("")){
+						if(!project_set.equals("")) project_set +=",";
+						project_set += val;
+				}
+		}
 		public List<ProjectUpdate> getUpdates(){
 				return updates;
 		}
@@ -204,8 +216,47 @@ public class ProjectUpdateList implements java.io.Serializable{
 				finally{
 						Helper.databaseDisconnect(con, pstmt, rs);
 				}
-				return msg;			
+				return msg;
+				
 		}
+		/**
+		 * find min/max dates of phases in certain projects
+		 */
+		String findMinMaxDates(){
+
+				String qq = "select date_format(min(r.date),'%m/%d/%Y'),date_format(max(r.date),'%m/%d/%Y') from project_updates r where r.project_id in ";
+				Connection con = null;
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				String msg = "";
+				if(project_set.equals("")){
+						msg = "project set not set ";
+						return msg;
+				}
+				qq += "("+project_set+")";
+				logger.debug(qq);
+				try{
+						con = Helper.getConnection();
+						if(con == null){
+								msg = "Could not connect ";
+								return msg;
+						}
+						pstmt = con.prepareStatement(qq);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+								min_date = rs.getString(1);
+								max_date = rs.getString(2);
+						}
+				}catch(Exception e){
+						msg += e+":"+qq;
+						logger.error(msg);
+				}
+				finally{
+						Helper.databaseDisconnect(con, pstmt, rs);
+				}
+				return msg;			
+		}		
+		
 }
 
 

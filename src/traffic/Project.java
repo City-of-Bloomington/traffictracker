@@ -35,10 +35,11 @@ public class Project implements java.io.Serializable{
 		User user = null;
 		Type type = null;
 		Type owner = null, funding_source = null;
-		
+		int updates_min_days=0, updates_max_days=0;		
 		User lead = null, eng_lead = null;
 		List<Feature> features = null;
 		ProjectUpdate lastProjectUpdate = null;
+		List<ProjectUpdate> updates = null;
 		String[] del_feature = null;
 		public Project(){
 		}	
@@ -428,6 +429,48 @@ public class Project implements java.io.Serializable{
 		}
 		public boolean canDelete(){
 				return status.equals("Pending Delete");
+		}
+		public List<ProjectUpdate> getUpdates(){
+				if(updates == null && !id.equals("")){
+						ProjectUpdateList pul = new ProjectUpdateList(id);
+						pul.setSortBy("r.id asc");
+						String back = pul.find();
+						if(back.equals("")){
+								List<ProjectUpdate> ones = pul.getUpdates();
+								if(ones != null && ones.size() > 0){
+										updates = ones;
+								}
+						}
+				}
+				return updates;
+		}
+		public int getUpdates_min_days(){
+				return updates_min_days;
+		}
+		public int getUpdates_max_days(){
+				return updates_max_days;
+		}		
+		public int getUpdates_count(){
+				if(updates == null)
+						getUpdates();
+				return updates == null? 0:updates.size();
+
+		}		
+		void findUpdatesMinMaxDays(){
+				if(updates == null)
+						getUpdates();
+				if(updates != null){
+						// need one to start
+						ProjectUpdate one2 = updates.get(0);
+						updates_min_days = updates_max_days = one2.getUpdate_length();
+						for(ProjectUpdate one:updates){
+								int days = one.getUpdate_length();
+								if(days < updates_min_days)
+										updates_min_days = days;
+								if(days > updates_max_days)
+										updates_max_days = days;
+						}
+				}
 		}		
 		/**
 		 * check if we can add more updates to this project

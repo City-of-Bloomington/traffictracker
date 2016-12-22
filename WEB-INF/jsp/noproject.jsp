@@ -19,11 +19,11 @@
 <s:if test="updates != null && updates.size() > 0">
 	<s:set var="updates" value="updates" />
 	<s:set var="showProject" value="true" />
-	<s:set var="updatesTitle" value="'Most Recent Project Updates'" />
+	<s:set var="updatesTitle" value="updatesTitle" />
 	<%@  include file="updates.jsp" %>
 </s:if>
 <s:elseif test="projects != null && projects.size() > 0">
-  <p>Pick a project to add updates </p>	
+  <p>Pick a project to add phase </p>	
 	<s:set var="projects" value="projects" />
 	<s:set var="projectsTitle" value="projectsTitle" />
 	<%@  include file="projects.jsp" %>

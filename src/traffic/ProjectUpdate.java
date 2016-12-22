@@ -4,7 +4,7 @@ package traffic;
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author W. Sibo <sibow@bloomington.in.gov>
  */
-import java.util.*;
+import java.util.Date;
 import java.sql.*;
 import java.io.*;
 import java.text.*;
@@ -21,10 +21,16 @@ public class ProjectUpdate implements java.io.Serializable{
 		static final long serialVersionUID = 18L;	
    
 		static Logger logger = Logger.getLogger(ProjectUpdate.class);
-		static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		static SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		String id="", project_id="", phase_rank_id="", date="", notes="",
 				user_id="";
-
+		int update_length = -1; // unset
+		//
+		// the date should not be less than previous phase date
+		// unless it is the first phase
+		//
+		String prev_date=""; 
+		String end_date = "";
 		//
 		// objects
 		//
@@ -91,6 +97,10 @@ public class ProjectUpdate implements java.io.Serializable{
 				if(val != null)
 						date = val;
 		}
+		public void setPrev_date(String val){
+				if(val != null)
+						prev_date = val;
+		}		
 		public void setPhase_rank_id(String val){
 				if(val != null && !val.equals("-1"))
 						phase_rank_id = val;
@@ -172,6 +182,113 @@ public class ProjectUpdate implements java.io.Serializable{
 		public boolean isComplete(){
 				return phase_rank_id.equals("13");
 		}
+		public int getUpdate_length(){
+				if(update_length < 0)
+						findPhaseLength();
+				if(update_length < 0) return 0;
+				return update_length;
+		}
+		public String getEnd_date(){
+				if(end_date.equals("")){
+						findPhaseLength();
+				}
+				if(end_date.equals("") && !date.equals("")){
+						end_date = date;
+				}
+				return end_date;
+		}
+		/**
+		 * check if the new date is after the previous phase date
+		 */
+		private boolean checkIfDateIsGreaterThanPreviousPhaseDate(){		
+						boolean ret = true;
+				if(!prev_date.equals("")){
+						try{
+								Date old_date = df.parse(prev_date);
+								if(date.equals("")) date = Helper.getToday();
+								Date new_date = df.parse(date);
+								if(!new_date.equals(old_date)								
+									 && !new_date.after(old_date)) ret = false;
+						}catch(Exception ex){
+								System.err.println(ex);
+						}
+				}
+				return ret;
+		}
+		public String findPhaseLength(){
+				//
+				String qq = "select datediff(p2.date,p.date) as days,date_format(p2.date,'%m/%d/%Y') from project_updates p, project_updates p2 where p.project_id=p2.project_id and p.phase_rank_id < p2.phase_rank_id and p.id=? and p.project_id=? order by days asc limit 1 ";
+
+				String qq2 = "select datediff(now(),p.date) as days from project_updates p where p.id=? and p.project_id=? ";				
+				//
+				// if this is the 
+				String qw = "";
+				Connection con = null;
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				String msg = "";
+				if(id.equals("") || project_id.equals("")){
+						msg = " phase id or project id not set";
+						return msg;
+				}
+				getPhase_rank();
+				// if the phase is complete or cancelled, end_date will be the same date
+				if(phase_rank.getName().equals("Complete") ||
+					 phase_rank.getName().equals("Cancelled")){
+						end_date = date;
+						update_length = 0;
+						return msg;
+				}
+				getProject();
+				ProjectUpdate lastUpdate = project.getLastProjectUpdate();
+				if(lastUpdate.getId().equals(id)){
+						if(project.getStatus().equals("Closed")){
+								end_date = date;
+								update_length = 0;
+								return msg;
+						}
+				}
+				logger.debug(qq);
+				try{
+						con = Helper.getConnection();
+						if(con == null){
+								msg = "Could not connect ";
+								return msg;
+						}
+						pstmt = con.prepareStatement(qq);
+						
+						int jj=1;
+						pstmt.setString(jj++,id);
+						pstmt.setString(jj++,project_id);
+						rs = pstmt.executeQuery();
+						if(rs.next()){ // we want the first one only 
+								update_length = rs.getInt(1);
+								end_date = rs.getString(2);								
+						}
+						else {
+								logger.debug(qq2);
+								pstmt = con.prepareStatement(qq2);
+								jj=1;
+								pstmt.setString(jj++,id);
+								pstmt.setString(jj++,project_id);
+								rs = pstmt.executeQuery();
+								if(rs.next()){
+										update_length = rs.getInt(1);
+										if(update_length > 0)
+												end_date = Helper.getToday();
+								}
+						}
+				}
+				catch(Exception ex){
+						msg += ex+":"+qq;
+						logger.error(msg);
+				}
+				finally{
+						Helper.databaseDisconnect(con, pstmt, rs);
+				}
+				return msg;								
+				
+		}
 		//
 		// No updates allowed, just Save
 		//
@@ -230,7 +347,7 @@ public class ProjectUpdate implements java.io.Serializable{
 				try{
 						pstmt.setString(1, project_id);
 						pstmt.setString(2, phase_rank_id);
-						pstmt.setDate(3, new java.sql.Date(dateFormat.parse(date).getTime()));						
+						pstmt.setDate(3, new java.sql.Date(df.parse(date).getTime()));						
 						if(notes.equals(""))
 								pstmt.setNull(4, Types.VARCHAR);
 						else
