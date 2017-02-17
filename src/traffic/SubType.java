@@ -16,7 +16,8 @@ import org.apache.log4j.Logger;
 public class SubType extends Type{
 
 		String type_id = ""; 
-		static final long serialVersionUID = 115L;		
+		static final long serialVersionUID = 115L;
+		//
 		static Logger logger = Logger.getLogger(SubType.class);
     public SubType(){
     }

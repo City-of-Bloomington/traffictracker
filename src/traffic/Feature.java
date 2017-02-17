@@ -20,9 +20,9 @@ public class Feature implements java.io.Serializable{
 				length=""; // length or count
 		// we need these to determine the length field as length or count
 		private static final Set<Integer> f_ids = new HashSet<Integer>(Arrays.asList(2, 3, 4));
-		private static final Set<Integer> s_ids = new HashSet<Integer>(Arrays.asList(6, 7, 8,9,10));
+		private static final Set<Integer> s_ids = new HashSet<Integer>(Arrays.asList(5));
 		private static final Set<Integer> s_s_ids = new HashSet<Integer>(Arrays.asList(8,9,10,11,12));
-		
+
 		static final long serialVersionUID = 115L;		
 		static Logger logger = Logger.getLogger(Feature.class);
 		List<Feature> features = null;
@@ -170,10 +170,12 @@ public class Feature implements java.io.Serializable{
 		}
 		public String getLengthOrCount(){
 				// feature 2,3,4 count
-				// sub_feature 1,2,3 length
-				// sub_feature 6,7,8,9,10 count
-				// sub_sub_feature 1,2,3,4,5,6,7  length
+				// sub_feature 5 count
 				// sub_sub_feature 8,9,10,11,12 count
+				//
+				// sub_feature 1,2,3,4,6,7,8,9,10  length
+				// sub_sub_feature 1,2,3,4,5,6,7  length
+
 				//
 				String ret = "Length";
 				int f_id=0,s_id=0,s_s_id=0;

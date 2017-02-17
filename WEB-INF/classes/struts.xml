@@ -107,6 +107,13 @@
 			<result name="error">/WEB-INF/jsp/reportInput.jsp</result>
 			<result name="success">/WEB-INF/jsp/reportResult.jsp</result>
 		</action>
+		<action name="user" 
+						class="traffic.UserAction" 
+						method="execute">
+			<result name="input">/WEB-INF/jsp/user.jsp</result>		
+			<result name="error">/WEB-INF/jsp/user.jsp</result>
+			<result name="success">/WEB-INF/jsp/user.jsp</result>
+		</action>		
    </package>
 
 </struts>

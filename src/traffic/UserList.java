@@ -16,7 +16,7 @@ public class UserList{
 		static final long serialVersionUID = 1120L;		
 		static Logger logger = Logger.getLogger(UserList.class);
 		String fullname = "";
-		boolean eng_only = false;
+		boolean eng_only = false, all = false;
 		List<User> users = null;
 		String name = "";
 
@@ -31,21 +31,31 @@ public class UserList{
 		public void setEngOnly(){
 				eng_only = true;
 		}
+		public void setAll(){
+				all = true;
+		}
 		String find(){
 				String msg = "";
-				String qq = " select * from users ";
+				String qq = " select * from users ", qw = "";
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
-				qq += " where type is not null and active is not null"; // type Plan, Eng All to avoid IT staff
+				if(!all){
+						qw += " type is not null and active is not null"; // type Plan, Eng All to avoid IT staff
+				}
 				if(!fullname.equals("")){
-						qq += " and fullname like ? ";
+						if(!qw.equals("")) qw += " and ";
+						qw += " fullname like ? ";
 				}
 				if(eng_only){
-						qq += " and type = 'Eng' ";
+						if(!qw.equals("")) qw += " and ";						
+						qw += " type = 'Eng' ";
+				}
+				if(!qw.equals("")){
+						qw = " where "+qw;
 				}
 				String qo = " order by fullname ";
-				qq += qo;
+				qq += qw+" "+qo;
 				//
 				logger.debug(qq);
 				try{

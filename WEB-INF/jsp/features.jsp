@@ -29,7 +29,7 @@
 						<s:property value="sub_name" />
 					</s:if>
 					<s:if test="sub_sub_id != ''">
-					/<s:property value="sub_sub_name" />
+						/<s:property value="sub_sub_name" />
 					</s:if>					
 				</td>
 				<td><s:property value="type" /></td>

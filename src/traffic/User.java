@@ -7,6 +7,8 @@ package traffic;
 import java.sql.*;
 import javax.naming.*;
 import javax.naming.directory.*;
+import java.util.Map;
+import java.util.HashMap;
 import org.apache.log4j.Logger;
 /**
  * User class
@@ -15,12 +17,13 @@ import org.apache.log4j.Logger;
 
 public class User implements java.io.Serializable{
 
-    String userid="", fullname="", role="", id="", active="",
+    String userid="", fullname="", role="View", id="", active="",
 				type=""; // Plan Eng All
     boolean userExists = false;
 		static final long serialVersionUID = 135L;		
 		static Logger logger = Logger.getLogger(User.class);
     String errors = "";
+		Map<String, String> roles = null;
     public User(){
     }		
     public User(String val){
@@ -48,6 +51,14 @@ public class User implements java.io.Serializable{
 				setActive(val5);
 				setType(val6);
 				userExists = true;
+				setRoleMap();
+		}
+		private void setRoleMap(){
+				roles = new HashMap<>();
+				roles.put("View","View only");
+				roles.put("Edit","Edit Only");
+				roles.put("Edit:Delete","Edit & Delete");
+				roles.put("Edit:Delete:Admin","Admin");
 		}
     //
     public boolean hasRole(String val){
@@ -81,12 +92,28 @@ public class User implements java.io.Serializable{
     public String getRole(){
 				return role;
     }
+    public String getRoleName(){
+				if(roles != null && roles.containsKey(role)){
+						return roles.get(role);
+				}
+				return "View";
+    }		
 		public boolean isActive(){
+				if(id.equals("")) return true; // for new users
 				return !active.equals("");
 		}
     public String getType(){
 				return type;
     }
+    public String getTypeName(){
+				if(type.equals("Plan"))
+						return "Planning";
+				else if(type.equals("Eng"))
+						return "Engineering";
+				else if(type.equals("All"))
+						return "Planning/Engineering";
+				return "";
+    }		
 		public boolean isTypePlan(){
 				return type.equals("Plan") || type.equals("All");
 		}
@@ -208,5 +235,106 @@ public class User implements java.io.Serializable{
 				}
 				return msg;
 		}
-	
+		public String doSave(){
+
+				Connection con = null;
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				String msg = "";
+				active="y";
+				if(fullname.equals("")){
+						msg = " fullname not set";
+						return msg;
+				}
+				String qq = "insert into users values(0,?,?,?,'y',?)";
+				logger.debug(qq);
+				try{
+						con = Helper.getConnection();
+						if(con == null){
+								msg = "Could not connect ";
+								return msg;
+						}
+						pstmt = con.prepareStatement(qq);
+						pstmt.setString(1, userid);						
+						pstmt.setString(2, fullname);
+						if(role.equals(""))
+								pstmt.setNull(3, Types.VARCHAR);
+						else
+								pstmt.setString(3, role);								
+						if(type.equals(""))
+								pstmt.setNull(4, Types.VARCHAR);
+						else
+								pstmt.setString(4, type);								
+						pstmt.executeUpdate();
+						qq = "select LAST_INSERT_ID() ";
+						pstmt = con.prepareStatement(qq);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+								id = rs.getString(1);
+						}
+				}
+				catch(Exception ex){
+						msg += ex+":"+qq;
+						logger.error(msg);
+				}
+				finally{
+						Helper.databaseDisconnect(con, pstmt, rs);
+				}
+				return msg;
+		}		
+		public String doUpdate(){
+
+				Connection con = null;
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				String msg = "";
+				if(id.equals("")){
+						msg = " id not set";
+						return msg;
+				}
+				if(userid.equals("")){
+						msg = " username not set";
+						return msg;
+				}
+				if(fullname.equals("")){
+						msg = " fullname not set";
+						return msg;
+				}				
+				String qq = "update users set userid=?,fullname=?,role=?,active=?,type=? where id=?";
+				logger.debug(qq);
+				try{
+						con = Helper.getConnection();
+						if(con == null){
+								msg = "Could not connect ";
+								return msg;
+						}
+						pstmt = con.prepareStatement(qq);
+						pstmt.setString(1, userid);
+						pstmt.setString(2, fullname);
+						if(role.equals(""))
+								pstmt.setNull(3, Types.VARCHAR);
+						else
+								pstmt.setString(3, role);
+						if(active.equals(""))
+								pstmt.setNull(4, Types.CHAR);
+						else
+								pstmt.setString(4, "y");						
+						if(type.equals(""))
+								pstmt.setNull(5, Types.VARCHAR);
+						else
+								pstmt.setString(5, type);		
+
+						pstmt.setString(6, id);
+						pstmt.executeUpdate();
+				}
+				catch(Exception ex){
+						msg += ex+":"+qq;
+						logger.error(msg);
+				}
+				finally{
+						Helper.databaseDisconnect(con, pstmt, rs);
+				}
+				return msg;
+		}					
+		
 }

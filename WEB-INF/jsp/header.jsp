@@ -47,6 +47,7 @@
             <div class="fn1-dropdown-links" >
               <s:if test="#session.user.isAdmin()">
 								<a href="<s:property value='#application.url'/>report.action" class="fn1-dropdown-link">Reports</a>
+								<a href="<s:property value='#application.url'/>user.action" class="fn1-dropdown-link">Users</a>								
               </s:if>
             </div>
           </nav>
