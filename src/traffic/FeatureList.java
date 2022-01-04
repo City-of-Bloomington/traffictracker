@@ -7,14 +7,13 @@ package traffic;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.*;
-import javax.naming.directory.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FeatureList{
 
 		static final long serialVersionUID = 1225L;		
-		static Logger logger = Logger.getLogger(FeatureList.class);
+		static Logger logger = LogManager.getLogger(FeatureList.class);
 		String project_id = "", exclude_id="";
 		List<Feature> features = null;
 		String name = "";

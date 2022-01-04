@@ -10,16 +10,15 @@ import java.io.*;
 import java.text.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.naming.*;
 import javax.sql.*;
-import javax.naming.directory.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Project implements java.io.Serializable{
 
 		static final long serialVersionUID = 17L;	
    
-		static Logger logger = Logger.getLogger(Project.class);
+		static Logger logger = LogManager.getLogger(Project.class);
 		static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		String id="", name=""; 
 		String owner_id ="", type_id="", funding_source_id="",date_time="", description="",lead_id="",eng_lead_id="",date = "", length="", file_path="", des_no = "", est_end_date="", actual_end_date="", est_cost="", actual_cost="";

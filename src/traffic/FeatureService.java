@@ -10,15 +10,15 @@ import javax.naming.*;
 import javax.naming.directory.*;
 import java.util.ArrayList;
 import java.util.List;
- 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class FeatureService extends HttpServlet{
 
     String url="";
 		static final long serialVersionUID = 180L;	
-		static Logger logger = Logger.getLogger(FeatureService.class);
+		static Logger logger = LogManager.getLogger(FeatureService.class);
     
     public void doGet(HttpServletRequest req, 
 											HttpServletResponse res) 

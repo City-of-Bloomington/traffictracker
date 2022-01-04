@@ -12,11 +12,12 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.util.ServletContextAware;
 import org.apache.struts2.interceptor.SessionAware;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MapAction extends ActionSupport implements SessionAware, ServletContextAware{
     private static final long serialVersionUID = 290L;
-		static Logger logger = Logger.getLogger(MapAction.class);
+		static Logger logger = LogManager.getLogger(MapAction.class);
 		private ServletContext ctx;
 		private Map<String, Object> sessionMap;
 		private MapItem mapItem = null;
@@ -122,6 +123,17 @@ public class MapAction extends ActionSupport implements SessionAware, ServletCon
 		public void setServletContext(ServletContext ctx) {  
         this.ctx = ctx;  
     }  	 
+		/**
+			 public key
+			 old url and token
+			             "url": "http:\/\/api.tiles.mapbox.com\/v4\/mapbox.streets\/{z}\/{x}\/{y}.png?access_token=pk.eyJ1IjoiaW5naGFtbiIsImEiOiJkYjI4YjY4NTQzZmU3YzU1NjNhNWY5YWQ1MGYzNWM1MSJ9.bTz47lsKieDIZoLusUS99A"
+
+				new token
+				
+       pk.eyJ1Ijoic2lib3ciLCJhIjoiY2t5MGcyYnY0MDB0OTJxcGRrNnJocGk4ZSJ9.0ku_IM1zq8fUJThadGNs9A
+
+		 */
+
 }
 
 

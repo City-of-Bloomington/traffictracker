@@ -7,15 +7,14 @@ package traffic;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.*;
-import javax.naming.directory.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SubTypeList{
 
     String whichList ="sub_features";
 		static final long serialVersionUID = 130L;		
-		static Logger logger = Logger.getLogger(SubTypeList.class);
+		static Logger logger = LogManager.getLogger(SubTypeList.class);
 		
 		List<SubType> subTypes = null;
 		String name = "", feature_id="", sub_id="";

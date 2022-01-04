@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Feature implements java.io.Serializable{
 
@@ -24,7 +25,7 @@ public class Feature implements java.io.Serializable{
 		private static final Set<Integer> s_s_ids = new HashSet<Integer>(Arrays.asList(8,9,10,11,12));
 
 		static final long serialVersionUID = 115L;		
-		static Logger logger = Logger.getLogger(Feature.class);
+		static Logger logger = LogManager.getLogger(Feature.class);
 		List<Feature> features = null;
 		List<SubType> sub_features = null, sub_sub_features = null;		
     public Feature(){

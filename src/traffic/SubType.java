@@ -5,9 +5,8 @@ package traffic;
  * @author W. Sibo <sibow@bloomington.in.gov>
  */
 import java.sql.*;
-import javax.naming.*;
-import javax.naming.directory.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  * SubType class
  *
@@ -18,7 +17,7 @@ public class SubType extends Type{
 		String type_id = ""; 
 		static final long serialVersionUID = 115L;
 		//
-		static Logger logger = Logger.getLogger(SubType.class);
+		static Logger logger = LogManager.getLogger(SubType.class);
     public SubType(){
     }
     public SubType(String val){

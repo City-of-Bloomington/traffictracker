@@ -11,11 +11,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;  
 import org.apache.struts2.util.ServletContextAware;  
 import javax.servlet.http.HttpServletResponse;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
- * @author Walid Sibo
  */
 public class LogoutAction extends ActionSupport implements ServletContextAware{
 

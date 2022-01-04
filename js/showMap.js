@@ -3,7 +3,8 @@ var maplayers  = [
     {
         "source": "XYZ",
         "options": {
-            "url": "http:\/\/api.tiles.mapbox.com\/v4\/mapbox.streets\/{z}\/{x}\/{y}.png?access_token=pk.eyJ1IjoiaW5naGFtbiIsImEiOiJkYjI4YjY4NTQzZmU3YzU1NjNhNWY5YWQ1MGYzNWM1MSJ9.bTz47lsKieDIZoLusUS99A"
+						"url": "https:\/\/api.tiles.mapbox.com\/v4\/mapbox.streets\/{z}\/{x}\/{y}.png?access_token=pk.eyJ1Ijoic2lib3ciLCJhIjoiY2t5MGcyYnY0MDB0OTJxcGRrNnJocGk4ZSJ9.0ku_IM1zq8fUJThadGNs9A"
+						
         }
     }
 ];

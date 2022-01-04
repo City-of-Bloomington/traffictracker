@@ -7,15 +7,14 @@ package traffic;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.*;
-import javax.naming.directory.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TypeList{
 
     String whichList ="types";
 		static final long serialVersionUID = 120L;		
-		static Logger logger = Logger.getLogger(TypeList.class);
+		static Logger logger = LogManager.getLogger(TypeList.class);
 		List<Type> types = null;
 		String name = "";
     public TypeList(){

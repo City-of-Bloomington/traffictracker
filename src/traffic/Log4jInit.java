@@ -4,7 +4,7 @@ package traffic;
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author W. Sibo <sibow@bloomington.in.gov>
  */
-import org.apache.log4j.PropertyConfigurator;
+// import org.apache.log4j.PropertyConfigurator;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +14,8 @@ import java.io.IOException;
 
 public class Log4jInit extends HttpServlet{
 
-		static final long serialVersionUID = 50L;	
+		static final long serialVersionUID = 50L;
+		/**
 		public
 				void init() {
 				String prefix =  getServletContext().getRealPath("/");
@@ -24,7 +25,7 @@ public class Log4jInit extends HttpServlet{
 						PropertyConfigurator.configure(prefix+file);
 				}
 		}
-
+		*/
 		public
 				void doGet(HttpServletRequest req, HttpServletResponse res) {
 		}

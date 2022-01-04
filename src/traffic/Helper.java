@@ -12,28 +12,26 @@ import javax.sql.*;
 import javax.naming.*;
 import javax.naming.directory.*;
 import java.security.MessageDigest;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
- * RiskPerson main class
  *
- * @author Walid Sibo
- * @version %I%, %G%
+ *
  */
 
 public class Helper{
 
 		static int c_con = 0;
     //
-    // Non static variables
-    //
-		static Logger logger = Logger.getLogger(Helper.class);
+
+		static Logger logger = LogManager.getLogger(Helper.class);
 
     //
     // basic constructor
     public Helper(boolean deb){
 				//
 				// initialize
-				//
+
     }
 		//
     final static String getHashCodeOf(String buffer){
