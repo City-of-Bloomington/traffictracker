@@ -3,7 +3,10 @@ var maplayers  = [
     {
         "source": "XYZ",
         "options": {
-            "url":"https:\/\/api.mapbox.com\/styles\/v1\/mapbox\/streets-v11\/tiles\/{z}\/{x}\/{y}?access_token=pk.eyJ1Ijoic2lib3ciLCJhIjoiY2t5MGcyYnY0MDB0OTJxcGRrNnJocGk4ZSJ9.0ku_IM1zq8fUJThadGNs9A"
+            "url":"https:\/\/api.mapbox.com\/styles\/v1\/mapbox\/streets-v11\/tiles\/{z}\/{x}\/{y}?access_token=pk.eyJ1Ijoic2lib3ciLCJhIjoiY2t5MGcyYnY0MDB0OTJxcGRrNnJocGk4ZSJ9.0ku_IM1zq8fUJThadGNs9A",
+						"tileSize": 512,
+            "maxZoom": 18,
+            "zoomOffset": -1
         }
     }
 ];
@@ -85,7 +88,7 @@ var MAPDISPLAY = {
             center: ol.proj.transform([-86.536806, 39.169927], 'EPSG:4326', 'EPSG:3857'),
             zoom: 14,
             minZoom: 1,
-            maxZoom: 20
+            maxZoom: 18
         })
     }),
     /**
@@ -377,7 +380,7 @@ MAPDISPLAY.map.on('click', MAPDISPLAY.handleMapClick);
             f = features.length;
             features[f] = MAPDISPLAY.wktFormatter.readFeature(geography.innerHTML);
             features[f].getGeometry().transform('EPSG:4326', 'EPSG:3857');
-            features[f].event_id = id;
+						features[f].event_id = id;
             features[f].type     = type;
 						features[f].project_name = project_name;
 						features[f].url = url;
